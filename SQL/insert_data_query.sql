@@ -12,10 +12,6 @@ INCREMENT BY 1;
 SHOW DEFINE;
 SET DEFINE OFF;
 
-
-DELETE member
-WHERE member_num= 2;
-
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1998-06-29', '진돌', '부산광역시 해운대구 중동', '010-4044-4444', 'https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=20170712195535009572d12411ff9587970114.jpg&nmt=12');
 
@@ -79,9 +75,28 @@ INSERT INTO block
 VALUES (3, 5);
 
 -- 채팅
+CREATE SEQUENCE SEQ_CHATROOM_ID
+START WITH 1
+INCREMENT BY 1;
+ 
+1
 
+2
 
 -- 채팅 내용
+CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID --1번채팅방 내용번호
+START WITH 1
+INCREMENT BY 1;
+
+INSERT INTO chat_board
+VALUES (1,SEQ_CHATCONTENT_ROOM1_ID,ㅁ미나으 );
+
+CREATE SEQUENCE SEQ_CHATCONTENT_ROOM2_ID -- 2번채팅방 내용번호
+START WITH 1
+INCREMENT BY 1;
+
+INSERT INTO chat_board
+VALUES (2,SEQ_CHATCONTENT_ROOM2_ID,ㅁ미나으 );
 
 
 -- 당근페이
