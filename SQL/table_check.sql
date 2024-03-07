@@ -2,30 +2,39 @@
 -- 각 테이블 조회
 
 -- 회원
+SELECT * FROM member;
 
 
 -- 관리자
+SELECT * FROM admin;
 
 
 -- 신고
+SELECT * FROM report;
 
 
 -- 차단
+SELECT * FROM block;
 
 
 -- 채팅
+SELECT * FROM chat;
 
 
 -- 채팅 내용
+SELECT * FROM chat_board;
 
 
 -- 당근페이
+SELECT * FROM danngn_pay;
 
 
 -- 결제
+SELECT * FROM pay;
 
 
 -- 공지사항 게시판
+SELECT * FROM notice_board;
 
 
 -- 판매 물품 카테고리
