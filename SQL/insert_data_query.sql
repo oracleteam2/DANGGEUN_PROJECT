@@ -1,12 +1,10 @@
 -- SCOTT
 -- 데이터 삽입
 
-<<<<<<< HEAD
 -- 회원
 -- 회원 넣기전에 추가해주세요
 ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
 
-=======
 --COMM : COMMUNITY
 --CMT : COMMENT
 --CTGR : CATEGORY
@@ -16,32 +14,16 @@ ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
 SHOW DEFINE;
 SET DEFINE OFF;
 
-
-
--- MEMBER 테이블
---회원 넘버 ( PK )
---회원생년월일
---회원닉네임
---회원주소
---회원전화번호
---회원프로필이미지
---매너온도
-
 -- 회원 시퀀스
->>>>>>> WH
 CREATE SEQUENCE SEQ_MEMBER_ID
 START WITH 1
 INCREMENT BY 1;
 
-<<<<<<< HEAD
 SHOW DEFINE;
 SET DEFINE OFF;
-=======
+
 -- 회원 넣기전에 추가해주세요
 ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
-
-
->>>>>>> WH
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1998-06-29', '진돌', '부산광역시 해운대구 중동', '010-4044-4444', 'https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=20170712195535009572d12411ff9587970114.jpg&nmt=12');
@@ -51,12 +33,7 @@ VALUES (seq_member_id.NEXTVAL, '1990-03-12', '강타', '서울특별시 강남구 중동', '
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1991-05-23', '이효리', '서울특별시 강남구 중동', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000
-<<<<<<< HEAD
-
-=======
->>>>>>> WH
-');
+VALUES (seq_member_id.NEXTVAL, '1991-05-23', '이효리', '서울특별시 강남구 중동', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1992-07-27', '바다', '서울특별시 노원구 중동', '010-4467-2454', 'https://png.pngtree.com/thumb_back/fh260/background/20230609/pngtree-three-puppies-with-their-mouths-open-are-posing-for-a-photo-image_2902292.jpg
@@ -70,21 +47,18 @@ VALUES (seq_member_id.NEXTVAL, '1994-12-04', '손호영', '대구광역시 수성구 중동',
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1995-09-02', '차승원', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg
-');
+VALUES (seq_member_id.NEXTVAL, '1995-09-02', '차승원', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1996-08-24', '원빈', '부산광역시 해운대구 좌동', '010-1253-8964', 'https://i.pinimg.com/736x/05/fe/0c/05fe0c269a225ac1251fff5bc74483ef.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-<<<<<<< HEAD
 VALUES (seq_member_id.NEXTVAL, '1997-02-15', '카리나', '인천광역시 남구 중동', '010-2834-5315', 'https://www.moneynet.co.kr/files/attach/images/33793530/304/717/049/0d8e9d6eee5e97ac11f96085c56072ab.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '2000-07-11', '손석구', '제주특별시 제주시 아라일동', '010-2427-2453', 'https://cdnimage.dailian.co.kr/news/201802/news_1518415236_693408_m_1.jpg');
 
 -- 관리자
-=======
 VALUES (seq_member_id.NEXTVAL, '2000-02-15', '카리나', '인천광역시 남구 중동', '010-2834-5315', 'https://www.moneynet.co.kr/files/attach/images/33793530/304/717/049/0d8e9d6eee5e97ac11f96085c56072ab.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
@@ -172,7 +146,6 @@ VALUES (1,SEQ_CHATCONTENT_ROOM1_ID, '첫채팅', SYSDATE);
 --관리자비밀번호
 
 -- 관리자 시퀀스 생성
->>>>>>> WH
 CREATE SEQUENCE SEQ_ADMIN_ID
 START WITH 1
 INCREMENT BY 1;
@@ -186,7 +159,6 @@ VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자2', 'admin4875', '842135');
 INSERT INTO admin
 VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자3', 'admin9753', '84651321');
 
-<<<<<<< HEAD
 -- 신고
 CREATE SEQUENCE SEQ_REPORT_ID
 START WITH 1
@@ -256,9 +228,7 @@ VALUES(1, '91098112453', '국민', 50000);
 -- 결제
 INSERT INTO pay
 VALUES(1, 3);
-=======
 COMMIT;
->>>>>>> WH
 
 
 -- 공지사항 게시판
@@ -267,7 +237,6 @@ START WITH 1
 INCREMENT BY 1;
 
 INSERT INTO notice_board
-<<<<<<< HEAD
 VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1,  '저희 당근은 네고 불가입니다', '저희 당근은 금일부로 네고할 수 없습니다. 네고시 회원자격을 박탈하겠습니다.', SYSDATE);
 
 
@@ -290,7 +259,6 @@ VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1,  '저희 당근은 네고 불가입니다', '저희 당�
 
 
 -- 동네생활 댓글
-=======
 VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, '저희 당근은 네고 불가입니다', '저희 당근은 금일부로 네고할 수 없습니다. 네고시 회원자격을 박탈하겠습니다.', SYSDATE);
 
 INSERT INTO notice_board
@@ -541,7 +509,6 @@ COMMIT;
 --시간
 --댓글내용
 
->>>>>>> WH
 INSERT INTO COMM_CMT (COMM_NUM, COMM_BOARD_NUM, COMM_WRITER_NICKNAME, COMM_DATE, COMM_CTGR_NAME, COMM_CONTENT) 
 VALUES (1, 100, '뿡빵이', TO_DATE('21-04-21','YY-MM-DD'), '인기게시판', '댓글 내용입니다.'),
        (2, 200, '하호하미', TO_DATE('21-01-01','YY-MM-DD'), '인기게시판', '댓글 내용입니다.'),
@@ -553,10 +520,8 @@ VALUES (1, 100, '뿡빵이', TO_DATE('21-04-21','YY-MM-DD'), '인기게시판', '댓글 내
        (8, 800, 'kamel94', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
        (9, 900, '동동', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
        (10, 1000, '오쪼꼬미니미', TO_DATE('21-01-01','YY-MM-DD'), '정보공유', '댓글 내용입니다.');
-<<<<<<< HEAD
 
 -- 동네생활 대댓글
-=======
 COMMIT;
 
 
@@ -569,7 +534,6 @@ COMMIT;
 --대댓글 내용
 --시간
 
->>>>>>> WH
 INSERT INTO CMT_REPLY (RCMT_NUM, COMM_NUM, RCMT_WRITER_NICKNAME, CMT_BOARD_NUM, RCMT_CONTENT, RCMT_DATE) 
 VALUES (1, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
        (2, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
@@ -582,12 +546,10 @@ VALUES (1, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21',
        (9, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
        (10, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD'));
 
-<<<<<<< HEAD
 -- 동네생활 게시판 좋아요
 
 
 -- 동네생활 댓글 좋아요
-=======
 COMMIT;
 
 -- COMM_CMT_LIKE 테이블
@@ -596,7 +558,6 @@ COMMIT;
 --댓글 넘버
 --회원 넘버
 
->>>>>>> WH
 INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM) 
 VALUES (1, 100, 1, 1),
        (2, 200, 1, 1),
@@ -608,11 +569,9 @@ VALUES (1, 100, 1, 1),
        (8, 800, 1, 1),
        (9, 900, 1, 1),
        (10, 1000, 1, 1);
-<<<<<<< HEAD
 
 
 -- 동네생활 대댓글 좋아요
-=======
 COMMIT;
 
 -- CMT_REPLY_LIKE 테이블
@@ -620,7 +579,6 @@ COMMIT;
 --회원 넘버
 --동네생활 대댓글 넘버
 
->>>>>>> WH
 INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM) 
 VALUES (1, 1, 1),
        (2, 1, 1),
@@ -632,30 +590,7 @@ VALUES (1, 1, 1),
        (8, 1, 1),
        (9, 1, 1),
        (10, 1, 1);
-<<<<<<< HEAD
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 COMMIT;
 
 
@@ -1095,4 +1030,3 @@ INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( s
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 6);
 
 COMMIT;
->>>>>>> WH
