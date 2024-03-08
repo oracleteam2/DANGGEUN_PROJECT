@@ -1,199 +1,137 @@
 -- SCOTT
--- µ¥ÀÌÅÍ »ðÀÔ
+-- ë°ì´í„° ì‚½ìž…
+
 
 --COMM : COMMUNITY
 --CMT : COMMENT
 --CTGR : CATEGORY
 --NUM : NUMBER
 
--- '&' À» ¹®ÀÚ·Î Ãë±ÞÇÏ°ÔÇÏ´Â ÄÚµå
+-- '&' ì„ ë¬¸ìžë¡œ ì·¨ê¸‰í•˜ê²Œí•˜ëŠ” ì½”ë“œ
 SHOW DEFINE;
 SET DEFINE OFF;
 
 
-
--- MEMBER Å×ÀÌºí
---È¸¿ø ³Ñ¹ö ( PK )
---È¸¿ø»ý³â¿ùÀÏ
---È¸¿ø´Ð³×ÀÓ
---È¸¿øÁÖ¼Ò
---È¸¿øÀüÈ­¹øÈ£
---È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö
---¸Å³Ê¿Âµµ
-
--- È¸¿ø ½ÃÄö½º
+-- íšŒì› ì‹œí€€ìŠ¤
+-- íšŒì›ë„˜ë²„(pk), ìƒë…„ì›”ì¼, ë‹‰ë„¤ìž„, ì£¼ì†Œ, ì „í™”ë²ˆí˜¸, í”„ë¡œí•„ì´ë¯¸ì§€, ë§¤ë„ˆì˜¨ë„(default)
 CREATE SEQUENCE SEQ_MEMBER_ID
 START WITH 1
 INCREMENT BY 1;
 
--- È¸¿ø ³Ö±âÀü¿¡ Ãß°¡ÇØÁÖ¼¼¿ä
-
 
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1998-06-29', 'Áøµ¹', 'ºÎ»ê±¤¿ª½Ã ÇØ¿î´ë±¸ Áßµ¿', '010-4044-4444', 'https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=20170712195535009572d12411ff9587970114.jpg&nmt=12');
+VALUES (seq_member_id.NEXTVAL, '1998-06-29', 'ì§„ëŒ', 'ë¶€ì‚°ê´‘ì—­ì‹œ í•´ìš´ëŒ€êµ¬ ì¤‘ë™', '010-4044-4444', 'https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=20170712195535009572d12411ff9587970114.jpg&nmt=12');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1990-03-12', '°­Å¸', '¼­¿ïÆ¯º°½Ã °­³²±¸ Áßµ¿', '010-1234-4444', 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8fA%3D%3D
+VALUES (seq_member_id.NEXTVAL, '1990-03-12', 'ì•ˆìœ ì§„', 'ì„œìš¸íŠ¹ë³„ì‹œ ê°•ë‚¨êµ¬ ì¤‘ë™', '010-1234-4444', 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8fA%3D%3D
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1991-05-23', 'ÀÌÈ¿¸®', '¼­¿ïÆ¯º°½Ã °­³²±¸ Áßµ¿', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000
+VALUES (seq_member_id.NEXTVAL, '1991-05-23', 'ìž¥ì›ì˜', 'ì„œìš¸íŠ¹ë³„ì‹œ ê°•ë‚¨êµ¬ ì¤‘ë™', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000');
+
+INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
+VALUES (seq_member_id.NEXTVAL, '1992-07-27', 'ì°¨ì€ìš°', 'ì„œìš¸íŠ¹ë³„ì‹œ ë…¸ì›êµ¬ ì¤‘ë™', '010-4467-2454', 'https://png.pngtree.com/thumb_back/fh260/background/20230609/pngtree-three-puppies-with-their-mouths-open-are-posing-for-a-photo-image_2902292.jpg
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1992-07-27', '¹Ù´Ù', '¼­¿ïÆ¯º°½Ã ³ë¿ø±¸ Áßµ¿', '010-4467-2454', 'https://png.pngtree.com/thumb_back/fh260/background/20230609/pngtree-three-puppies-with-their-mouths-open-are-posing-for-a-photo-image_2902292.jpg
+VALUES (seq_member_id.NEXTVAL, '1993-11-19', 'ê³ ìˆ˜', 'ì„œìš¸íŠ¹ë³„ì‹œ ë§ˆí¬êµ¬ ì¤‘ë™', '010-7014-1244', 'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg');
+
+INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
+VALUES (seq_member_id.NEXTVAL, '1994-12-04', 'ìœˆí„°', 'ëŒ€êµ¬ê´‘ì—­ì‹œ ìˆ˜ì„±êµ¬ ì¤‘ë™', '010-8344-8894', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUepaBdMZtoy5GmiKF_v1vkRbwo3MgxAiIwcaztDaqiYwLdV58jhq19hUX00btfdkBUF8&usqp=CAU 
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1993-11-19', '±èÅÂ¿ì', '¼­¿ïÆ¯º°½Ã ¸¶Æ÷±¸ Áßµ¿', '010-7014-1244', 'https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg');
+VALUES (seq_member_id.NEXTVAL, '1995-09-02', 'ê°•ë™ì›', 'ëŒ€ì „ê´‘ì—­ì‹œ  ì„œêµ¬ ì¤‘ë™', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1994-12-04', '¼ÕÈ£¿µ', '´ë±¸±¤¿ª½Ã ¼ö¼º±¸ Áßµ¿', '010-8344-8894', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUepaBdMZtoy5GmiKF_v1vkRbwo3MgxAiIwcaztDaqiYwLdV58jhq19hUX00btfdkBUF8&usqp=CAU 
-');
+VALUES (seq_member_id.NEXTVAL, '1996-08-24', 'ì›ë¹ˆ', 'ë¶€ì‚°ê´‘ì—­ì‹œ í•´ìš´ëŒ€êµ¬ ì¢Œë™', '010-1253-8964', 'https://i.pinimg.com/736x/05/fe/0c/05fe0c269a225ac1251fff5bc74483ef.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1995-09-02', 'Â÷½Â¿ø', '´ëÀü±¤¿ª½Ã  ¼­±¸ Áßµ¿', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg
-');
+VALUES (seq_member_id.NEXTVAL, '1997-02-15', 'ì¹´ë¦¬ë‚˜', 'ì¸ì²œê´‘ì—­ì‹œ ë‚¨êµ¬ ì¤‘ë™', '010-2834-5315', 'https://www.moneynet.co.kr/files/attach/images/33793530/304/717/049/0d8e9d6eee5e97ac11f96085c56072ab.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1996-08-24', '¿øºó', 'ºÎ»ê±¤¿ª½Ã ÇØ¿î´ë±¸ ÁÂµ¿', '010-1253-8964', 'https://i.pinimg.com/736x/05/fe/0c/05fe0c269a225ac1251fff5bc74483ef.jpg');
-
-INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1997-02-15', 'Ä«¸®³ª', 'ÀÎÃµ±¤¿ª½Ã ³²±¸ Áßµ¿', '010-2834-5315', 'https://www.moneynet.co.kr/files/attach/images/33793530/304/717/049/0d8e9d6eee5e97ac11f96085c56072ab.jpg');
-
-INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '2000-07-11', '¼Õ¼®±¸', 'Á¦ÁÖÆ¯º°½Ã Á¦ÁÖ½Ã ¾Æ¶óÀÏµ¿', '010-2427-2453', 'https://cdnimage.dailian.co.kr/news/201802/news_1518415236_693408_m_1.jpg');
+VALUES (seq_member_id.NEXTVAL, '2000-07-11', 'ì†ì„êµ¬', 'ì œì£¼íŠ¹ë³„ì‹œ ì œì£¼ì‹œ ì•„ë¼ì¼ë™', '010-2427-2453', 'https://cdnimage.dailian.co.kr/news/201802/news_1518415236_693408_m_1.jpg');
 
 COMMIT;
 
--- DANNGN_PAY Å×ÀÌºí
---È¸¿ø ³Ñ¹ö ( PK )
---°èÁÂ¹øÈ£
---ÀºÇàÀÌ¸§
---ÀÜ¾×
-INSERT INTO DANNGN_pay
-VALUES(1, '91098112453', '±¹¹Î', 50000);
-INSERT INTO DANNGN_pay
-VALUES(2, '33332955474', '½ÅÇÑ', 30000);
-INSERT INTO DANNGN_pay
-VALUES(3, '91963923557953', 'ÇÏ³ª', 60000);
-INSERT INTO DANNGN_pay
-VALUES(4, '1234811255453', '³óÇù', 40000);
-INSERT INTO DANNGN_pay
-VALUES(5, '44445930203', 'SCÁ¦ÀÏ', 70000);
-
-COMMIT;
-
--- BLOCK Å×ÀÌºí
---È¸¿ø³Ñ¹ö1
---È¸¿ø³Ñ¹ö2
-INSERT INTO block
-VALUES (3, 5);
-
-INSERT INTO block
-VALUES (1, 5);
-
-INSERT INTO block
-VALUES (10, 5);
-
-INSERT INTO block
-VALUES (5, 1);
-
-INSERT INTO block
-VALUES (4, 2);
-
-
--- PAY Å×ÀÌºí
---È¸¿ø ³Ñ¹ö
---È¸¿ø ³Ñ¹ö2
-INSERT INTO pay
-VALUES(1, 3);
-
-
--- CHAT Å×ÀÌºí
---Ã¤ÆÃ¹æ ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---È¸¿ø ³Ñ¹ö2
-
--- CHAT ½ÃÄö½º »ý¼º
-CREATE SEQUENCE SEQ_CHATROOM_ID
-START WITH 1
-INCREMENT BY 1;
- 
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 1, 2);
-
-
--- CHAT_BOARD Å×ÀÌºí
---Ã¤ÆÃ¹æ ³Ñ¹ö
---Ã¤ÆÃ ³Ñ¹ö ( PK )
---Ã¤ÆÃ³»¿ë
---Ã¤ÆÃ½Ã°£
-
--- CHAT_BOARD ½ÃÄö½º »ý¼º
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID --1¹øÃ¤ÆÃ¹æ ³»¿ë¹øÈ£
-START WITH 1
-INCREMENT BY 1;
-
-INSERT INTO chat_board
-VALUES (1,SEQ_CHATCONTENT_ROOM1_ID, 'Ã¹Ã¤ÆÃ', SYSDATE);
-
-
--- ADMIN Å×ÀÌºí
---°ü¸®ÀÚ ³Ñ¹ö ( PK ) 
---°ü¸®ÀÚ´Ð³×ÀÓ
---°ü¸®ÀÚID
---°ü¸®ÀÚºñ¹Ð¹øÈ£
-
--- °ü¸®ÀÚ ½ÃÄö½º »ý¼º
+-- ê´€ë¦¬ìž ìƒì„±
+-- ADMIN í…Œì´ë¸”, ê´€ë¦¬ìž ë„˜ë²„ ( PK ), ê´€ë¦¬ìžë‹‰ë„¤ìž„, ê´€ë¦¬ìžID, ê´€ë¦¬ìžë¹„ë°€ë²ˆí˜¸
 CREATE SEQUENCE SEQ_ADMIN_ID
 START WITH 1
 INCREMENT BY 1;
 
 INSERT INTO admin
-VALUES (SEQ_ADMIN_ID.NEXTVAL, '°ü¸®ÀÚ1', 'admin123', '1234');
+VALUES (SEQ_ADMIN_ID.NEXTVAL, 'ê´€ë¦¬ìž1', 'admin123', '1234');
 
 INSERT INTO admin
-VALUES (SEQ_ADMIN_ID.NEXTVAL, '°ü¸®ÀÚ2', 'admin4875', '842135');
+VALUES (SEQ_ADMIN_ID.NEXTVAL, 'ê´€ë¦¬ìž2', 'admin4875', '842135');
 
 INSERT INTO admin
-VALUES (SEQ_ADMIN_ID.NEXTVAL, '°ü¸®ÀÚ3', 'admin9753', '84651321');
+VALUES (SEQ_ADMIN_ID.NEXTVAL, 'ê´€ë¦¬ìž3', 'admin9753', '84651321');
 
+
+
+
+
+-- DANNGN_PAY í…Œì´ë¸”, íšŒì› ë„˜ë²„ ( PK ), ê³„ì¢Œë²ˆí˜¸, ì€í–‰ì´ë¦„, ìž”ì•¡
+INSERT INTO DANNGN_pay
+VALUES(1, '91098112453', 'KBêµ­ë¯¼ì€í–‰', 1350000);
+INSERT INTO DANNGN_pay
+VALUES(2, '33332955474', 'ì‹ í•œì€í–‰', 350000);
+INSERT INTO DANNGN_pay
+VALUES(3, '91963923557953', 'KEBí•˜ë‚˜ì€í–‰', 275000);
+INSERT INTO DANNGN_pay
+VALUES(4, '1234811255453', 'NHë†í˜‘ì€í–‰', 64000);
+INSERT INTO DANNGN_pay
+VALUES(5, '44445930203', 'SCì œì¼ì€í–‰', 170000);
+INSERT INTO DANNGN_pay
+VALUES(6, '123456789434', 'ì”¨í‹°ì€í–‰', 600000);
+INSERT INTO DANNGN_pay
+VALUES(7, '45629759232', 'ì¼€ì´ë±…í¬', 1790000);
+INSERT INTO DANNGN_pay
+VALUES(8, '914346765579', 'ì¹´ì¹´ì˜¤ë±…í¬', 510000);
+INSERT INTO DANNGN_pay
+VALUES(9, '09173549283', 'DGBëŒ€êµ¬ì€í–‰', 200000);
+INSERT INTO DANNGN_pay
+VALUES(10, '056737235267', 'BNKë¶€ì‚°ì€í–‰', 660000);
 COMMIT;
 
+-- PAY í…Œì´ë¸”, íšŒì› ë„˜ë²„, íšŒì› ë„˜ë²„2
+INSERT INTO pay
+VALUES(1, 3);
 
--- °øÁö»çÇ× °Ô½ÃÆÇ
-CREATE SEQUENCE SEQ_NOTICE_BOARD_ID
+
+-- CHAT í…Œì´ë¸”, ì±„íŒ…ë°© ë„˜ë²„ ( PK ), íšŒì› ë„˜ë²„, íšŒì› ë„˜ë²„2
+CREATE SEQUENCE SEQ_CHATROOM_ID
 START WITH 1
 INCREMENT BY 1;
 
-INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, 'ÀúÈñ ´ç±ÙÀº ³×°í ºÒ°¡ÀÔ´Ï´Ù', 'ÀúÈñ ´ç±ÙÀº ±ÝÀÏºÎ·Î ³×°íÇÒ ¼ö ¾ø½À´Ï´Ù. ³×°í½Ã È¸¿øÀÚ°ÝÀ» ¹ÚÅ»ÇÏ°Ú½À´Ï´Ù.', SYSDATE);
+INSERT INTO chat
+VALUES(SEQ_CHATROOM_ID.NEXTVAL, 1, 2);
 
-INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 2, 'ÀÇ·á±¤°í ½ÉÀÇÇÊ ÀÛ¼º ¹æ¹ý °øÁö', 'ÀÇ·á±¤°íÀÇ °æ¿ì, ÇÊ¼öÀûÀ¸·Î ÀÇ·á±¤°í ½ÉÀÇÇÊ¶õ¿¡ ½ÉÀÇÇÊ ¹øÈ£¸¦ ÀÛ¼ºÇØ ÁÖ½Ã±â ¹Ù¶ø´Ï´Ù. ½ÉÀÇÇÊ¶õ¿¡ ÀÛ¼ºÇÏÁö ¾Ê°í, ´Ù¸¥ À§Ä¡¿¡ ÀÛ¼ºÇÑ °æ¿ì ½É»ç ½Ã ½ÂÀÎÀÌ ¾î·Á¿ï ¼ö ÀÖ½À´Ï´Ù.', '2023-03-30');
+INSERT INTO chat
+VALUES(SEQ_CHATROOM_ID.NEXTVAL, 3, 5);
 
-INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, 'Åë°è Áý°è ¿À·ù ÇØ°á', 'Åë°è È­¸é¿¡¼­ 9¿ù 26ÀÏ ÀÌÈÄÀÇ Á¶È¸¼ö µî ¹æ¹® µ¥ÀÌÅÍ°¡ ³ëÃâµÇÁö ¾Ê¾Ò¾î¿ä.
-                                                           10¿ù 4ÀÏ Àå¾Ö º¹±¸ ¿Ï·á ÇÏ¿´À¸¸ç, ¸ðµç ÀÏÀÚ¿¡¼­ Á¤»óÀûÀ¸·Î Åë°è¸¦ È®ÀÎÇÏ½Ç ¼ö ÀÖ¾î¿ä.
-                                                           ÀÌ¿ë¿¡ ºÒÆíÀ» µå·Á ´ë´ÜÈ÷ ÁË¼ÛÇÕ´Ï´Ù.
-                                                           º¸´Ù ¾ÈÁ¤ÀûÀÎ ¼­ºñ½º¸¦ Á¦°øÇÏ´Â ´ç±Ù ºñÁî´Ï½º°¡ µÇ°Ú½À´Ï´Ù.', '2023-06-21');
-                                                           
-INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 2, 'Àü¹®°¡¸ðµå »ç·Ê°ø¸ðÀü ¾È³»', '´ç±Ù Àü¹®°¡¸ðµå¿Í ÇÔ²² ºñÁî´Ï½ºÀÇ ¼ºÀåÀ» ¸¸µé¾î³½ ¿©·¯ºÐÀÇ ÀÌ¾ß±â¸¦ ´ã¾Æ³»´Â, ¡®Á¦ 1È¸ Àü¹®°¡¸ðµå »ç·Ê °ø¸ðÀü¡¯ÀÌ ½ÃÀÛµÇ¾ú¾î¿ä.', '2023-08-12');
+INSERT INTO chat
+VALUES(SEQ_CHATROOM_ID.NEXTVAL, 1, 10);
 
-INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 3, '¿¡¾îÄÁ °ßÀû ¿äÃ»À» ¼Õ½±°Ô ¹Þ¾Æº¸¼¼¿ä.', '°í°´ÀÌ º¸³½ °ßÀû ¿äÃ»À» È®ÀÎÇÏ°í °ßÀûÀ» º¸³¾ ¼ö ÀÖ¾î¿ä. °ßÀû ¿äÃ»¼­¿¡ Á¦Ç° Á¤º¸¿Í ¿äÃ» ³»¿ëÀÌ ´ã°Ü ÀÖ¾î ¸Å¹ø Á÷Á¢ Á¤º¸¸¦ ¹°¾îºÁ¾ß Çß´ø ¹ø°Å·Î¿òÀÌ »ç¶óÁ®¿ä.', '2024-02-16');
+INSERT INTO chat
+VALUES(SEQ_CHATROOM_ID.NEXTVAL, 2, 8);
 
-COMMIT;
+INSERT INTO chat
+VALUES(SEQ_CHATROOM_ID.NEXTVAL, 6, 9);
 
 
--- REPORT Å×ÀÌºí
---½Å°í ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---°ü¸®ÀÚ ³Ñ¹ö
+-- CHAT_BOARD í…Œì´ë¸”, ì±„íŒ…ë°© ë„˜ë²„, ì±„íŒ… ë„˜ë²„ ( PK ), íšŒì›ë„˜ë²„, ì±„íŒ…ë‚´ìš©, ì±„íŒ…ì‹œê°„
+CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID --1ë²ˆì±„íŒ…ë°© ë‚´ìš©ë²ˆí˜¸
+START WITH 1
+INCREMENT BY 1;
 
+INSERT INTO chat_board
+VALUES (1,SEQ_CHATCONTENT_ROOM1_ID, 'ì²«ì±„íŒ…', SYSDATE);
+
+-- ì‹ ê³ 
 CREATE SEQUENCE SEQ_REPORT_ID
 START WITH 1
 INCREMENT BY 1;
@@ -228,25 +166,149 @@ VALUES (SEQ_REPORT_ID.NEXTVAL, 7, 2);
 INSERT INTO report
 VALUES (SEQ_REPORT_ID.NEXTVAL, 1, 2);
 
+-- BLOCK í…Œì´ë¸”, íšŒì›ë„˜ë²„1, íšŒì›ë„˜ë²„2
+INSERT INTO block
+VALUES (3, 5);
+
+INSERT INTO block
+VALUES (1, 5);
+
+INSERT INTO block
+VALUES (10, 5);
 
 
--- COMM_CTGR ( ¾ÆÁ÷ µ¥ÀÌÅÍ ¾øÀ½ ) Å×ÀÌºí
---µ¿³×»ýÈ° Ä«Å×°í¸® ³Ñ¹ö ( PK )
---µ¿³×»ýÈ° Ä«Å×°í¸® ÀÌ¸§
+-- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ
+-- ê³µì§€ì‚¬í•­ ë„˜ë²„(pk), ê´€ë¦¬ìžë„˜ë²„, ì œëª©, ë‚´ìš©, ë‚ ì§œ
+CREATE SEQUENCE SEQ_NOTICE_BOARD_ID
+START WITH 1
+INCREMENT BY 1;
 
-INSERT INTO comm_ctgr VALUES( 1,'ÀÎ±â');
-INSERT INTO comm_ctgr VALUES( 2,'ÀÚÀ¯');
-INSERT INTO comm_ctgr VALUES( 3,'Áú¹®');
-INSERT INTO comm_ctgr VALUES( 4,'Á¤º¸°øÀ¯');
-INSERT INTO comm_ctgr VALUES( 5,'ºÐ½Ç');
-INSERT INTO comm_ctgr VALUES( 6,'»ç°Ç»ç°í');
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, 'ì €í¬ ë‹¹ê·¼ì€ ë„¤ê³  ë¶ˆê°€ìž…ë‹ˆë‹¤', 'ì €í¬ ë‹¹ê·¼ì€ ê¸ˆì¼ë¶€ë¡œ ë„¤ê³ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ë„¤ê³ ì‹œ íšŒì›ìžê²©ì„ ë°•íƒˆí•˜ê² ìŠµë‹ˆë‹¤.', SYSDATE);
+
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 2, 'ì˜ë£Œê´‘ê³  ì‹¬ì˜í•„ ìž‘ì„± ë°©ë²• ê³µì§€', 'ì˜ë£Œê´‘ê³ ì˜ ê²½ìš°, í•„ìˆ˜ì ìœ¼ë¡œ ì˜ë£Œê´‘ê³  ì‹¬ì˜í•„ëž€ì— ì‹¬ì˜í•„ ë²ˆí˜¸ë¥¼ ìž‘ì„±í•´ ì£¼ì‹œê¸° ë°”ëžë‹ˆë‹¤. ì‹¬ì˜í•„ëž€ì— ìž‘ì„±í•˜ì§€ ì•Šê³ , ë‹¤ë¥¸ ìœ„ì¹˜ì— ìž‘ì„±í•œ ê²½ìš° ì‹¬ì‚¬ ì‹œ ìŠ¹ì¸ì´ ì–´ë ¤ìš¸ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.', '2023-03-30');
+
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, 'í†µê³„ ì§‘ê³„ ì˜¤ë¥˜ í•´ê²°', 'í†µê³„ í™”ë©´ì—ì„œ 9ì›” 26ì¼ ì´í›„ì˜ ì¡°íšŒìˆ˜ ë“± ë°©ë¬¸ ë°ì´í„°ê°€ ë…¸ì¶œë˜ì§€ ì•Šì•˜ì–´ìš”.
+                                                           10ì›” 4ì¼ ìž¥ì•  ë³µêµ¬ ì™„ë£Œ í•˜ì˜€ìœ¼ë©°, ëª¨ë“  ì¼ìžì—ì„œ ì •ìƒì ìœ¼ë¡œ í†µê³„ë¥¼ í™•ì¸í•˜ì‹¤ ìˆ˜ ìžˆì–´ìš”.
+                                                           ì´ìš©ì— ë¶ˆíŽ¸ì„ ë“œë ¤ ëŒ€ë‹¨ížˆ ì£„ì†¡í•©ë‹ˆë‹¤.
+                                                           ë³´ë‹¤ ì•ˆì •ì ì¸ ì„œë¹„ìŠ¤ë¥¼ ì œê³µí•˜ëŠ” ë‹¹ê·¼ ë¹„ì¦ˆë‹ˆìŠ¤ê°€ ë˜ê² ìŠµë‹ˆë‹¤.', '2023-06-21');
+                                                           
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 2, 'ì „ë¬¸ê°€ëª¨ë“œ ì‚¬ë¡€ê³µëª¨ì „ ì•ˆë‚´', 'ë‹¹ê·¼ ì „ë¬¸ê°€ëª¨ë“œì™€ í•¨ê»˜ ë¹„ì¦ˆë‹ˆìŠ¤ì˜ ì„±ìž¥ì„ ë§Œë“¤ì–´ë‚¸ ì—¬ëŸ¬ë¶„ì˜ ì´ì•¼ê¸°ë¥¼ ë‹´ì•„ë‚´ëŠ”, â€˜ì œ 1íšŒ ì „ë¬¸ê°€ëª¨ë“œ ì‚¬ë¡€ ê³µëª¨ì „â€™ì´ ì‹œìž‘ë˜ì—ˆì–´ìš”.', '2023-08-12');
+
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 3, 'ì—ì–´ì»¨ ê²¬ì  ìš”ì²­ì„ ì†ì‰½ê²Œ ë°›ì•„ë³´ì„¸ìš”.', 'ê³ ê°ì´ ë³´ë‚¸ ê²¬ì  ìš”ì²­ì„ í™•ì¸í•˜ê³  ê²¬ì ì„ ë³´ë‚¼ ìˆ˜ ìžˆì–´ìš”. ê²¬ì  ìš”ì²­ì„œì— ì œí’ˆ ì •ë³´ì™€ ìš”ì²­ ë‚´ìš©ì´ ë‹´ê²¨ ìžˆì–´ ë§¤ë²ˆ ì§ì ‘ ì •ë³´ë¥¼ ë¬¼ì–´ë´ì•¼ í–ˆë˜ ë²ˆê±°ë¡œì›€ì´ ì‚¬ë¼ì ¸ìš”.', '2024-02-16');
 
 COMMIT;
 
--- COMM_BOARD_LIKE ( ¾ÆÁ÷ µ¥ÀÌÅÍ ¾øÀ½ ) Å×ÀÌºí
---µ¿³×»ýÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---µ¿³×»ýÈ° °Ô½ÃÆÇ ³Ñ¹ö
+
+-- ë™ë„¤ìƒí™œ ì¹´í…Œê³ ë¦¬ í…Œì´ë¸”
+--ë™ë„¤ìƒí™œ ì¹´í…Œê³ ë¦¬ ë„˜ë²„ ( PK ), ë™ë„¤ìƒí™œ ì¹´í…Œê³ ë¦¬ ì´ë¦„
+
+INSERT INTO comm_ctgr VALUES( 1,'ì¸ê¸°');
+INSERT INTO comm_ctgr VALUES( 2,'ìžìœ ');
+INSERT INTO comm_ctgr VALUES( 3,'ì§ˆë¬¸');
+INSERT INTO comm_ctgr VALUES( 4,'ì •ë³´ê³µìœ ');
+INSERT INTO comm_ctgr VALUES( 5,'ë¶„ì‹¤');
+INSERT INTO comm_ctgr VALUES( 6,'ì‚¬ê±´ì‚¬ê³ ');
+
+COMMIT;
+
+
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ
+-- COMM_BOARD í…Œì´ë¸” 
+-- COMM_BOARD_NUM ( PK ), COMM_CTGR_NUM, MEMBER_NUM, COMM_TITLE, COMM_CONTENT, COMM_UPLOAD_DATE
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ëˆ„êµ¬ë“ ì§€ í•˜ë£¨ì— 10ë¶„ë§Œ íˆ¬ìží•˜ë©´ ë¶€ìžê°€ ë  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ','ë¶€ìžë˜ëŠ” ë²•',1,to_date('21-04-23','yy-mm-dd'),9);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì „31ì‚´ ë‚¨ìžê³  ì¸ì²œê³µí•­ì— ì¼ë•Œë¬¸ì— í”½ì—… ê°€ëŠ”ë° ê³µí•­ê°€ì‹œëŠ”ë¶„ ìžˆìœ¼ë©´ê³µí•­ê¹Œì§€ ì¹´í’€í•©ë‹ˆë‹¤ ~ ì—°íœ´ë•Œ ê³ í–¥ë‚´ë ¤ê°€ëŠ” ì°¨íŽ¸ ë§¤ì§„Â‰ç‘›ë»‘ ì–´ë–¤ë¶„ì´ ê°ì‚¬í•˜ê²Œë„ ì¹´í’€í•´ì£¼ì…”ì„œ íŽ¸í•˜ê²Œ ê°”ë˜ ê¸°ì–µì´ìžˆì–´ì„œ ì˜¬ë ¤ë´…ë‹ˆë‹¤^^ ','ë‚´ì¼ (3.7)ì˜¤ì „ 6ì‹œ30ë¶„ ì¶œë°œ ë™ìˆ˜ì›ì‚¬ê±°ë¦¬ìª½ì—ì„œ',1,to_date('20-01-13','yy-mm-dd'),6);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì¹˜í‚¨ë¨¹ê³ ì‹¶ì–´ìš” ìžˆìœ¼ë©´ ì¢‹ê² ë‹¤ ','ë§í¬ë™ìª½ì— ì¹˜í‚¨íŠ¸ëŸ­ ì˜¨ë° ìžˆì–´ìš”?',1,to_date('22-11-03','yy-mm-dd'),7);
+
+INSERT INTO comm_board(comm_board_num,comm_content,comm_title,comm_ctgr_num,comm_upload_date,member_num)
+VALUES(seq_board.nextval,'ë³´í†µ ê¸°ì¡´ì— ì‚´ë˜ ì „ì„¸ì§‘ ê³„ì•½ì¼ ëª‡ë‹¬ì „ì— ì§‘ì„ ì•Œì•„ë³´ë‚˜ìš”?  ì˜ˆë¥¼ ë“¤ì–´ 8ì›”ë§ì´ ë§Œë£Œë¼ë©´ ì–¸ì œë¶€í„° ìƒˆë¡œ ê³„ì•½í•  ì „ì„¸ì§‘ì„ ì•Œì•„ë³´ëŠ”ê²Œ ì¢‹ì„ê¹Œìš”?
+ ','ì „ì„¸ ê³„ì•½ ê¶ê¸ˆì¦',2,to_date('24-01-01','yy-mm-dd'),3);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì•ˆë…•í•˜ì„¸ìš”:) ì–¼ë§ˆ ì „ ìˆ˜ì› ì´ì‚¬ì™€ì„œ ê¸°ì¡´ í’‹ì‚´íŒ€ì€ ê°ˆìˆ˜ ì—†ê²Œ ë˜ì–´  ì„±ì¸ ì¶•êµ¬êµì‹¤ì´ë¼ë„ ë‹¤ë…€ë³¼ê¹Œ í•©ë‹ˆë‹¤.  ê´œì°®ì€ ê³³ ìžˆìœ¼ë©´ ì†Œê°œ ë¶€íƒë“œë ¤ìš” ê°ì‚¬í•©ë‹ˆë‹¤
+ ','ë§í¬ê·¼ì²˜ ì„±ì¸ì¶•êµ¬êµì‹¤ ë¬¸ì˜ë“œë¦½ë‹ˆë‹¤',2,to_date('23-07-16','yy-mm-dd'),1);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,' ížˆí”¼íŽŒ í•˜ê³  ì‹¶ì€ë°
+ ','ë‚¨ìž íŽŒ ìž˜í•˜ëŠ” ê³³ ìžˆë‚˜ìš”',2,to_date('23-09-12','yy-mm-dd'),2);
+ 
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,' ëŒ“ê¸€ ë‹¬ì•„ì£¼ì„¸ìš”!
+ ','ë² ì´ìŠ¤ ì¹˜ì‹œëŠ”ë¶„ ê³„ì‹ ê°€ìš”?',3,to_date('23-05-02','yy-mm-dd'),4);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì €ëž‘ í•´ìž¥êµ­ì— ì†Œì£¼í•œìž”í•˜ì‹¤ëž˜ìš”? 3 0 ë‚¨
+ ','ë§í¬ì—­ê·¼ì²˜í‡´ê·¼í•˜ì‹ ë¶„',3,to_date('23-06-11','yy-mm-dd'),8);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì§€ê¸ˆ ì˜í†µêµ¬ì²­ ì•žì— ë²„ê±°í‚¹ìª½ì— ì‚¬ëžŒë§Žê³  ì´¬ì˜í•˜ëŠ”ë° ë­”ì§€ ì•„ì‹œëŠ”ë¶„?
+ ','ì§€ê¸ˆ ì˜í†µêµ¬ì²­ ì•žì— ë²„ê±°í‚¹ìª½ì— ì‚¬ëžŒë§Žê³  ì´¬ì˜í•˜ëŠ”ë° ë­”ì§€ ì•„ì‹œëŠ”ë¶„?',3,to_date('23-10-01','yy-mm-dd'),7);
+ 
+ 
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜í†µë¶€ê·¼ì— ì¢‹ì€ë‚´ê³¼ì¢€ ì•Œë ¤ì£¼ì‹­ì‹œìš”. ì§€ê¸ˆ ë‹¤ë‹ˆëŠ” ì—°ì„¸ë‚´ê³¼ ë§˜ì— ì•ˆë“¤ì–´ì„œìš”. ë„ˆë¬´ ìƒì—…ì ìœ¼ë¡œ í™˜ìžë¥¼ ìƒëŒ€í•˜ëŠ”ê²ƒ ê°™ì•„ìš”
+ ','ë³‘ì›ë¬¸ì˜',4,to_date('23-05-10','yy-mm-dd'),4);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ë„ˆë¬´ ëª©ì´ ê°„ì§ˆê±°ë¦¬ë©° ì‹¬í•˜ê²Œ ê¸°ì¹¨ì´ ë‚˜ì˜µë‹ˆë‹¤'. 'ë³‘ì› ì•ˆë‚´ì¢€ í•´ì£¼ì‹œë©´ ê°ì‚¬í•©ë‹ˆë‹¤.
+ ','ëª©ì´ì•„íŒŒìš”',4,to_date('23-01-21','yy-mm-dd'),8);
+
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜í†µêµ¬ ìª½ì— ì˜¥íƒ‘ë°©ì„ ì¢€ êµ¬í•˜ê³  ì‹¶ì€ë°ìš”, ë§¤ë¬¼ì´ ìž˜ ì—†ë„¤ìš”ã…  ì•± ë§ê³  ë°© ì°¾ì•„ë³¼ ìˆ˜ ìžˆëŠ” ë°©ë²•ì¢€ ìžˆì„ê¹Œìš”?
+ ','ì˜í†µêµ¬ ì˜¥íƒ‘ë°©',4,to_date('23-12-11','yy-mm-dd'),5);
+
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì–´ë¥¸ ì¤‘ê°„ ì •ê°•ì´ê¹Œì§€ ì˜¤ëŠ” í¬ê¸°ì˜ ê°ˆìƒ‰ í¬ë©”ë¼ë‹ˆì•ˆ ìž…ë‹ˆë‹¤ ë³´ì‹  ë¶„ì€ ëŒ“ê¸€ ë‹¬ì•„ì£¼ì„¸ìš” ã…œã…œ',  'ì €í¬ ì§‘ ë°±ëŒì´ë¥¼ ì½ì–´ ë²„ë ¸ì–´ìš” ã…œã…¡ã…œ
+',5,to_date('23-02-12','yy-mm-dd'),9);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜¤ëŠ˜ ì˜¤í›„ 5ì‹œì— ë§í¬ì—­ì—ì„œ êµ­ë¯¼ì€í–‰ ì²´í¬ì¹´ë“œ ë¶„ì‹¤í–ˆëŠ”ë° ë§¤ìž¥ì— ë“¤ì–´ì˜¤ ë¶„ì‹¤ë¬¼ì´ ì—†ë‹¤ê³  í•˜ë„¤ìš” í˜¹ì‹œ
+ë³´ì‹  ë¶„ ê³„ì‹œë©´ ëŒ“ê¸€ë¡œ ì¢€ ì•Œë ¤ì£¼ì„¸ìš” ã…œã…œã…œ','ì˜¤ëŠ˜ ì˜¤í›„ 5ì‹œì— ë§í¬ì—­ ìŠ¤íƒ€ë²…ìŠ¤ì—ì„œ ì¹´ë“œ ì£¼ìš°ì‹ ë¶„?',5,to_date('23-06-01','yy-mm-dd'),1);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜¤ëŠ˜ ê²½í¬ëŒ€ ì•žì— ìžì „ê±°ë¥¼ ìž ê¹ ì„¸ì›Œë†¨ëŠ”ë° ëˆ„ê°€ ê°€ì ¸ê°”ë„¤ìš” ì €í•œí…Œ ì •ë§ ì†Œì¤‘í•œ ìžì „ê±° ìž…ë‹ˆë‹¤ í˜¹ì‹œ ì°¾ì•„ ì£¼ì‹œëŠ” ë¶„ ìžˆìœ¼ë©´ ì‚¬ë¡€ í•´ë“œë¦´ê²Œìš” ã…œã…œ 
+ë¡œë“œ ë°”ì´í¬ê³  ìƒ‰ìƒì€ ë¹¨ê°•ìƒ‰ìž…ë‹ˆë‹¤.!!',
+'ì˜¤ëŠ˜ ì˜¤ì „ 9ì‹œì¯¤ ìžì „ê±°ë¥¼ ìžƒì–´ ë²„ë ¸ìŠµë‹ˆë‹¤. ',5,to_date('23-01-30','yy-mm-dd'),4);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜¤ëŠ˜ í™ˆí”ŒëŸ¬ìŠ¤ 1ì¸µ ì´ë””ì•¼ ì•ž ë³µë„ì—ì„œ ìš°ë¦¬ì€í–‰ ì²´í¬ì¹´ë“œë¥¼ ì£¼ì› ìŠµë‹ˆë‹¤. ê·¸ëƒ¥ ê²½ì°°ì— ê°€ì ¸ë‹¤ ì¤„ê¹Œ í•˜ë‹¤ê°€ ì—¬ê¸°ì—ë‹¤ ê¸€ ì˜¬ë¦½ë‹ˆë‹¤!! ì¹´ë“œ ì£¼ì¸ì€ ê¹€xì§„ 98ë…„1ì›” 30ì¼ ìƒì´ë¼ê³  ì í˜€ìžˆìŠµë‹ˆë‹¤.!',
+' ì²´í¬ì¹´ë“œë¥¼ ì£¼ì› ìŠµë‹ˆë‹¤. ',5,to_date('24-02-27','yy-mm-dd'),6);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì–´ì œ ë°¤ ìˆ˜ì›ëŒ€ ê·¼ì²˜ í˜¸ìˆ˜ì—ì„œ 50ëŒ€ ì—¬ìžì‹œì‹ ì´ ë°œê²¬ëë‹¤ê³  í•˜ë„¤ìš” ã…œã…œ ë‹¤ë“¤ ì¡°ì‹¬í•˜ì„¸ìš”',
+' ìˆ˜ì›ëŒ€ ì—¬ìž ì‹œì‹  ',6,to_date('24-03-06','yy-mm-dd'),3);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ìš”ì¦˜ ë°¤ë§Œ ë˜ë©´ ì „ê¹ƒ ì¤„ì— ê¹Œë§ˆê·€ ë–¼ë“¤ì´ ì•‰ì•„ì„œ ë‚œë¦¬ë„¤ìš” ã…œã…œ ì €ë²ˆì— ìƒˆë˜¥ ë§žì„ ë»” í–ˆëŠ”ë° ë‹¤ë“¤ ì „ê¹ƒì¤„ ë°‘ìœ¼ë¡œëŠ” ì§€ë‚˜ë‹¤ë‹ˆì‹œì§€ ì•ŠëŠ”ê²Œ ì¢‹ì„ê±° ê°™ì•„ìš” !!',
+' ê¹Œë§ˆê·€ ë–¼ ',6,to_date('23-08-27','yy-mm-dd'),4);
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜¤ëŠ˜ ì˜ë™ì´ˆë“±í•™êµ ì•žì—ì„œ ìš°íšŒì „ í•˜ëŠ” ì°¨ëŸ‰ì— ì´ˆë“±í•™ìƒ ì•„ì´ê°€ ì¹˜ì—¬ í¬ê²Œ ë‹¤ì³¤ë‹¤ê³  í•˜ë„¤ìš” ì°¨ëŸ‰ë“¤ë„ ì¡°ì‹¬ížˆ ë‹¤ë…€ì•¼ ê² ì§€ë§Œ ì§‘ì•ˆì—ì„œ ê°ìž ì•„ì´ë“¤ì—ê²Œ êµí†µ êµìœ¡ì„ í™•ì‹¤ížˆ ì‹œí‚¬ í•„ìš”ê°€ ìžˆì„ê±° ê°™ë„¤ìš” ã…œã…œ ê±±ì •ì´ ë§ŽìŠµë‹ˆë‹¤ ã…œã…œã…œã…œ',
+' ì˜ë™ì´ˆ ì•ž êµí†µì‚¬ê³  ',6,to_date('23-2-27','yy-mm-dd'),2);
+
+
+INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
+VALUES(seq_board.nextval,'ì˜¤ëŠ˜ í° ì‚¬ê±°ë¦¬ì— ìžˆëŠ” 5ë°±ë…„ ëœ ë‚˜ë¬´ê°€ ë²ˆê°œë¥¼ ë§¡ê³  ë¶€ëŸ¬ì¡Œë„¤ìš” ã…œã…œ ë­”ê°€ ë§ˆì„ì„ ì§€ì¼œì£¼ëŠ” ìˆ˜í˜¸ì‹  ê°™ì€ ì¡´ìž¬ì˜€ëŠ”ë° ë¶€ëŸ¬ì§€ë‹ˆê¹Œ ê´œížˆ ë§ˆìŒì´ ì•ˆ ì¢‹ìŠµë‹ˆë‹¤ ã…œã…œ',
+'500ë…„ ëœ ë‚˜ë¬´ ... ',6,to_date('22-08-16','yy-mm-dd'),8);
+
+COMMIT;
+
+-- COMM_BOARD_LIKE  í…Œì´ë¸”
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš” ë„˜ë²„( PK )
+--íšŒì› ë„˜ë²„
+--ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ë„˜ë²„
 
 INSERT INTO comm_board_like Values(1,1,1);
 
@@ -277,171 +339,41 @@ INSERT INTO comm_board_like Values(13,7,11);
 
 COMMIT;
 
--- COMM_BOARD ( ¾ÆÁ÷ µ¥ÀÌÅÍ ¾øÀ½ ) Å×ÀÌºí
---µ¿³×»ýÈ° °Ô½ÃÆÇ ³Ñ¹ö ( PK )
---µ¿³×»ýÈ° Ä«Å×°í¸® ³Ñ¹ö
---È¸¿ø ³Ñ¹ö
---µ¿³×»ýÈ° °Ô½ÃÆÇ Á¦¸ñ
---µ¿³×»ýÈ° ÀÛ¼º³»¿ë
---µ¿³×»ýÈ° ÀÛ¼º½Ã°£
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'´©±¸µçÁö ÇÏ·ç¿¡ 10ºÐ¸¸ ÅõÀÚÇÏ¸é ºÎÀÚ°¡ µÉ ¼ö ÀÖ½À´Ï´Ù. ','ºÎÀÚµÇ´Â ¹ý',1,to_date('21-04-23','yy-mm-dd'),9);
-
-
-Insert INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'Àü31»ì ³²ÀÚ°í ÀÎÃµ°øÇ×¿¡ ÀÏ¶§¹®¿¡ ÇÈ¾÷ °¡´Âµ¥ °øÇ×°¡½Ã´ÂºÐ ÀÖÀ¸¸é°øÇ×±îÁö Ä«Ç®ÇÕ´Ï´Ù ~ ¿¬ÈÞ¶§ °íÇâ³»·Á°¡´Â Â÷Æí ¸ÅÁø‰çÀ»¶§ ¾î¶²ºÐÀÌ °¨»çÇÏ°Ôµµ Ä«Ç®ÇØÁÖ¼Å¼­ ÆíÇÏ°Ô °¬´ø ±â¾ïÀÌÀÖ¾î¼­ ¿Ã·Áº¾´Ï´Ù^^ ','³»ÀÏ (3.7)¿ÀÀü 6½Ã30ºÐ Ãâ¹ß µ¿¼ö¿ø»ç°Å¸®ÂÊ¿¡¼­',1,to_date('20-01-13','yy-mm-dd'),6);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'Ä¡Å²¸Ô°í½Í¾î¿ä ÀÖÀ¸¸é ÁÁ°Ú´Ù ','¸ÁÆ÷µ¿ÂÊ¿¡ Ä¡Å²Æ®·° ¿Âµ¥ ÀÖ¾î¿ä?',1,to_date('22-11-03','yy-mm-dd'),7);
-
-
-INSERT INTO comm_board(comm_board_num,comm_content,comm_title,comm_ctgr_num,comm_upload_date,member_num)
-Values(seq_board.nextval,'º¸Åë ±âÁ¸¿¡ »ì´ø Àü¼¼Áý °è¾àÀÏ ¸î´ÞÀü¿¡ ÁýÀ» ¾Ë¾Æº¸³ª¿ä?  ¿¹¸¦ µé¾î 8¿ù¸»ÀÌ ¸¸·á¶ó¸é ¾ðÁ¦ºÎÅÍ »õ·Î °è¾àÇÒ Àü¼¼ÁýÀ» ¾Ë¾Æº¸´Â°Ô ÁÁÀ»±î¿ä?
- ','Àü¼¼ °è¾à ±Ã±ÝÁõ',2,to_date('24-01-01','yy-mm-dd'),3);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¾È³çÇÏ¼¼¿ä:) ¾ó¸¶ Àü ¼ö¿ø ÀÌ»ç¿Í¼­ ±âÁ¸ Ç²»ìÆÀÀº °¥¼ö ¾ø°Ô µÇ¾î  ¼ºÀÎ Ãà±¸±³½ÇÀÌ¶óµµ ´Ù³àº¼±î ÇÕ´Ï´Ù.  ±¦ÂúÀº °÷ ÀÖÀ¸¸é ¼Ò°³ ºÎÅ¹µå·Á¿ä °¨»çÇÕ´Ï´Ù
- ','¸ÁÆ÷±ÙÃ³ ¼ºÀÎÃà±¸±³½Ç ¹®ÀÇµå¸³´Ï´Ù',2,to_date('23-07-16','yy-mm-dd'),1);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,' È÷ÇÇÆß ÇÏ°í ½ÍÀºµ¥
- ','³²ÀÚ Æß ÀßÇÏ´Â °÷ ÀÖ³ª¿ä',2,to_date('23-09-12','yy-mm-dd'),2);
- 
- 
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,' ´ñ±Û ´Þ¾ÆÁÖ¼¼¿ä!
- ','º£ÀÌ½º Ä¡½Ã´ÂºÐ °è½Å°¡¿ä?',3,to_date('23-05-02','yy-mm-dd'),4);
-
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'Àú¶û ÇØÀå±¹¿¡ ¼ÒÁÖÇÑÀÜÇÏ½Ç·¡¿ä? 3 0 ³²
-
- ','¸ÁÆ÷¿ª±ÙÃ³Åð±ÙÇÏ½ÅºÐ',3,to_date('23-06-11','yy-mm-dd'),8);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'Áö±Ý ¿µÅë±¸Ã» ¾Õ¿¡ ¹ö°ÅÅ·ÂÊ¿¡ »ç¶÷¸¹°í ÃÔ¿µÇÏ´Âµ¥ ¹ºÁö ¾Æ½Ã´ÂºÐ?
- ','Áö±Ý ¿µÅë±¸Ã» ¾Õ¿¡ ¹ö°ÅÅ·ÂÊ¿¡ »ç¶÷¸¹°í ÃÔ¿µÇÏ´Âµ¥ ¹ºÁö ¾Æ½Ã´ÂºÐ?',3,to_date('23-10-01','yy-mm-dd'),7);
- 
- 
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿µÅëºÎ±Ù¿¡ ÁÁÀº³»°úÁ» ¾Ë·ÁÁÖ½Ê½Ã¿ä. Áö±Ý ´Ù´Ï´Â ¿¬¼¼³»°ú ¸¾¿¡ ¾Èµé¾î¼­¿ä. ³Ê¹« »ó¾÷ÀûÀ¸·Î È¯ÀÚ¸¦ »ó´ëÇÏ´Â°Í °°¾Æ¿ä
-
- ','º´¿ø¹®ÀÇ',4,to_date('23-05-10','yy-mm-dd'),4);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-Values(seq_board.nextval,'³Ê¹« ¸ñÀÌ °£Áú°Å¸®¸ç ½ÉÇÏ°Ô ±âÄ§ÀÌ ³ª¿É´Ï´Ù'. 'º´¿ø ¾È³»Á» ÇØÁÖ½Ã¸é °¨»çÇÕ´Ï´Ù.
-
- ','¸ñÀÌ¾ÆÆÄ¿ä',4,to_date('23-01-21','yy-mm-dd'),8);
-
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿µÅë±¸ ÂÊ¿¡ ¿ÁÅ¾¹æÀ» Á» ±¸ÇÏ°í ½ÍÀºµ¥¿ä, ¸Å¹°ÀÌ Àß ¾ø³×¿ä¤Ð ¾Û ¸»°í ¹æ Ã£¾Æº¼ ¼ö ÀÖ´Â ¹æ¹ýÁ» ÀÖÀ»±î¿ä?
-
- ','¿µÅë±¸ ¿ÁÅ¾¹æ',4,to_date('23-12-11','yy-mm-dd'),5);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-Values(seq_board.nextval,'¾î¸¥ Áß°£ Á¤°­ÀÌ±îÁö ¿À´Â Å©±âÀÇ °¥»ö Æ÷¸Þ¶ó´Ï¾È ÀÔ´Ï´Ù º¸½Å ºÐÀº ´ñ±Û ´Þ¾ÆÁÖ¼¼¿ä ¤Ì¤Ì',  'ÀúÈñ Áý ¹éµ¹ÀÌ¸¦ ÀÐ¾î ¹ö·È¾î¿ä ¤Ì¤Ñ¤Ì
-',5,to_date('23-02-12','yy-mm-dd'),9);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿À´Ã ¿ÀÈÄ 5½Ã¿¡ ¸ÁÆ÷¿ª¿¡¼­ ±¹¹ÎÀºÇà Ã¼Å©Ä«µå ºÐ½ÇÇß´Âµ¥ ¸ÅÀå¿¡ µé¾î¿À ºÐ½Ç¹°ÀÌ ¾ø´Ù°í ÇÏ³×¿ä È¤½Ã
-º¸½Å ºÐ °è½Ã¸é ´ñ±Û·Î Á» ¾Ë·ÁÁÖ¼¼¿ä ¤Ì¤Ì¤Ì','¿À´Ã ¿ÀÈÄ 5½Ã¿¡ ¸ÁÆ÷¿ª ½ºÅ¸¹÷½º¿¡¼­ Ä«µå ÁÖ¿ì½ÅºÐ?',5,to_date('23-06-01','yy-mm-dd'),1);
-
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-Values(seq_board.nextval,'¿À´Ã °æÈñ´ë ¾Õ¿¡ ÀÚÀü°Å¸¦ Àá±ñ ¼¼¿ö³ù´Âµ¥ ´©°¡ °¡Á®°¬³×¿ä ÀúÇÑÅ× Á¤¸» ¼ÒÁßÇÑ ÀÚÀü°Å ÀÔ´Ï´Ù È¤½Ã Ã£¾Æ ÁÖ½Ã´Â ºÐ ÀÖÀ¸¸é »ç·Ê ÇØµå¸±°Ô¿ä ¤Ì¤Ì 
-·Îµå ¹ÙÀÌÅ©°í »ö»óÀº »¡°­»öÀÔ´Ï´Ù.!!',
-'¿À´Ã ¿ÀÀü 9½ÃÂë ÀÚÀü°Å¸¦ ÀÒ¾î ¹ö·È½À´Ï´Ù. ',5,to_date('23-01-30','yy-mm-dd'),4);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-values(seq_board.nextval,'¿À´Ã È¨ÇÃ·¯½º 1Ãþ ÀÌµð¾ß ¾Õ º¹µµ¿¡¼­ ¿ì¸®ÀºÇà Ã¼Å©Ä«µå¸¦ ÁÖ¿ü½À´Ï´Ù. ±×³É °æÂû¿¡ °¡Á®´Ù ÁÙ±î ÇÏ´Ù°¡ ¿©±â¿¡´Ù ±Û ¿Ã¸³´Ï´Ù!! Ä«µå ÁÖÀÎÀº ±èxÁø 98³â1¿ù 30ÀÏ »ýÀÌ¶ó°í ÀûÇôÀÖ½À´Ï´Ù.!',
-' Ã¼Å©Ä«µå¸¦ ÁÖ¿ü½À´Ï´Ù. ',5,to_date('24-02-27','yy-mm-dd'),6);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¾îÁ¦ ¹ã ¼ö¿ø´ë ±ÙÃ³ È£¼ö¿¡¼­ 50´ë ¿©ÀÚ½Ã½ÅÀÌ ¹ß°ßµÆ´Ù°í ÇÏ³×¿ä ¤Ì¤Ì ´Ùµé Á¶½ÉÇÏ¼¼¿ä',
-' ¼ö¿ø´ë ¿©ÀÚ ½Ã½Å ',6,to_date('24-03-06','yy-mm-dd'),3);
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿äÁò ¹ã¸¸ µÇ¸é Àü±ê ÁÙ¿¡ ±î¸¶±Í ¶¼µéÀÌ ¾É¾Æ¼­ ³­¸®³×¿ä ¤Ì¤Ì Àú¹ø¿¡ »õ¶Ë ¸ÂÀ» »· Çß´Âµ¥ ´Ùµé Àü±êÁÙ ¹ØÀ¸·Î´Â Áö³ª´Ù´Ï½ÃÁö ¾Ê´Â°Ô ÁÁÀ»°Å °°¾Æ¿ä !!',
-' ±î¸¶±Í ¶¼ ',6,to_date('23-08-27','yy-mm-dd'),4);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿À´Ã ¿µµ¿ÃÊµîÇÐ±³ ¾Õ¿¡¼­ ¿ìÈ¸Àü ÇÏ´Â Â÷·®¿¡ ÃÊµîÇÐ»ý ¾ÆÀÌ°¡ Ä¡¿© Å©°Ô ´ÙÃÆ´Ù°í ÇÏ³×¿ä Â÷·®µéµµ Á¶½ÉÈ÷ ´Ù³à¾ß °ÚÁö¸¸ Áý¾È¿¡¼­ °¢ÀÚ ¾ÆÀÌµé¿¡°Ô ±³Åë ±³À°À» È®½ÇÈ÷ ½ÃÅ³ ÇÊ¿ä°¡ ÀÖÀ»°Å °°³×¿ä ¤Ì¤Ì °ÆÁ¤ÀÌ ¸¹½À´Ï´Ù ¤Ì¤Ì¤Ì¤Ì',
-' ¿µµ¿ÃÊ ¾Õ ±³Åë»ç°í ',6,to_date('23-2-27','yy-mm-dd'),2);
-
-
-INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'¿À´Ã Å« »ç°Å¸®¿¡ ÀÖ´Â 5¹é³â µÈ ³ª¹«°¡ ¹ø°³¸¦ ¸Ã°í ºÎ·¯Á³³×¿ä ¤Ì¤Ì ¹º°¡ ¸¶À»À» ÁöÄÑÁÖ´Â ¼öÈ£½Å °°Àº Á¸Àç¿´´Âµ¥ ºÎ·¯Áö´Ï±î ±¦È÷ ¸¶À½ÀÌ ¾È ÁÁ½À´Ï´Ù ¤Ì¤Ì',
-'500³â µÈ ³ª¹« ... ',6,to_date('22-08-16','yy-mm-dd'),8);
-
-COMMIT;
-
--- COMM_CMT Å×ÀÌºí
---µ¿³×»ýÈ° °Ô½ÃÆÇ ³Ñ¹ö
---´ñ±Û ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---½Ã°£
---´ñ±Û³»¿ë
+-- ë™ë„¤ìƒí™œ ëŒ“ê¸€  
+-- COMM_BOARD_NUM  , COMM_NUM ( PK ) , COMM_WRITER_NICKNAME, COMM_DATE, COMM_CTGR_NAME, COMM_CONTENT
 
 INSERT INTO COMM_CMT (COMM_NUM, COMM_BOARD_NUM, COMM_WRITER_NICKNAME, COMM_DATE, COMM_CTGR_NAME, COMM_CONTENT) 
-VALUES (1, 100, '»×»§ÀÌ', TO_DATE('21-04-21','YY-MM-DD'), 'ÀÎ±â°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (2, 200, 'ÇÏÈ£ÇÏ¹Ì', TO_DATE('21-01-01','YY-MM-DD'), 'ÀÎ±â°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (3, 300, '¹ÎÆ®', TO_DATE('21-01-01','YY-MM-DD'), 'ÀÎ±â°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (4, 400, 'ÃÊÄÚ', TO_DATE('21-01-01','YY-MM-DD'), 'ÀÚÀ¯°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (5, 500, 'Willer', TO_DATE('21-01-01','YY-MM-DD'), 'ÀÚÀ¯°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (6, 600, 'ÃÊÅ°Ã³Å°', TO_DATE('21-01-01','YY-MM-DD'), 'ÀÚÀ¯°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (7, 700, 'guitar215', TO_DATE('21-01-01','YY-MM-DD'), 'Áú¹®°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (8, 800, 'kamel94', TO_DATE('21-01-01','YY-MM-DD'), 'Áú¹®°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (9, 900, 'µ¿µ¿', TO_DATE('21-01-01','YY-MM-DD'), 'Áú¹®°Ô½ÃÆÇ', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.'),
-       (10, 1000, '¿ÀÂÉ²¿¹Ì´Ï¹Ì', TO_DATE('21-01-01','YY-MM-DD'), 'Á¤º¸°øÀ¯', '´ñ±Û ³»¿ëÀÔ´Ï´Ù.');
-COMMIT;
+VALUES (1, 100, 'ë¿¡ë¹µì´', TO_DATE('21-04-21','YY-MM-DD'), 'ì¸ê¸°ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (2, 200, 'í•˜í˜¸í•˜ë¯¸', TO_DATE('21-01-01','YY-MM-DD'), 'ì¸ê¸°ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (3, 300, 'ë¯¼íŠ¸', TO_DATE('21-01-01','YY-MM-DD'), 'ì¸ê¸°ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (4, 400, 'ì´ˆì½”', TO_DATE('21-01-01','YY-MM-DD'), 'ìžìœ ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (5, 500, 'Willer', TO_DATE('21-01-01','YY-MM-DD'), 'ìžìœ ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (6, 600, 'ì´ˆí‚¤ì²˜í‚¤', TO_DATE('21-01-01','YY-MM-DD'), 'ìžìœ ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (7, 700, 'guitar215', TO_DATE('21-01-01','YY-MM-DD'), 'ì§ˆë¬¸ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (8, 800, 'kamel94', TO_DATE('21-01-01','YY-MM-DD'), 'ì§ˆë¬¸ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (9, 900, 'ë™ë™', TO_DATE('21-01-01','YY-MM-DD'), 'ì§ˆë¬¸ê²Œì‹œíŒ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.'),
+       (10, 1000, 'ì˜¤ìª¼ê¼¬ë¯¸ë‹ˆë¯¸', TO_DATE('21-01-01','YY-MM-DD'), 'ì •ë³´ê³µìœ ', 'ëŒ“ê¸€ ë‚´ìš©ìž…ë‹ˆë‹¤.');
 
 
-
--- CMT_REPLY Å×ÀÌºí
---µ¿³×»ýÈ° °Ô½ÃÆÇ ³Ñ¹ö
---´ñ±Û ³Ñ¹ö
---µ¿³×»ýÈ° ´ë´ñ±Û ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---´ë´ñ±Û ³»¿ë
---½Ã°£
-
+-- ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€
+-- RCMT_NUM, COMM_NUM, RCMT_WRITER_NICKNAME ( PK ), CMT_BOARD_NUM, RCMT_CONTENT, RCMT_DATE
 INSERT INTO CMT_REPLY (RCMT_NUM, COMM_NUM, RCMT_WRITER_NICKNAME, CMT_BOARD_NUM, RCMT_CONTENT, RCMT_DATE) 
-VALUES (1, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (2, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (3, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (4, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (5, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (6, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (7, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (8, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (9, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD')),
-       (10, 1, '´äº¯ ÀÛ¼ºÀÚ ´Ð³×ÀÓ', 100, '´äº¯ ³»¿ëÀÔ´Ï´Ù.', TO_DATE('21-04-21','YY-MM-DD'));
+VALUES (1, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (2, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (3, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (4, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (5, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (6, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (7, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (8, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (9, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD')),
+       (10, 1, 'ë‹µë³€ ìž‘ì„±ìž ë‹‰ë„¤ìž„', 100, 'ë‹µë³€ ë‚´ìš©ìž…ë‹ˆë‹¤.', TO_DATE('21-04-21','YY-MM-DD'));
 
 COMMIT;
 
--- COMM_CMT_LIKE Å×ÀÌºí
---µ¿³×»ýÈ° ´ñ±Û ÁÁ¾Æ¿ä ³Ñ¹ö ( PK )
---µ¿³×»ýÈ° °Ô½ÃÆÇ ³Ñ¹ö
---´ñ±Û ³Ñ¹ö
---È¸¿ø ³Ñ¹ö
 
+-- ë™ë„¤ìƒí™œ ëŒ“ê¸€ ì¢‹ì•„ìš” í…Œì´ë¸”
+-- COMM_CMT_LIKE ( PK ), COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM
 INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM) 
 VALUES (1, 100, 1, 1),
        (2, 200, 1, 1),
@@ -455,11 +387,8 @@ VALUES (1, 100, 1, 1),
        (10, 1000, 1, 1);
 COMMIT;
 
--- CMT_REPLY_LIKE Å×ÀÌºí
---µ¿³×»ýÈ° ´ë´ñ±Û ÁÁ¾Æ¿ä ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---µ¿³×»ýÈ° ´ë´ñ±Û ³Ñ¹ö
-
+-- ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš” í…Œì´ë¸”
+-- RCMT_LIKE_NUM ( PK ), RCMT_NUM, MEMBER_NUM
 INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM) 
 VALUES (1, 1, 1),
        (2, 1, 1),
@@ -474,57 +403,48 @@ VALUES (1, 1, 1),
 COMMIT;
 
 
--- ITEM_CTGR Å×ÀÌºí
---¹°Ç° Ä«Å×°í¸® ³Ñ¹ö ( PK )
---¹°Ç° Ä«Å×°í¸® ÀÌ¸§
-INSERT INTO ITEM_CTGR VALUES ( 1, 'µðÁöÅÐ±â±â') ;
-INSERT INTO ITEM_CTGR VALUES ( 2, '»ýÈ°°¡Àü') ;
-INSERT INTO ITEM_CTGR VALUES ( 3, 'ÀÇ·ù') ;
-INSERT INTO ITEM_CTGR VALUES ( 4, '¾Æµ¿') ;
-INSERT INTO ITEM_CTGR VALUES ( 5, '½ºÆ÷Ã÷') ;
-INSERT INTO ITEM_CTGR VALUES ( 6, '½ÄÇ°') ;
-INSERT INTO ITEM_CTGR VALUES ( 7, 'Ãë¹Ì') ;
-INSERT INTO ITEM_CTGR VALUES ( 8, '»ð´Ï´Ù') ;
+-- ITEM_CTGR í…Œì´ë¸”
+--ë¬¼í’ˆ ì¹´í…Œê³ ë¦¬ ë„˜ë²„ ( PK )
+--ë¬¼í’ˆ ì¹´í…Œê³ ë¦¬ ì´ë¦„
+INSERT INTO ITEM_CTGR VALUES ( 1, 'ë””ì§€í„¸ê¸°ê¸°') ;
+INSERT INTO ITEM_CTGR VALUES ( 2, 'ìƒí™œê°€ì „') ;
+INSERT INTO ITEM_CTGR VALUES ( 3, 'ì˜ë¥˜') ;
+INSERT INTO ITEM_CTGR VALUES ( 4, 'ì•„ë™') ;
+INSERT INTO ITEM_CTGR VALUES ( 5, 'ìŠ¤í¬ì¸ ') ;
+INSERT INTO ITEM_CTGR VALUES ( 6, 'ì‹í’ˆ') ;
+INSERT INTO ITEM_CTGR VALUES ( 7, 'ì·¨ë¯¸') ;
+INSERT INTO ITEM_CTGR VALUES ( 8, 'ì‚½ë‹ˆë‹¤') ;
 COMMIT;
 
 
--- TRADE_BOARD Å×ÀÌºí
---Áß°í°Å·¡ °Ô½ÃÆÇ ³Ñ¹ö ( PK )
---È¸¿ø ³Ñ¹ö
---¹°Ç° Ä«Å×°í¸® ³Ñ¹ö
---°Ô½ÃÆÇ Á¦¸ñ
---³»¿ë
---ÀÛ¼º½Ã°£
---°¡°Ý
---°Å·¡Èñ¸Á Àå¼Ò
+-- TRADE_BOARD í…Œì´ë¸”
+-- trade_num ( PK ), member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location
 
--- ITEM_IMAGE Å×ÀÌºí
---Áß°í°Å·¡ °Ô½ÃÆÇ ³Ñ¹ö
---»óÇ° ÀÌ¹ÌÁö ³Ñ¹ö (PK)
---»óÇ° ÀÌ¹ÌÁö URL
+-- ITEM_IMAGE í…Œì´ë¸”
+-- trade_num, item_image_num (PK) ,item_image_url
 
--- TRADE_BOARD INSERT ÇÏ³ª ÇÏ°í ITEM_IMAGE INSERT¸¦ ¼øÂ÷ÀûÀ¸·Î ÁøÇàÇÏ½Ã¸é µË´Ï´Ù.
+-- TRADE_BOARD INSERT í•˜ë‚˜ í•˜ê³  ITEM_IMAGE INSERTë¥¼ ìˆœì°¨ì ìœ¼ë¡œ ì§„í–‰í•˜ì‹œë©´ ë©ë‹ˆë‹¤.
 
--- ½ÃÄö½º »ý¼º
+-- ì‹œí€€ìŠ¤ ìƒì„±
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_item_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
--- ÀÌ°É·Î ¼Ó¼º°ª ¼öÁ¤ ¸ÕÀú ÁøÇàÇØÁÖ¼¼¿ä
+-- ì´ê±¸ë¡œ ì†ì„±ê°’ ìˆ˜ì • ë¨¼ì € ì§„í–‰í•´ì£¼ì„¸ìš”
 ALTER TABLE item_image MODIFY ( item_image_url VARCHAR2(4000));
 
--- ¿¡¾îÆÌ¸Æ½º »õ»óÇ°
+-- ì—ì–´íŒŸë§¥ìŠ¤ ìƒˆìƒí’ˆ
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 1
     , 1
-    , '¿¡¾îÆÌ¸Æ½º »õ»óÇ°'
-    , '¹Ì°³ºÀ »õ»óÇ°ÀÎµ¥ Àú´Â ÀÌ¹Ì ÇÏ³ª ÀÖ¾î¼­ ÆÈ¾Æ¿ä'
+    , 'ì—ì–´íŒŸë§¥ìŠ¤ ìƒˆìƒí’ˆ'
+    , 'ë¯¸ê°œë´‰ ìƒˆìƒí’ˆì¸ë° ì €ëŠ” ì´ë¯¸ í•˜ë‚˜ ìžˆì–´ì„œ íŒ”ì•„ìš”'
     ,  SYSDATE
     ,  200000
-    , 'Áßµ¿'
+    , 'ì¤‘ë™'
     );   
--- ¿¡¾îÆÌ¸Æ½º »õ»óÇ°
+-- ì—ì–´íŒŸë§¥ìŠ¤ ìƒˆìƒí’ˆ
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -535,19 +455,19 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
 
 
--- Á¢ÀÌ½Ä Çì¾îµå¶óÀÌ±â
+-- ì ‘ì´ì‹ í—¤ì–´ë“œë¼ì´ê¸°
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 2
     , 1
-    , '´ÙÀÌ½¼ ¼öÆÛ¼Ò´Ð Çì¾îµå¶óÀÌ¾î ºí·ç ºí·¯½¬ ÆÇ¸ÅÇÕ´Ï´Ù.'
-     , '¹Ì°³ºÀ »õÁ¦Ç° Á¤Ç°ÀÔ´Ï´Ù. Á÷°Å·¡´Â ½ÅÀåµ¿¿¡¼­ °¡´ÉÇÕ´Ï´Ù.'
+    , 'ë‹¤ì´ìŠ¨ ìˆ˜í¼ì†Œë‹‰ í—¤ì–´ë“œë¼ì´ì–´ ë¸”ë£¨ ë¸”ëŸ¬ì‰¬ íŒë§¤í•©ë‹ˆë‹¤.'
+     , 'ë¯¸ê°œë´‰ ìƒˆì œí’ˆ ì •í’ˆìž…ë‹ˆë‹¤. ì§ê±°ëž˜ëŠ” ì‹ ìž¥ë™ì—ì„œ ê°€ëŠ¥í•©ë‹ˆë‹¤.'
     , '2024-03-01'
     , 100000
-    , 'Áßµ¿'
+    , 'ì¤‘ë™'
     );
--- Á¢ÀÌ½Ä Çì¾îµå¶óÀÌ±â
+-- ì ‘ì´ì‹ í—¤ì–´ë“œë¼ì´ê¸°
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_0.webp?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -555,19 +475,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfron
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_2.webp?q=95&s=1440x1440&t=inside&f=webp');
 
--- ¿Àºì Åä½ºÅÍ
+-- ì˜¤ë¸ í† ìŠ¤í„°
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 3
     , 2
-    , '¿Àºì Åä½ºÅÍ'
-    , '±³Ã¼¸¦ À§ÇØ ³»³õ½À´Ï´Ù. È¥ÀÚ»ç´Â ºÐÀÌ¶ó¸é ÃæºÐÈ÷ »ç¿ëÇÒ ¸¸ÇÑ Å©±âÀÔ´Ï´Ù.'
+    , 'ì˜¤ë¸ í† ìŠ¤í„°'
+    , 'êµì²´ë¥¼ ìœ„í•´ ë‚´ë†“ìŠµë‹ˆë‹¤. í˜¼ìžì‚¬ëŠ” ë¶„ì´ë¼ë©´ ì¶©ë¶„ížˆ ì‚¬ìš©í•  ë§Œí•œ í¬ê¸°ìž…ë‹ˆë‹¤.'
     , '2024-02-28'
     , 40000  
-    , '°­³²¿ª'
+    , 'ê°•ë‚¨ì—­'
     );
--- ¿Àºì Åä½ºÅÍ
+-- ì˜¤ë¸ í† ìŠ¤í„°
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/08ec535f0dc069be48db7970231f52a662446f8e07d334b7e44f23d97ffa145f_0.webp?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -575,19 +495,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfron
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fdnvefa72aowie.cloudfront.net%2Forigin%2Farticle%2F202312%2Fac867456b1fe127309cf94a172a46ac2d514cafc2a982e622383af25493a2f60.jpg%3Fq%3D95%26s%3D1440x1440%26t%3Dinside%26f%3Dwebp&type=sc960_832');
 
--- ¿ÍÀÎ ±Û¶ó½º ¼¼Æ®
+-- ì™€ì¸ ê¸€ë¼ìŠ¤ ì„¸íŠ¸
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 4
     , 2
-    , '¿ÍÀÎ ±Û¶ó½º'
-    , '¿¡³ëÅ×Ä«ÀÇ ¿ÍÀÎ±Û¶ó½ºÀÔ´Ï´Ù. Å« »çÀÌÁî·Î ±ú²ýÇÑ »óÅÂÀÔ´Ï´Ù. ´«¿¡ ¶ç´Â ÈìÁýÀÌ³ª ¾ó·è¾øÀ½.'
+    , 'ì™€ì¸ ê¸€ë¼ìŠ¤'
+    , 'ì—ë…¸í…Œì¹´ì˜ ì™€ì¸ê¸€ë¼ìŠ¤ìž…ë‹ˆë‹¤. í° ì‚¬ì´ì¦ˆë¡œ ê¹¨ë—í•œ ìƒíƒœìž…ë‹ˆë‹¤. ëˆˆì— ë„ëŠ” í ì§‘ì´ë‚˜ ì–¼ë£©ì—†ìŒ.'
     , '2024-02-16'
     , 30000  
-    , '³ë¿ø¿ª'
+    , 'ë…¸ì›ì—­'
     );
--- ¿ÍÀÎ ±Û¶ó½º ¼¼Æ®
+-- ì™€ì¸ ê¸€ë¼ìŠ¤ ì„¸íŠ¸
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202402/cc6cf7e733f70887fb9d4963c4e96d22af16021f9a86729c4f1b5f08dd6a8e68.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -595,19 +515,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/comm
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20230324_114%2F1679637966978NtLwq_JPEG%2FTLbli_100901_7.jpg&type=sc960_832');
 
- -- ¿©¼ºÀÇ·ù Ä¶ºóÅ¬¶óÀÎ ¹ÝÆÈÆ¼
+ -- ì—¬ì„±ì˜ë¥˜ ìº˜ë¹ˆí´ë¼ì¸ ë°˜íŒ”í‹°
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 5
     , 3
-    , '¿©¼ºÀÇ·ù Ä¶ºóÅ¬¶óÀÎ ¹ÝÆÈÆ¼ ÆË´Ï´Ù.'
-    , '3È¸ Âø¿ëÇß½À´Ï´Ù. °ÅÀÇ »õ»óÇ°ÀÔ´Ï´Ù. Á÷°Å·¡ ¿øÇÕ´Ï´Ù Äð°Å·¡ °¡´É'
+    , 'ì—¬ì„±ì˜ë¥˜ ìº˜ë¹ˆí´ë¼ì¸ ë°˜íŒ”í‹° íŒë‹ˆë‹¤.'
+    , '3íšŒ ì°©ìš©í–ˆìŠµë‹ˆë‹¤. ê±°ì˜ ìƒˆìƒí’ˆìž…ë‹ˆë‹¤. ì§ê±°ëž˜ ì›í•©ë‹ˆë‹¤ ì¿¨ê±°ëž˜ ê°€ëŠ¥'
     , '2024-02-04'
     , 25000   
-    , '¸¶Æ÷¿ª'
+    , 'ë§ˆí¬ì—­'
     );
- -- ¿©¼ºÀÇ·ù Ä¶ºóÅ¬¶óÀÎ ¹ÝÆÈÆ¼
+ -- ì—¬ì„±ì˜ë¥˜ ìº˜ë¹ˆí´ë¼ì¸ ë°˜íŒ”í‹°
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/51a2ebe878d07f4ff8223922c38bea16a348775645e01ab5ff4fc146499ca61d.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -617,19 +537,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/comm
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fck-s3.s3.ap-northeast-2.amazonaws.com%2Fecom%2F24SS%2FCKJ%2FJ223860-YAF%2FJ223860-YAF-ITEM-2.jpg&type=a340');
 
--- ±î½ºÅÚ¹ÙÀÛ °ñÇÁÀÇ·ù ´ÏÆ®Á¶³¢ »çÀÌÁî 95
+-- ê¹ŒìŠ¤í…”ë°”ìž‘ ê³¨í”„ì˜ë¥˜ ë‹ˆíŠ¸ì¡°ë¼ ì‚¬ì´ì¦ˆ 95
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
     SEQ_BOARD.NEXTVAL
     , 6
     , 3
-    , '±î½ºÅÚ¹ÙÀÛ °ñÇÁÀÇ·ù ´ÏÆ®Á¶³¢ »çÀÌÁî95'
-    , '±î½ºÅÚ¹ÙÀÛ °ñÇÁÀÇ·ù ´ÏÆ®Á¶³¢ »çÀÌÁî95 ¸î ¹ø ¾ÈÀÔ¾ú½À´Ï´Ù.'
+    , 'ê¹ŒìŠ¤í…”ë°”ìž‘ ê³¨í”„ì˜ë¥˜ ë‹ˆíŠ¸ì¡°ë¼ ì‚¬ì´ì¦ˆ95'
+    , 'ê¹ŒìŠ¤í…”ë°”ìž‘ ê³¨í”„ì˜ë¥˜ ë‹ˆíŠ¸ì¡°ë¼ ì‚¬ì´ì¦ˆ95 ëª‡ ë²ˆ ì•ˆìž…ì—ˆìŠµë‹ˆë‹¤.'
     , '2024-02-01'
     , 35000
-    , '¼ö¼º±¸Ã»'
+    , 'ìˆ˜ì„±êµ¬ì²­'
     ); 
--- ±î½ºÅÚ¹ÙÀÛ °ñÇÁÀÇ·ù ´ÏÆ®Á¶³¢ »çÀÌÁî 95
+-- ê¹ŒìŠ¤í…”ë°”ìž‘ ê³¨í”„ì˜ë¥˜ ë‹ˆíŠ¸ì¡°ë¼ ì‚¬ì´ì¦ˆ 95
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210828_228%2F163013337942202vwE_JPEG%2F31269162995911619_1021975160.jpg&type=sc960_832');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -638,19 +558,19 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832');
 
 
--- ¸Þ¸®´Ù ¾î¸°ÀÌ ÀÚÀü°Å
+-- ë©”ë¦¬ë‹¤ ì–´ë¦°ì´ ìžì „ê±°
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 7
     , 4
-    , '¸Þ¸®´Ù ¾î¸°ÀÌ ÀÚÀü°Å'
-    , 'ÁÖ´Ï¾î ÀÚÀü°ÅÀÔ´Ï´Ù. »ç¿ë°¨ ÀÖ½À´Ï´Ù. Á÷Á¢¿À¼Å¾ßÇØ¿ä'
+    , 'ë©”ë¦¬ë‹¤ ì–´ë¦°ì´ ìžì „ê±°'
+    , 'ì£¼ë‹ˆì–´ ìžì „ê±°ìž…ë‹ˆë‹¤. ì‚¬ìš©ê° ìžˆìŠµë‹ˆë‹¤. ì§ì ‘ì˜¤ì…”ì•¼í•´ìš”'
     , '2024-01-30'
     , 70000
-    , 'ÁÂµ¿'
+    , 'ì¢Œë™'
     );   
--- ¸Þ¸®´Ù ¾î¸°ÀÌ ÀÚÀü°Å
+-- ë©”ë¦¬ë‹¤ ì–´ë¦°ì´ ìžì „ê±°
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/ac29d7c003f5c248866caf0beb4b197ecfad62315987dbb241d512aa66d4d574_0.webp?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -661,19 +581,19 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832' );
 
 
--- ¾Æµ¿ »ç¿îµåÆæ
+-- ì•„ë™ ì‚¬ìš´ë“œíŽœ
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 8
     , 4
-    , '¾Æµ¿ »ç¿îµåÆæ ÆË´Ï´Ù.'
-    , 'ÇØ¿äÆæ°ú ÇÔ²² º¼ ¼ö ÀÖ´Â ¿µ¾îÃ¥ÀÔ´Ï´Ù. Àß ¾ÈºÁ¼­ Ã¥Àº ±ú²ýÇØ¿ä~'
+    , 'ì•„ë™ ì‚¬ìš´ë“œíŽœ íŒë‹ˆë‹¤.'
+    , 'í•´ìš”íŽœê³¼ í•¨ê»˜ ë³¼ ìˆ˜ ìžˆëŠ” ì˜ì–´ì±…ìž…ë‹ˆë‹¤. ìž˜ ì•ˆë´ì„œ ì±…ì€ ê¹¨ë—í•´ìš”~'
     , TO_DATE('2023-02-23','YY-MM-DD')
     , 15000
-    , 'Áßµ¿ ½ºÅ¸¹÷½º'
+    , 'ì¤‘ë™ ìŠ¤íƒ€ë²…ìŠ¤'
     );     
--- ¾Æµ¿ »ç¿îµåÆæ
+-- ì•„ë™ ì‚¬ìš´ë“œíŽœ
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/c05c5dbd0a7f9024e140997cfb00a0d97aba1a67ef280682dccd3a3eabadd00a_0.webp?q=95&s=1440x1440&t=inside&f=webp');    
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -685,42 +605,42 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,'https://search.pstatic.net/common
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220503_138%2F1651533711184nSJx7_JPEG%2F52669539010215726_920666573.jpg&type=sc960_832');
 
--- ¸ð´ÏÅÍ °Å·¡
+-- ëª¨ë‹ˆí„° ê±°ëž˜
 INSERT INTO trade_board ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES 
     ( 
     seq_tboard.NEXTVAL
     , 1
     , 1
-    , '¸ð´ÏÅÍ 24ÀÎÄ¡ Ä¿ºêµå AK'
-    , '»ç¹«½Ç¿¡¼­ »ç¿ëÇß½À´Ï´Ù Áý±âÃ³ºÐ ÁßÀÔ´Ï´Ù. Ä¿ºêµå·Î º¸±âÁÁ¾Æ¿ä'
+    , 'ëª¨ë‹ˆí„° 24ì¸ì¹˜ ì»¤ë¸Œë“œ AK'
+    , 'ì‚¬ë¬´ì‹¤ì—ì„œ ì‚¬ìš©í–ˆìŠµë‹ˆë‹¤ ì§‘ê¸°ì²˜ë¶„ ì¤‘ìž…ë‹ˆë‹¤. ì»¤ë¸Œë“œë¡œ ë³´ê¸°ì¢‹ì•„ìš”'
     , TO_DATE('2023-02-21','YY-MM-DD')
     , 20000
-    , 'Áßµ¿'
+    , 'ì¤‘ë™'
     );
 
--- ¸ð´ÏÅÍ °Å·¡ ÀÌ¹ÌÁö
+-- ëª¨ë‹ˆí„° ê±°ëž˜ ì´ë¯¸ì§€
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/e66df18442ef31f0ebb34d6171d91626863ea6cacdc7e4bc3ef91241d3daafa7.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/5dca6ae7ff3000b33d78f98595a1f0bbbce56472bcdbd7c1ec4628aab36802c9.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
 
--- ÁÖ´Ï¾î ÀÚÀü°Å
+-- ì£¼ë‹ˆì–´ ìžì „ê±°
 INSERT INTO trade_board ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES 
     ( 
     seq_tboard.NEXTVAL
     , 2
     , 5
-    , 'RITE WAY ÁÖ´Ï¾î ÀÚÀü°Å'
-    , '18 ÀÎÄ¡ ÁÖ´Ï¾î ÀÚÀü°ÅÀÔ´Ï´Ù. 1³â°£ÀÇ »ç¿ëÀÌ¹Ç·Î »óÅÂ´Â ÁÁ½À´Ï´Ù¸¸, ¾à°£ÀÇ ½ºÅ©·¡Ä¡¶ó¸é ½Å°æÀÌ ¾²ÀÌÁö ¾Ê´Â ºÐÀÇ ¿¬¶ôÀ» ±â´Ù¸®°í ÀÖ½À´Ï´Ù.'
+    , 'RITE WAY ì£¼ë‹ˆì–´ ìžì „ê±°'
+    , '18 ì¸ì¹˜ ì£¼ë‹ˆì–´ ìžì „ê±°ìž…ë‹ˆë‹¤. 1ë…„ê°„ì˜ ì‚¬ìš©ì´ë¯€ë¡œ ìƒíƒœëŠ” ì¢‹ìŠµë‹ˆë‹¤ë§Œ, ì•½ê°„ì˜ ìŠ¤í¬ëž˜ì¹˜ë¼ë©´ ì‹ ê²½ì´ ì“°ì´ì§€ ì•ŠëŠ” ë¶„ì˜ ì—°ë½ì„ ê¸°ë‹¤ë¦¬ê³  ìžˆìŠµë‹ˆë‹¤.'
     , TO_DATE('2023-01-30','YY-MM-DD')
     , 1000000
-    , '°­³²¿ª'
+    , 'ê°•ë‚¨ì—­'
     );
 
--- ÁÖ´Ï¾î ÀÚÀü°Å ÀÌ¹ÌÁö    
+-- ì£¼ë‹ˆì–´ ìžì „ê±° ì´ë¯¸ì§€    
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/a42229bfc28ea3427d8a61c3032e91bd91d557fef62de6b5b136adf6c1373c53.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -733,7 +653,7 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/7e7eff3d0e19c0f0d63bea281872492944515ebc25e729a4ba60d02275011ea2.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
 
--- ¾ÆÀÌÆù °Å·¡
+-- ì•„ì´í° ê±°ëž˜
 INSERT INTO trade_board ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES 
     ( 
@@ -741,13 +661,13 @@ VALUES
     , 2
     , 1
     , 'iPhone 8 Gold 64GB'
-    , '½É Àá±Ý ÇØÁ¦ µÈ ¾ÆÀÌÆùÀÔ´Ï´Ù. ¹èÅÍ¸® ÃÖ´ë ¿ë·®: 95% .'
+    , 'ì‹¬ ìž ê¸ˆ í•´ì œ ëœ ì•„ì´í°ìž…ë‹ˆë‹¤. ë°°í„°ë¦¬ ìµœëŒ€ ìš©ëŸ‰: 95% .'
     , TO_DATE('2023-01-21','YY-MM-DD')
     , 350000
-    , '°­³²¿ª'
+    , 'ê°•ë‚¨ì—­'
     );
 
--- ¾ÆÀÌÆù °Å·¡ ÀÌ¹ÌÁö
+-- ì•„ì´í° ê±°ëž˜ ì´ë¯¸ì§€
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/CF1D735E3998828421B45FCBD98687B733405FCF51E2EA8FD64219FD7A741EE0.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -755,20 +675,20 @@ VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.clo
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/6EA3286D098D6EF7041FACC4CD0210F197F872987848678C25130E5E848FDEFF.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
--- ³ªÀÌÅ° ½ºÆ÷Ã÷ Å©·Î½º¹é
+-- ë‚˜ì´í‚¤ ìŠ¤í¬ì¸  í¬ë¡œìŠ¤ë°±
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
     SEQ_BOARD.NEXTVAL
     , 10
     , 5
-    , '³ªÀÌÅ° ½ºÆ÷Ã÷ Å©·Î½º¹é'
-    , 'ÄÁµð¼Ç ±Â±Â±Â/º¸½Ã´Â°ÍÃ³·³ µðÀÚÀÎÀÌ ÈÇ¸¢ÇÏ¿© ½ºÆ÷Ã÷,¿©Çà,Ã¥°¡¹æ ´Ù¾çÇÏ°Ô ¸Å°í ´Ù´Ò ¼ö ÀÖ½À´Ï´Ù. ¸¹Àº ¹®ÀÇ ºÎÅ¹µå·Á¿ä'
+    , 'ë‚˜ì´í‚¤ ìŠ¤í¬ì¸  í¬ë¡œìŠ¤ë°±'
+    , 'ì»¨ë””ì…˜ êµ¿êµ¿êµ¿/ë³´ì‹œëŠ”ê²ƒì²˜ëŸ¼ ë””ìžì¸ì´ í›Œë¥­í•˜ì—¬ ìŠ¤í¬ì¸ ,ì—¬í–‰,ì±…ê°€ë°© ë‹¤ì–‘í•˜ê²Œ ë§¤ê³  ë‹¤ë‹ ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ë§Žì€ ë¬¸ì˜ ë¶€íƒë“œë ¤ìš”'
     , TO_DATE('2022-12-13','YY-MM-DD')
     , 48000    
-    , '¾Æ¶óÀÏµ¿'
+    , 'ì•„ë¼ì¼ë™'
     );  
     
--- ³ªÀÌÅ° ½ºÆ÷Ã÷ Å©·Î½º¹é ÀÌ¹ÌÁö
+-- ë‚˜ì´í‚¤ ìŠ¤í¬ì¸  í¬ë¡œìŠ¤ë°± ì´ë¯¸ì§€
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/dab501b13199011884360972c1c83a6359920d1183ec11858b692996b8fae9ba.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -779,19 +699,19 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/product/249468232_1_1705127550_w360.jpg');
 
 
--- °Ç°­½ÄÇ° È«»ï/»ê»ï/ÀÎ»ï ÆÇ¸Å
+-- ê±´ê°•ì‹í’ˆ í™ì‚¼/ì‚°ì‚¼/ì¸ì‚¼ íŒë§¤
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
     SEQ_BOARD.NEXTVAL
     , 1
     , 6
-    , '(»õÁ¦Ç°)°Ç°­½ÄÇ° È«»ï/»ê»ï/ÀÎ»ï/¹ú²Ü ÆÇ¸Å'
-    , '¸ðµÎ »õ»óÇ°ÀÌÁö¸¸ Áß°í°Å·¡ Æ¯¼º»ó ¹ÝÇ°/È¯ºÒX, ³¹°³&ÀÏ°ý ±¸¸Å°¡´É/³×°í°¡´É'
+    , '(ìƒˆì œí’ˆ)ê±´ê°•ì‹í’ˆ í™ì‚¼/ì‚°ì‚¼/ì¸ì‚¼/ë²Œê¿€ íŒë§¤'
+    , 'ëª¨ë‘ ìƒˆìƒí’ˆì´ì§€ë§Œ ì¤‘ê³ ê±°ëž˜ íŠ¹ì„±ìƒ ë°˜í’ˆ/í™˜ë¶ˆX, ë‚±ê°œ&ì¼ê´„ êµ¬ë§¤ê°€ëŠ¥/ë„¤ê³ ê°€ëŠ¥'
     , TO_DATE('2022-08-21','YY-MM-DD')
     , 10000
-    , 'Áßµ¿'
+    , 'ì¤‘ë™'
     );   
---6. °Ç°­½ÄÇ° È«»ï/»ê»ï/ÀÎ»ï ÆÇ¸Å
+--6. ê±´ê°•ì‹í’ˆ í™ì‚¼/ì‚°ì‚¼/ì¸ì‚¼ íŒë§¤
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/443d225e529c56a3e1ca01ce43bb0c5996e8e155d344c856170e94551bc1cd8b.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -801,19 +721,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://th1.tmon.kr/thumbs/imag
 
 
 
--- Ãë¹Ì ÇÒ¸®°¥¸® º¸µå°ÔÀÓ
+-- ì·¨ë¯¸ í• ë¦¬ê°ˆë¦¬ ë³´ë“œê²Œìž„
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
     , 4
     , 7
-    , 'Ãë¹Ì °ÔÀÓ ÇÒ¸®°¥¸® º¸µå°ÔÀÓ'
-    , 'À¯¾Æº¸µå°ÔÀÓÀ¸·Îµµ ÁÁ°í Ä£±¸µéÀÌ¶û ¼ú ¸¶½Ã¸é¼­ °ÔÀÓÇÏ±âµµ ÁÁÀº ¼ø¹ß·Â º¸µå°ÔÀÓ!'
+    , 'ì·¨ë¯¸ ê²Œìž„ í• ë¦¬ê°ˆë¦¬ ë³´ë“œê²Œìž„'
+    , 'ìœ ì•„ë³´ë“œê²Œìž„ìœ¼ë¡œë„ ì¢‹ê³  ì¹œêµ¬ë“¤ì´ëž‘ ìˆ  ë§ˆì‹œë©´ì„œ ê²Œìž„í•˜ê¸°ë„ ì¢‹ì€ ìˆœë°œë ¥ ë³´ë“œê²Œìž„!'
     , TO_DATE('22-07-25','YY-MM-DD')
     , 8000
-    , '¸Á¿ùµ¿'
+    , 'ë§ì›”ë™'
     );
--- Ãë¹Ì ÇÒ¸®°¥¸® º¸µå°ÔÀÓ
+-- ì·¨ë¯¸ í• ë¦¬ê°ˆë¦¬ ë³´ë“œê²Œìž„
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/09dc177b0574a519229a12c93671ae4649c5527293e52504eaa39873d24f6704.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -824,19 +744,19 @@ INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/af3477cbbf43a59d3507e23fe9b13c1046e463fd091489c2c399890397035638_3.webp?q=95&s=1440x1440&t=inside&f=webp');
 
 
--- ¾ÈÀ¯Áø ¸ðÄÏ¼¥ »ð´Ï´Ù
+-- ì•ˆìœ ì§„ ëª¨ì¼“ìƒµ ì‚½ë‹ˆë‹¤
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
     SEQ_BOARD.NEXTVAL
     , 5
     , 8
-    , '¾ÈÀ¯Áø ¸ðÄÏ¼¥ »ð´Ï´Ù'
-    , '10000~15000±îÁö »ç°í ÅÃ¹èºñ Æ÷ÇÔÇÑ °¡°ÝÀÔ´Ï´Ù. ½Ç¹°ÀÎÁõÀÌ³ª ºûºñÃã»çÁø ²À º¸³»ÁÖ¼Å¾ßÇÕ´Ï´Ù.Á÷°Å·¡µµ °¡´ÉÇØ¿ä~'
+    , 'ì•ˆìœ ì§„ ëª¨ì¼“ìƒµ ì‚½ë‹ˆë‹¤'
+    , '10000~15000ê¹Œì§€ ì‚¬ê³  íƒë°°ë¹„ í¬í•¨í•œ ê°€ê²©ìž…ë‹ˆë‹¤. ì‹¤ë¬¼ì¸ì¦ì´ë‚˜ ë¹›ë¹„ì¶¤ì‚¬ì§„ ê¼­ ë³´ë‚´ì£¼ì…”ì•¼í•©ë‹ˆë‹¤.ì§ê±°ëž˜ë„ ê°€ëŠ¥í•´ìš”~'
     , TO_DATE('22-04-20','YY-MM-DD')
     , 15000
-    , '¿¬»êÁ¦8µ¿'
+    , 'ì—°ì‚°ì œ8ë™'
     );
--- ¾ÈÀ¯Áø ¸ðÄÏ¼¥ »ð´Ï´Ù
+-- ì•ˆìœ ì§„ ëª¨ì¼“ìƒµ ì‚½ë‹ˆë‹¤
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/0bc0de5e3842995b678fd4c32d76b51f9d4745182e4b82a7fea1fa7b8f531429_0.webp?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -846,19 +766,19 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/pro
 
 
 
--- ½Å¼¼°è »óÇ°±Ç (»ð´Ï´Ù)
+-- ì‹ ì„¸ê³„ ìƒí’ˆê¶Œ (ì‚½ë‹ˆë‹¤)
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
     SEQ_BOARD.NEXTVAL
     , 6
     , 8
-    , '10¸¸¿ø±Ç ½Å¼¼°è»óÇ°±Ç »ð´Ï´Ù.'
-    , '9.4¿¡ 50Àå±îÁö »çº¾´Ï´Ù~~'
+    , '10ë§Œì›ê¶Œ ì‹ ì„¸ê³„ìƒí’ˆê¶Œ ì‚½ë‹ˆë‹¤.'
+    , '9.4ì— 50ìž¥ê¹Œì§€ ì‚¬ë´…ë‹ˆë‹¤~~'
     , TO_DATE('2021-04-21','YY-MM-DD')
     , 94000
-    , '¿¬»êÁ¦8µ¿'
+    , 'ì—°ì‚°ì œ8ë™'
     );
---8. ½Å¼¼°è »óÇ°±Ç
+--8. ì‹ ì„¸ê³„ ìƒí’ˆê¶Œ
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f63093fdcb0c7ce520dd22f3609316a3be290e5a75d3210eca1c5e3152d5fef1_0.webp?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
@@ -868,12 +788,11 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfron
 
 COMMIT;
 
--- TRADE_BOARD_LIKE Å×ÀÌºí ( Æ®¸®°Å·Î Áßº¹ ÁÁ¾Æ¿ä Ã³¸® )
---ÁÁ¾Æ¿ä ³Ñ¹ö (PK)
---Áß°í°Å·¡ °Ô½ÃÆÇ ³Ñ¹ö
---È¸¿ø ³Ñ¹ö
 
--- ¹°Ç° °Ô½ÃÆÇ ÁÁ¾Æ¿ä ½ÃÄö½º
+-- TRADE_BOARD_LIKE í…Œì´ë¸” ( íŠ¸ë¦¬ê±°ë¡œ ì¤‘ë³µ ì¢‹ì•„ìš” ì²˜ë¦¬ )
+-- trade_like_num  (PK), trade_num, member_num
+
+-- ë¬¼í’ˆ ê²Œì‹œíŒ ì¢‹ì•„ìš” ì‹œí€€ìŠ¤
 CREATE SEQUENCE seq_tboard_like 
 INCREMENT BY 1 
 START WITH 1 

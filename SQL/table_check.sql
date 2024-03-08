@@ -32,7 +32,6 @@ SELECT * FROM danngn_pay;
 -- 결제
 SELECT * FROM pay;
 
-
 -- 공지사항 게시판
 SELECT * FROM notice_board;
 
