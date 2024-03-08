@@ -271,8 +271,7 @@ VALUES(seq_board.nextval,'영통부근에 좋은내과좀 알려주십시요. 지금 다니는 연세내
  ','병원문의',4,to_date('23-05-10','yy-mm-dd'),4);
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-VALUES(seq_board.nextval,'너무 목이 간질거리며 심하게 기침이 나옵니다'. '병원 안내좀 해주시면 감사합니다.
- ','목이아파요',4,to_date('23-01-21','yy-mm-dd'),8);
+VALUES(seq_board.nextval,'너무 목이 간질거리며 심하게 기침이 나옵니다', '병원 안내좀 해주시면 감사합니다.', 4, to_date('23-01-21','yy-mm-dd'),8);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
@@ -656,18 +655,6 @@ COMMIT;
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
-DELETE FROM TRADE_BOARD;
-
-DELETE FROM item_image;
-SELECT SEQ_TBOARD FROM DUAL;
-
-DELETE FROM TRADE_BOARD_LIKE;
-
-DROP SEQUENCE SEQ_TBOARD;
-
-DROP SEQUENCE SEQ_IMAGE;
-select * FROM TRADE_BOARD;
-SELECT * FROM item_image;
 
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -942,7 +929,4 @@ INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( s
 
 COMMIT;
 
-SELECT * FROM TRADE_BOARD_LIKE;
-SELECT * FROM TRADE_BOARD;
-SELECT * FROM ITEM_IMAGE;
 
