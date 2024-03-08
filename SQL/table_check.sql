@@ -22,8 +22,8 @@ SELECT * FROM chat;
 
 
 -- 채팅 내용
-SELECT * FROM chat_board;
 
+SELECT * FROM chat_board;
 
 -- 당근페이
 SELECT * FROM danngn_pay;
