@@ -76,25 +76,25 @@ VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자3', 'admin9753', '84651321');
 
 
 -- DANNGN_PAY 테이블, 회원 넘버 ( PK ), 계좌번호, 은행이름, 잔액
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(1, '91098112453', 'KB국민은행', 1350000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(2, '33332955474', '신한은행', 350000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(3, '91963923557953', 'KEB하나은행', 275000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(4, '1234811255453', 'NH농협은행', 64000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(5, '44445930203', 'SC제일은행', 170000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(6, '123456789434', '씨티은행', 600000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(7, '45629759232', '케이뱅크', 1790000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(8, '914346765579', '카카오뱅크', 510000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(9, '09173549283', 'DGB대구은행', 200000);
-INSERT INTO DANNGN_pay
+INSERT INTO DANGGEUN_pay
 VALUES(10, '056737235267', 'BNK부산은행', 660000);
 COMMIT;
 
@@ -129,8 +129,12 @@ CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID --1번채팅방 내용번호
 START WITH 1
 INCREMENT BY 1;
 
-INSERT INTO chat_board
-VALUES (1,SEQ_CHATCONTENT_ROOM1_ID, '첫채팅', SYSDATE);
+INSERT INTO chat_board(CHAT_ROOM_NUM, CHAT_NUM, CHAT_CONTENT, CHAT_TIME )
+VALUES (1,SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '첫채팅', SYSDATE);
+SELECT *
+FROM chat_board;
+
+DESC chat_board;
 
 -- 신고
 CREATE SEQUENCE SEQ_REPORT_ID
@@ -218,9 +222,15 @@ INSERT INTO comm_ctgr VALUES( 6,'사건사고');
 COMMIT;
 
 
+SELECT * FROM comm_ctgr;
+
 -- 동네생활 게시판
 -- COMM_BOARD 테이블 
 -- COMM_BOARD_NUM ( PK ), COMM_CTGR_NUM, MEMBER_NUM, COMM_TITLE, COMM_CONTENT, COMM_UPLOAD_DATE
+CREATE SEQUENCE SEQ_BOARD
+START WITH 1
+INCREMENT BY 1;
+
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
 VALUES(seq_board.nextval,'누구든지 하루에 10분만 투자하면 부자가 될 수 있습니다. ','부자되는 법',1,to_date('21-04-23','yy-mm-dd'),9);
@@ -310,32 +320,36 @@ COMMIT;
 -- 동네생활 게시판 좋아요 넘버( PK )
 --회원 넘버
 --동네생활 게시판 넘버
+CREATE SEQUENCE SEQ_COMM_LIKE
+START WITH 1
+INCREMENT BY 1;
 
-INSERT INTO comm_board_like Values(1,1,1);
 
-INSERT INTO comm_board_like Values(2,5,3);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,1,1);
 
-INSERT INTO comm_board_like Values(3,7,13);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,5,3);
 
-INSERT INTO comm_board_like Values(4,3,12);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,7,13);
 
-INSERT INTO comm_board_like Values(5,3,10);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,3,12);
 
-INSERT INTO comm_board_like Values(6,8,5);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,3,10);
 
-INSERT INTO comm_board_like Values(7,9,4);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,8,5);
 
-INSERT INTO comm_board_like Values(8,7,9);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,9,4);
 
-INSERT INTO comm_board_like Values(9,6,4);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,7,9);
 
-INSERT INTO comm_board_like Values(10,5,12);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,6,4);
 
-INSERT INTO comm_board_like Values(11,3,16);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,5,12);
 
-INSERT INTO comm_board_like Values(12,6,12);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,3,16);
 
-INSERT INTO comm_board_like Values(13,7,11);
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,6,12);
+
+INSERT INTO comm_board_like Values(SEQ_COMM_LIKE.NEXTVAL,7,11);
 
 
 COMMIT;
@@ -343,65 +357,277 @@ COMMIT;
 -- 동네생활 댓글  
 -- COMM_BOARD_NUM  , COMM_NUM ( PK ) , COMM_WRITER_NICKNAME, COMM_DATE, COMM_CTGR_NAME, COMM_CONTENT
 
-INSERT INTO COMM_CMT (COMM_NUM, COMM_BOARD_NUM, COMM_WRITER_NICKNAME, COMM_DATE, COMM_CTGR_NAME, COMM_CONTENT) 
-VALUES (1, 100, '뿡빵이', TO_DATE('21-04-21','YY-MM-DD'), '인기게시판', '댓글 내용입니다.'),
-       (2, 200, '하호하미', TO_DATE('21-01-01','YY-MM-DD'), '인기게시판', '댓글 내용입니다.'),
-       (3, 300, '민트', TO_DATE('21-01-01','YY-MM-DD'), '인기게시판', '댓글 내용입니다.'),
-       (4, 400, '초코', TO_DATE('21-01-01','YY-MM-DD'), '자유게시판', '댓글 내용입니다.'),
-       (5, 500, 'Willer', TO_DATE('21-01-01','YY-MM-DD'), '자유게시판', '댓글 내용입니다.'),
-       (6, 600, '초키처키', TO_DATE('21-01-01','YY-MM-DD'), '자유게시판', '댓글 내용입니다.'),
-       (7, 700, 'guitar215', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
-       (8, 800, 'kamel94', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
-       (9, 900, '동동', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
-       (10, 1000, '오쪼꼬미니미', TO_DATE('21-01-01','YY-MM-DD'), '정보공유', '댓글 내용입니다.');
+-- 댓글 넘버 시퀀스 생성
+CREATE SEQUENCE SEQ_COMM_NUM
+START WITH 1
+INCREMENT BY 1;
+
+SELECT * FROM comm_board;
+
+
+--1
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (1, SEQ_COMM_NUM.NEXTVAL, 8, '2023-01-14', '유익한 내용이었습니다');
+--2
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (2, SEQ_COMM_NUM.NEXTVAL, 4, '2020-01-15', '혹시 카풀 가능할까요?');
+--3
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (3, SEQ_COMM_NUM.NEXTVAL, 5, '2022-11-03', '화요일 아니었나?');
+--4
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (4, SEQ_COMM_NUM.NEXTVAL, 7, '2024-01-01', '부동산에 물어보면 정확할듯');
+--5
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (5, SEQ_COMM_NUM.NEXTVAL, 3, '2023-07-16', '우리팀 들어오실래여?');
+--6
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (6, SEQ_COMM_NUM.NEXTVAL, 4, '2023-09-12','마로 미용실 괜찮음.');
+--7
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (7, SEQ_COMM_NUM.NEXTVAL, 8, '2023-05-02', '베이스 배우려면 전화주세요 010-2245-8243');
+--8
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (8, SEQ_COMM_NUM.NEXTVAL, 7, '2023-06-11', '어디로 가면됩니까? 같이 한 잔 하시죠.');
+--9
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (9, SEQ_COMM_NUM.NEXTVAL, 5, '2023-10-01', '생생 정보통인듯?');
+--10
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (10, SEQ_COMM_NUM.NEXTVAL, 3, '2023-05-10', '바로내과로 가요. 거기 원장님 진료 잘봐줘요.');
+--11
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (11, SEQ_COMM_NUM.NEXTVAL, 2, '2023-01-21', '광수형내과나 바로 내과로 가시면 좋아요!');
+--12
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (12, SEQ_COMM_NUM.NEXTVAL, 2, '2023-12-11', '저희 부동산으로 오세요. 잘해드릴게! 천사부동산 검색.');
+--13
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (13, SEQ_COMM_NUM.NEXTVAL, 1, '2023-02-12', '꼭 찾으시길 바랄게여.');
+--14
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (14, SEQ_COMM_NUM.NEXTVAL, 9, '2023-06-01', '카드 무슨색이었나요?');
+--15
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (15, SEQ_COMM_NUM.NEXTVAL, 7, '2023-01-30', '헉! 혹시 몰라서 제가 경찰서에다가 놨어요.');
+--16
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (16, SEQ_COMM_NUM.NEXTVAL, 10, '2024-02-27', '그거 제꺼인데 지금 어디 계시나요?');
+--17
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (17, SEQ_COMM_NUM.NEXTVAL, 5, '2024-03-06', 'ㄷㄷ 개무섭네여;');
+--18
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (18, SEQ_COMM_NUM.NEXTVAL, 7, '2023-08-27', '민원 넣었는데도 쉽지 않나봐요 ㅠㅠ');
+--19
+INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
+VALUES (19, SEQ_COMM_NUM.NEXTVAL, 8, '2023-2-27', '우리 딸한테도 말해놔야겠네요. 감사합니다.');
+
+
 
 
 -- 동네생활 대댓글
 -- RCMT_NUM, COMM_NUM, RCMT_WRITER_NICKNAME ( PK ), CMT_BOARD_NUM, RCMT_CONTENT, RCMT_DATE
-INSERT INTO CMT_REPLY (RCMT_NUM, COMM_NUM, RCMT_WRITER_NICKNAME, CMT_BOARD_NUM, RCMT_CONTENT, RCMT_DATE) 
-VALUES (1, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (2, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (3, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (4, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (5, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (6, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (7, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (8, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (9, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
-       (10, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD'));
+CREATE SEQUENCE SEQ_RCMT_NUM
+START WITH 1
+INCREMENT BY 1;
+
+
+--1
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (1, 1, SEQ_RCMT_NUM.NEXTVAL, 9, '더 유익한 내용으로 찾아 뵙겠습니다.', '2023-01-15');
+--2
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (2, 2, SEQ_RCMT_NUM.NEXTVAL, 6, '지금 어디 계시나요? 저 출발해야되서...', '2020-01-15');
+--3
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (3, 3, SEQ_RCMT_NUM.NEXTVAL, 4, 'ㅇㅇ 화요일 맞는듯', '2022-11-03');
+--4
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)       
+VALUES (4, 4, SEQ_RCMT_NUM.NEXTVAL, 6, '우리부동산 전화주세요 010-6547-2321', '2024-01-01');
+--5
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (5, 5, SEQ_RCMT_NUM.NEXTVAL, 2, '할 곳이 있나?', '2023-07-16');
+--6
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (6, 6, SEQ_RCMT_NUM.NEXTVAL, 5, 'ㄴㄴ 마로 미용실 구림 가지마셈', '2023-09-12');
+--7
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (7, 7, SEQ_RCMT_NUM.NEXTVAL, 1, '저도 같이 껴도 될까요?', '2023-05-02');
+--8
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (8, 8, SEQ_RCMT_NUM.NEXTVAL, 10, '네, 생생 정보통 맞는듯', '2023-06-11');
+--9
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (9, 9, SEQ_RCMT_NUM.NEXTVAL, 4, '맞아요, 바로내과 저도 추천!!!', '2023-10-01');
+--10
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (10, 10, SEQ_RCMT_NUM.NEXTVAL, 6, '바로 내과로 가시는 게 좋아요!', '2023-05-10');
+--11
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (11, 11, SEQ_RCMT_NUM.NEXTVAL, 9, '요즘 전세 사기 많아서 부동산도 못믿음', '2023-01-21');
+--12
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (12, 12, SEQ_RCMT_NUM.NEXTVAL, 3, '찾으셨나요?', '2023-12-11');
+--13
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (13, 13, SEQ_RCMT_NUM.NEXTVAL, 5, '아까 가게에서 본 것 같은데...', '2023-02-12');
+--14
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (14, 14, SEQ_RCMT_NUM.NEXTVAL, 4, '그걸 왜 경찰서에?...', '2023-06-01');
+--15
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (15, 15, SEQ_RCMT_NUM.NEXTVAL, 8, '빨간색인가? 본 것 같은데?', '2023-01-30');
+--16
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (16, 16, SEQ_RCMT_NUM.NEXTVAL, 10, '찾았나보네', '2024-02-27');
+--17
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (17, 17, SEQ_RCMT_NUM.NEXTVAL, 2, '뉴스에도 나왔던데 너무 무서웠음 ㅠㅠ', '2024-03-06');
+--18
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (18, 18, SEQ_RCMT_NUM.NEXTVAL, 4, '진짜 너무 시끄러워요! 빨리 해결됐으면..', '2023-08-27');
+--19
+INSERT INTO CMT_REPLY (CMT_BOARD_NUM, COMM_NUM, RCMT_NUM, MEMBER_NUM, RCMT_CONTENT, RCMT_DATE)
+VALUES (19, 19, SEQ_RCMT_NUM.NEXTVAL, 5, '우리 아들도 큰일날 뻔 했던거 생각나네요.', '2023-2-27');
 
 COMMIT;
 
 
 -- 동네생활 댓글 좋아요 테이블
 -- COMM_CMT_LIKE ( PK ), COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM
-INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM) 
-VALUES (1, 100, 1, 1),
-       (2, 200, 1, 1),
-       (3, 300, 1, 1),
-       (4, 400, 1, 1),
-       (5, 500, 1, 1),
-       (6, 600, 1, 1),
-       (7, 700, 1, 1),
-       (8, 800, 1, 1),
-       (9, 900, 1, 1),
-       (10, 1000, 1, 1);
+
+CREATE SEQUENCE SEQ_COMM_CMT_LIKE
+START WITH 1
+INCREMENT BY 1;
+
+SELECT * FROM comm_cmt_like;
+
+--1
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 1, 2);
+--2
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 3, 8);
+--3
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 2, 7, 4);
+--4
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 3, 7, 2);
+--5
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 2, 3, 1);
+--6
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 7, 5, 10);
+--7
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 4, 3);
+--8
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 10, 4, 6);
+--9
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 15, 6, 5);
+--10
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 19, 7, 7);
+--11
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 18, 1, 4);
+--12
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 16, 8, 2);
+--13
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 9, 3);
+--14
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 12, 10, 1);
+--15
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 3, 8, 4);
+--16
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 7, 3, 8);
+--17
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 6, 1, 3);
+--18
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 5, 9, 6);
+--19
+INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
+VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 15, 9, 3);
+
 COMMIT;
 
 -- 동네생활 대댓글 좋아요 테이블
 -- RCMT_LIKE_NUM ( PK ), RCMT_NUM, MEMBER_NUM
-INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM) 
-VALUES (1, 1, 1),
-       (2, 1, 1),
-       (3, 1, 1),
-       (4, 1, 1),
-       (5, 1, 1),
-       (6, 1, 1),
-       (7, 1, 1),
-       (8, 1, 1),
-       (9, 1, 1),
-       (10, 1, 1);
-COMMIT;
+CREATE SEQUENCE SEQ_RCMT_LIKE
+START WITH 1
+INCREMENT BY 1;
+
+
+--1
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 1, 1);
+--2
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 10, 1);
+--3
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 9, 6);
+--4
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 4, 7);
+--5
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)      
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 3, 8);
+--6
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 1, 9);
+--7
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)      
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 2, 8);
+--8
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 4, 7);
+--9
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 8, 1);
+--10
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)       
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 6, 2);
+--11
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 7, 2);
+--12
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 3, 5);
+--13
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 2, 5);
+--14
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 5, 2);
+--15
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 6, 4);
+--16
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 7, 10);
+--17
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 4, 7);
+--18
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 2, 5);
+--19
+INSERT INTO CMT_REPLY_LIKE (RCMT_LIKE_NUM, RCMT_NUM, MEMBER_NUM)
+VALUES (SEQ_RCMT_LIKE.NEXTVAL, 1, 5);
+
 
 
 -- ITEM_CTGR 테이블
@@ -428,15 +654,25 @@ COMMIT;
 
 -- 시퀀스 생성
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
-CREATE SEQUENCE seq_item_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
+CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
--- 이걸로 속성값 수정 먼저 진행해주세요
-ALTER TABLE item_image MODIFY ( item_image_url VARCHAR2(4000));
+DELETE FROM TRADE_BOARD;
+
+DELETE FROM item_image;
+SELECT SEQ_TBOARD FROM DUAL;
+
+DELETE FROM TRADE_BOARD_LIKE;
+
+DROP SEQUENCE SEQ_TBOARD;
+
+DROP SEQUENCE SEQ_IMAGE;
+select * FROM TRADE_BOARD;
+SELECT * FROM item_image;
 
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 1
     , 1
     , '에어팟맥스 새상품'
@@ -446,20 +682,20 @@ VALUES (
     , '중동'
     );   
 -- 에어팟맥스 새상품
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
 
 
 -- 접이식 헤어드라이기
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 2
     , 1
     , '다이슨 수퍼소닉 헤어드라이어 블루 블러쉬 판매합니다.'
@@ -469,17 +705,17 @@ VALUES (
     , '중동'
     );
 -- 접이식 헤어드라이기
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/861b835995343e320e6259fa92c2d3c9b3f059c7b1b226a5cafa3993773daba7_1.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_2.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_0.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/861b835995343e320e6259fa92c2d3c9b3f059c7b1b226a5cafa3993773daba7_1.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_2.webp?q=95&s=1440x1440&t=inside&f=webp');
 
 -- 오븐 토스터
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 3
     , 2
     , '오븐 토스터'
@@ -489,17 +725,17 @@ VALUES (
     , '강남역'
     );
 -- 오븐 토스터
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/08ec535f0dc069be48db7970231f52a662446f8e07d334b7e44f23d97ffa145f_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/community/community/20240216/2ffbac14-1384-480d-acc4-4fdeb42fabb5.png?&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fdnvefa72aowie.cloudfront.net%2Forigin%2Farticle%2F202312%2Fac867456b1fe127309cf94a172a46ac2d514cafc2a982e622383af25493a2f60.jpg%3Fq%3D95%26s%3D1440x1440%26t%3Dinside%26f%3Dwebp&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/08ec535f0dc069be48db7970231f52a662446f8e07d334b7e44f23d97ffa145f_0.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/community/community/20240216/2ffbac14-1384-480d-acc4-4fdeb42fabb5.png?&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fdnvefa72aowie.cloudfront.net%2Forigin%2Farticle%2F202312%2Fac867456b1fe127309cf94a172a46ac2d514cafc2a982e622383af25493a2f60.jpg%3Fq%3D95%26s%3D1440x1440%26t%3Dinside%26f%3Dwebp&type=sc960_832');
 
 -- 와인 글라스 세트
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 4
     , 2
     , '와인 글라스'
@@ -509,17 +745,17 @@ VALUES (
     , '노원역'
     );
 -- 와인 글라스 세트
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202402/cc6cf7e733f70887fb9d4963c4e96d22af16021f9a86729c4f1b5f08dd6a8e68.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshopping.phinf.naver.net%2Fmain_3754868%2F37548689017.20230131125646.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20230324_114%2F1679637966978NtLwq_JPEG%2FTLbli_100901_7.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202402/cc6cf7e733f70887fb9d4963c4e96d22af16021f9a86729c4f1b5f08dd6a8e68.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshopping.phinf.naver.net%2Fmain_3754868%2F37548689017.20230131125646.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20230324_114%2F1679637966978NtLwq_JPEG%2FTLbli_100901_7.jpg&type=sc960_832');
 
  -- 여성의류 캘빈클라인 반팔티
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 5
     , 3
     , '여성의류 캘빈클라인 반팔티 팝니다.'
@@ -529,19 +765,19 @@ VALUES (
     , '마포역'
     );
  -- 여성의류 캘빈클라인 반팔티
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/51a2ebe878d07f4ff8223922c38bea16a348775645e01ab5ff4fc146499ca61d.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.musinsa.com%2Fmfile_s01%2F2022%2F04%2F15%2Fff67c3458fdaa4d4f3b5e3dc23c5506d184029.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA1MTVfOTkg%2FMDAxNjg0MTUwNTU0MjM4.QyxnLWV6NqLFYleqyR-PK8W_Z7_hgeoXg2RKDEQ6QdQg.kWGLc6KYE0tnxdvtGlQHbtkfQ79kteDu199f559s1Tog.JPEG.tnstnqorqo%2FIMG_8125.JPG&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fck-s3.s3.ap-northeast-2.amazonaws.com%2Fecom%2F24SS%2FCKJ%2FJ223860-YAF%2FJ223860-YAF-ITEM-2.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/51a2ebe878d07f4ff8223922c38bea16a348775645e01ab5ff4fc146499ca61d.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.musinsa.com%2Fmfile_s01%2F2022%2F04%2F15%2Fff67c3458fdaa4d4f3b5e3dc23c5506d184029.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA1MTVfOTkg%2FMDAxNjg0MTUwNTU0MjM4.QyxnLWV6NqLFYleqyR-PK8W_Z7_hgeoXg2RKDEQ6QdQg.kWGLc6KYE0tnxdvtGlQHbtkfQ79kteDu199f559s1Tog.JPEG.tnstnqorqo%2FIMG_8125.JPG&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fck-s3.s3.ap-northeast-2.amazonaws.com%2Fecom%2F24SS%2FCKJ%2FJ223860-YAF%2FJ223860-YAF-ITEM-2.jpg&type=a340');
 
 -- 까스텔바작 골프의류 니트조끼 사이즈 95
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES ( 
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 6
     , 3
     , '까스텔바작 골프의류 니트조끼 사이즈95'
@@ -551,18 +787,18 @@ VALUES (
     , '수성구청'
     ); 
 -- 까스텔바작 골프의류 니트조끼 사이즈 95
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210828_228%2F163013337942202vwE_JPEG%2F31269162995911619_1021975160.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210710_203%2F1625916196021Ubx5S_JPEG%2F33380828139819908_936957536.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210828_228%2F163013337942202vwE_JPEG%2F31269162995911619_1021975160.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210710_203%2F1625916196021Ubx5S_JPEG%2F33380828139819908_936957536.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832');
 
 
 -- 메리다 어린이 자전거
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 7
     , 4
     , '메리다 어린이 자전거'
@@ -572,20 +808,20 @@ VALUES (
     , '좌동'
     );   
 -- 메리다 어린이 자전거
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/ac29d7c003f5c248866caf0beb4b197ecfad62315987dbb241d512aa66d4d574_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODA0MjdfNTEg%2FMDAxNTI0ODMwNDU5MjM0.EEzN1PjwOjDrsQt6AMdKGUGqZ7GWp8FE17w6Ff5oLgYg.1SUuiexNmY8B7L9vEgMnjcYzvX_iUZdZP0cOvF7ZHZUg.JPEG.1984velo%2FKakaoTalk_20180427_200934077.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA0MDdfMjcg%2FMDAxNTU0NTkxMTA2ODE1.uCJ7D0xtEAz85zKy0c510bZML4FGoZPPWw1kRX9mRrMg.H7DLcFWg2Iry0ZOJ9A0a_keNHGjIOQVRJSF9H5_Olygg.JPEG.kyungin0315%2FAE5B12D6-F4F9-451A-8825-8A539D88F208.jpeg&type=sc960_832' );
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832' );
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/ac29d7c003f5c248866caf0beb4b197ecfad62315987dbb241d512aa66d4d574_0.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODA0MjdfNTEg%2FMDAxNTI0ODMwNDU5MjM0.EEzN1PjwOjDrsQt6AMdKGUGqZ7GWp8FE17w6Ff5oLgYg.1SUuiexNmY8B7L9vEgMnjcYzvX_iUZdZP0cOvF7ZHZUg.JPEG.1984velo%2FKakaoTalk_20180427_200934077.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA0MDdfMjcg%2FMDAxNTU0NTkxMTA2ODE1.uCJ7D0xtEAz85zKy0c510bZML4FGoZPPWw1kRX9mRrMg.H7DLcFWg2Iry0ZOJ9A0a_keNHGjIOQVRJSF9H5_Olygg.JPEG.kyungin0315%2FAE5B12D6-F4F9-451A-8825-8A539D88F208.jpeg&type=sc960_832' );
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832' );
 
 
 -- 아동 사운드펜
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_BOARD.NEXTVAL
+    SEQ_TBOARD.NEXTVAL
     , 8
     , 4
     , '아동 사운드펜 팝니다.'
@@ -595,22 +831,22 @@ VALUES (
     , '중동 스타벅스'
     );     
 -- 아동 사운드펜
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/c05c5dbd0a7f9024e140997cfb00a0d97aba1a67ef280682dccd3a3eabadd00a_0.webp?q=95&s=1440x1440&t=inside&f=webp');    
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDRfNTkg%2FMDAxNzA0MzU5MzQ2MzYw.SnuXXedY-d-o69g7wa4U5rFq0uOGx6I8m3gT5VMX6k4g.iU1C4BUd1IQ-xeHEp-e9wT-lwvUk6IKjj8mFlZZB-SQg.JPEG.yaena1143%2FIMG_2961.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20200304_158%2F1583306549050vLuw0_JPEG%2F20668882615659850_1383306984.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTExMjhfMjYg%2FMDAxNTc0OTIwNDE3NTQ4.SBjpdDpT1NVClTOyhy6zoEA5iYg_cuLKEbkcDoP5JDYg.E7Z3seCuctdf6b5lvyjmUFFmfN8mNrg_v1sdRLk1-ZUg.JPEG%2FexternalFile.jpg&type=sc960_832');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220503_138%2F1651533711184nSJx7_JPEG%2F52669539010215726_920666573.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/c05c5dbd0a7f9024e140997cfb00a0d97aba1a67ef280682dccd3a3eabadd00a_0.webp?q=95&s=1440x1440&t=inside&f=webp');    
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDRfNTkg%2FMDAxNzA0MzU5MzQ2MzYw.SnuXXedY-d-o69g7wa4U5rFq0uOGx6I8m3gT5VMX6k4g.iU1C4BUd1IQ-xeHEp-e9wT-lwvUk6IKjj8mFlZZB-SQg.JPEG.yaena1143%2FIMG_2961.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20200304_158%2F1583306549050vLuw0_JPEG%2F20668882615659850_1383306984.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTExMjhfMjYg%2FMDAxNTc0OTIwNDE3NTQ4.SBjpdDpT1NVClTOyhy6zoEA5iYg_cuLKEbkcDoP5JDYg.E7Z3seCuctdf6b5lvyjmUFFmfN8mNrg_v1sdRLk1-ZUg.JPEG%2FexternalFile.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220503_138%2F1651533711184nSJx7_JPEG%2F52669539010215726_920666573.jpg&type=sc960_832');
 
 -- 모니터 거래
 INSERT INTO trade_board ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES 
     ( 
-    seq_tboard.NEXTVAL
+    seq_Tboard.NEXTVAL
     , 1
     , 1
     , '모니터 24인치 커브드 AK'
@@ -622,9 +858,9 @@ VALUES
 
 -- 모니터 거래 이미지
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/e66df18442ef31f0ebb34d6171d91626863ea6cacdc7e4bc3ef91241d3daafa7.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/e66df18442ef31f0ebb34d6171d91626863ea6cacdc7e4bc3ef91241d3daafa7.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/5dca6ae7ff3000b33d78f98595a1f0bbbce56472bcdbd7c1ec4628aab36802c9.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/5dca6ae7ff3000b33d78f98595a1f0bbbce56472bcdbd7c1ec4628aab36802c9.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
 
 -- 주니어 자전거
@@ -643,15 +879,15 @@ VALUES
 
 -- 주니어 자전거 이미지    
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/a42229bfc28ea3427d8a61c3032e91bd91d557fef62de6b5b136adf6c1373c53.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/a42229bfc28ea3427d8a61c3032e91bd91d557fef62de6b5b136adf6c1373c53.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/d32d07b745d60a6d252608cce09a3fdfaebfab329a6fc4bd433d6fa0033a83b1.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/d32d07b745d60a6d252608cce09a3fdfaebfab329a6fc4bd433d6fa0033a83b1.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/ad34d9b59c5e2d1a586113bed1262ff763323741f7c331382e620c293e941d75.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/ad34d9b59c5e2d1a586113bed1262ff763323741f7c331382e620c293e941d75.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/8c9314be1295267df2b22832cd46b3be30c12e4e1cd552d293a52e1caa9198db.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/8c9314be1295267df2b22832cd46b3be30c12e4e1cd552d293a52e1caa9198db.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/7e7eff3d0e19c0f0d63bea281872492944515ebc25e729a4ba60d02275011ea2.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/7e7eff3d0e19c0f0d63bea281872492944515ebc25e729a4ba60d02275011ea2.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
 
 -- 아이폰 거래
@@ -670,122 +906,11 @@ VALUES
 
 -- 아이폰 거래 이미지
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/CF1D735E3998828421B45FCBD98687B733405FCF51E2EA8FD64219FD7A741EE0.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/CF1D735E3998828421B45FCBD98687B733405FCF51E2EA8FD64219FD7A741EE0.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/E9E849356D1CB51E516EB459E5D593F8159705A15FEAF2C899783737A4EB0C7A.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/E9E849356D1CB51E516EB459E5D593F8159705A15FEAF2C899783737A4EB0C7A.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_item_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/6EA3286D098D6EF7041FACC4CD0210F197F872987848678C25130E5E848FDEFF.jpg?q=95&s=1440x1440&t=inside&f=webp');
-
--- 나이키 스포츠 크로스백
-INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
-VALUES ( 
-    SEQ_BOARD.NEXTVAL
-    , 10
-    , 5
-    , '나이키 스포츠 크로스백'
-    , '컨디션 굿굿굿/보시는것처럼 디자인이 훌륭하여 스포츠,여행,책가방 다양하게 매고 다닐 수 있습니다. 많은 문의 부탁드려요'
-    , TO_DATE('2022-12-13','YY-MM-DD')
-    , 48000    
-    , '아라일동'
-    );  
-    
--- 나이키 스포츠 크로스백 이미지
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/dab501b13199011884360972c1c83a6359920d1183ec11858b692996b8fae9ba.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://image.production.fruitsfamily.com/public/product/resized%40width1125/_SRRycjJ4Q-874D853F-2506-4905-AB95-B8B3AEFC77D4.jpg');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/product/250761091_2_1706073356_w360.jpg');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/product/249468232_1_1705127550_w360.jpg');
-
-
--- 건강식품 홍삼/산삼/인삼 판매
-INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
-VALUES ( 
-    SEQ_BOARD.NEXTVAL
-    , 1
-    , 6
-    , '(새제품)건강식품 홍삼/산삼/인삼/벌꿀 판매'
-    , '모두 새상품이지만 중고거래 특성상 반품/환불X, 낱개&일괄 구매가능/네고가능'
-    , TO_DATE('2022-08-21','YY-MM-DD')
-    , 10000
-    , '중동'
-    );   
---6. 건강식품 홍삼/산삼/인삼 판매
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/443d225e529c56a3e1ca01ce43bb0c5996e8e155d344c856170e94551bc1cd8b.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://img4.tmon.kr/cdn3/deals/2019/08/12/2337358562/2337358562_intro_HtNQWYLmKr.jpg');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://th1.tmon.kr/thumbs/image/c93/551/0e7/90e8ccb89_700x700_95_FIT.jpg');
-
-
-
--- 취미 할리갈리 보드게임
-INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
-VALUES (
-    SEQ_BOARD.NEXTVAL
-    , 4
-    , 7
-    , '취미 게임 할리갈리 보드게임'
-    , '유아보드게임으로도 좋고 친구들이랑 술 마시면서 게임하기도 좋은 순발력 보드게임!'
-    , TO_DATE('22-07-25','YY-MM-DD')
-    , 8000
-    , '망월동'
-    );
--- 취미 할리갈리 보드게임
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/09dc177b0574a519229a12c93671ae4649c5527293e52504eaa39873d24f6704.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/81105a1300aae2a076536bc5c844150d76c52b3386f03dc7f246f255ee0445f3_1.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/af3477cbbf43a59d3507e23fe9b13c1046e463fd091489c2c399890397035638_2.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/af3477cbbf43a59d3507e23fe9b13c1046e463fd091489c2c399890397035638_3.webp?q=95&s=1440x1440&t=inside&f=webp');
-
-
--- 안유진 모켓샵 삽니다
-INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
-VALUES ( 
-    SEQ_BOARD.NEXTVAL
-    , 5
-    , 8
-    , '안유진 모켓샵 삽니다'
-    , '10000~15000까지 사고 택배비 포함한 가격입니다. 실물인증이나 빛비춤사진 꼭 보내주셔야합니다.직거래도 가능해요~'
-    , TO_DATE('22-04-20','YY-MM-DD')
-    , 15000
-    , '연산제8동'
-    );
--- 안유진 모켓샵 삽니다
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/0bc0de5e3842995b678fd4c32d76b51f9d4745182e4b82a7fea1fa7b8f531429_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/product/224944891_1_1684923737_w360.jpg');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://media.bunjang.co.kr/product/250866676_%7Bcnt%7D_1706149220_w%7Bres%7D.jpg');
-
-
-
--- 신세계 상품권 (삽니다)
-INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
-VALUES ( 
-    SEQ_BOARD.NEXTVAL
-    , 6
-    , 8
-    , '10만원권 신세계상품권 삽니다.'
-    , '9.4에 50장까지 사봅니다~~'
-    , TO_DATE('2021-04-21','YY-MM-DD')
-    , 94000
-    , '연산제8동'
-    );
---8. 신세계 상품권
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f63093fdcb0c7ce520dd22f3609316a3be290e5a75d3210eca1c5e3152d5fef1_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/1bca8d2f6d54f71c949cc2dbd66086fdec2e57f75aa114ae8a2095971a0d09af.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/7cb267c8c012abbd2fc7c5b65c14db61a54874b4ef0e470c7d0f5da32e2765e0.jpg?q=95&s=1440x1440&t=inside&f=webp');
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/6EA3286D098D6EF7041FACC4CD0210F197F872987848678C25130E5E848FDEFF.jpg?q=95&s=1440x1440&t=inside&f=webp');
 
 COMMIT;
 
@@ -814,22 +939,10 @@ INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( s
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 6);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 7);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 8);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 8);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 1);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 6);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 7);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 7);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 8);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 6);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 1);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 2);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 5, 1);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 5, 2);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 5, 3);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 10);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 5, 10);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 5, 8);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 7);
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 4, 6);
 
 COMMIT;
+
+SELECT * FROM TRADE_BOARD_LIKE;
+SELECT * FROM TRADE_BOARD;
+SELECT * FROM ITEM_IMAGE;
+
