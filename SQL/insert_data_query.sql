@@ -88,7 +88,7 @@ START WITH 1
 INCREMENT BY 1;
 
 INSERT INTO chat_board
-VALUES (1,SEQ_CHATCONTENT_ROOM1_ID, '첫채팅', SYSDATE);
+VALUES (1, SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '첫채팅', SYSDATE);
 
 
 -- 당근페이
@@ -101,7 +101,12 @@ VALUES(1, 3);
 
 
 -- 공지사항 게시판
+CREATE SEQUENCE SEQ_NOTICE_BOARD_ID
+START WITH 1
+INCREMENT BY 1;
 
+INSERT INTO notice_board
+VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1,  '저희 당근은 네고 불가입니다', '저희 당근은 금일부로 네고할 수 없습니다. 네고시 회원자격을 박탈하겠습니다.', SYSDATE);
 
 
 -- 판매 물품 카테고리
