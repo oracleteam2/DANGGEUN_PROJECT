@@ -40,7 +40,7 @@ VALUES (seq_member_id.NEXTVAL, '1994-12-04', '윈터', '대구광역시 수성구 중동', '
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1995-09-02', '강동원', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg');
+VALUES (seq_member_id.NEXTVAL, '1995-09-02', '현빈', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1996-08-24', '원빈', '부산광역시 해운대구 좌동', '010-1253-8964', 'https://i.pinimg.com/736x/05/fe/0c/05fe0c269a225ac1251fff5bc74483ef.jpg');
