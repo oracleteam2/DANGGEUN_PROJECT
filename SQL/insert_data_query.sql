@@ -1,10 +1,6 @@
 -- SCOTT
 -- 데이터 삽입
 
--- 회원
--- 회원 넣기전에 추가해주세요
-ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
-
 --COMM : COMMUNITY
 --CMT : COMMENT
 --CTGR : CATEGORY
@@ -14,16 +10,25 @@ ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
 SHOW DEFINE;
 SET DEFINE OFF;
 
+
+
+-- MEMBER 테이블
+--회원 넘버 ( PK )
+--회원생년월일
+--회원닉네임
+--회원주소
+--회원전화번호
+--회원프로필이미지
+--매너온도
+
 -- 회원 시퀀스
 CREATE SEQUENCE SEQ_MEMBER_ID
 START WITH 1
 INCREMENT BY 1;
 
-SHOW DEFINE;
-SET DEFINE OFF;
-
 -- 회원 넣기전에 추가해주세요
-ALTER TABLE member MODIFY (member_manner_points DEFAULT '36.5');
+
+
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1998-06-29', '진돌', '부산광역시 해운대구 중동', '010-4044-4444', 'https://cliimage.commutil.kr/phpwas/restmb_allidxmake.php?pp=002&idx=3&simg=20170712195535009572d12411ff9587970114.jpg&nmt=12');
@@ -33,7 +38,8 @@ VALUES (seq_member_id.NEXTVAL, '1990-03-12', '강타', '서울특별시 강남구 중동', '
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1991-05-23', '이효리', '서울특별시 강남구 중동', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000');
+VALUES (seq_member_id.NEXTVAL, '1991-05-23', '이효리', '서울특별시 강남구 중동', '010-9822-4224', 'https://img.freepik.com/premium-photo/caricature-of-a-carrot-with-a-face-and-limbs-generative-ai_252214-6349.jpg?w=2000
+');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1992-07-27', '바다', '서울특별시 노원구 중동', '010-4467-2454', 'https://png.pngtree.com/thumb_back/fh260/background/20230609/pngtree-three-puppies-with-their-mouths-open-are-posing-for-a-photo-image_2902292.jpg
@@ -47,7 +53,8 @@ VALUES (seq_member_id.NEXTVAL, '1994-12-04', '손호영', '대구광역시 수성구 중동',
 ');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1995-09-02', '차승원', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg');
+VALUES (seq_member_id.NEXTVAL, '1995-09-02', '차승원', '대전광역시  서구 중동', '010-7744-4477', ' https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/tfQwmqh621xPopjfnJ9wXkfrBcc.jpg
+');
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '1996-08-24', '원빈', '부산광역시 해운대구 좌동', '010-1253-8964', 'https://i.pinimg.com/736x/05/fe/0c/05fe0c269a225ac1251fff5bc74483ef.jpg');
@@ -57,12 +64,6 @@ VALUES (seq_member_id.NEXTVAL, '1997-02-15', '카리나', '인천광역시 남구 중동', '
 
 INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
 VALUES (seq_member_id.NEXTVAL, '2000-07-11', '손석구', '제주특별시 제주시 아라일동', '010-2427-2453', 'https://cdnimage.dailian.co.kr/news/201802/news_1518415236_693408_m_1.jpg');
-
--- 관리자
-VALUES (seq_member_id.NEXTVAL, '2000-02-15', '카리나', '인천광역시 남구 중동', '010-2834-5315', 'https://www.moneynet.co.kr/files/attach/images/33793530/304/717/049/0d8e9d6eee5e97ac11f96085c56072ab.jpg');
-
-INSERT INTO member(member_num, member_birth, member_nickname, member_address, member_tel, member_profile) 
-VALUES (seq_member_id.NEXTVAL, '1983-07-11', '손석구', '제주특별시 제주시 아라일동', '010-2427-2453', 'https://cdnimage.dailian.co.kr/news/201802/news_1518415236_693408_m_1.jpg');
 
 COMMIT;
 
@@ -159,75 +160,6 @@ VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자2', 'admin4875', '842135');
 INSERT INTO admin
 VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자3', 'admin9753', '84651321');
 
--- 신고
-CREATE SEQUENCE SEQ_REPORT_ID
-START WITH 1
-INCREMENT BY 1;
-
-INSERT INTO report
-VALUES (SEQ_REPORT_ID.NEXTVAL, 1, 3);
-
--- 차단
-INSERT INTO block
-VALUES (3, 5);
-
--- 채팅
-CREATE SEQUENCE SEQ_CHATROOM_ID
-START WITH 1
-INCREMENT BY 1;
- 
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 1, 2);
-
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 3, 5);
-
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 1, 10);
-
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 2, 8);
-
-INSERT INTO chat
-VALUES(SEQ_CHATROOM_ID.NEXTVAL, 6, 9);
-
--- 채팅 내용
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID --1번채팅방 내용번호
-START WITH 1
-INCREMENT BY 1;
-
-INSERT INTO chat_board
-VALUES (1, SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '첫채팅', SYSDATE);
---
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM2_ID --2번채팅방 내용번호
-START WITH 1
-INCREMENT BY 1;
-
-INSERT INTO chat_board
-VALUES (2, SEQ_CHATCONTENT_ROOM2_ID.NEXTVAL, '안녕하세요', SYSDATE);
-
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM3_ID --3번채팅방 내용번호
-START WITH 1
-INCREMENT BY 1;
-
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM4_ID --4번채팅방 내용번호
-START WITH 1
-INCREMENT BY 1;
-
-CREATE SEQUENCE SEQ_CHATCONTENT_ROOM5_ID --5번채팅방 내용번호
-START WITH 1
-INCREMENT BY 1;
-
-
-
--- 당근페이
-INSERT INTO DANNGN_pay
-VALUES(1, '91098112453', '국민', 50000);
-
-
--- 결제
-INSERT INTO pay
-VALUES(1, 3);
 COMMIT;
 
 
@@ -237,28 +169,6 @@ START WITH 1
 INCREMENT BY 1;
 
 INSERT INTO notice_board
-VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1,  '저희 당근은 네고 불가입니다', '저희 당근은 금일부로 네고할 수 없습니다. 네고시 회원자격을 박탈하겠습니다.', SYSDATE);
-
-
--- 판매 물품 카테고리
-
-
--- 중고거래 게시판
-
-
--- 상품 이미지
-
-
--- 중고거래 게시판 좋아요
-
-
--- 동네생활 카테고리
-
-
--- 동네생활 게시판
-
-
--- 동네생활 댓글
 VALUES(SEQ_NOTICE_BOARD_ID.NEXTVAL, 1, '저희 당근은 네고 불가입니다', '저희 당근은 금일부로 네고할 수 없습니다. 네고시 회원자격을 박탈하겠습니다.', SYSDATE);
 
 INSERT INTO notice_board
@@ -377,68 +287,57 @@ COMMIT;
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'누구든지 하루에 10분만 투자하면 부자가 될 수 있습니다. ','부자되는 법',1,to_date('21-04-23','yy-mm-dd'),9);
 
 
 Insert INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'전31살 남자고 인천공항에 일때문에 픽업 가는데 공항가시는분 있으면공항까지 카풀합니다 ~ 연휴때 고향내려가는 차편 매진됬을때 어떤분이 감사하게도 카풀해주셔서 편하게 갔던 기억이있어서 올려봅니다^^ ','내일 (3.7)오전 6시30분 출발 동수원사거리쪽에서',1,to_date('20-01-13','yy-mm-dd'),6);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'치킨먹고싶어요 있으면 좋겠다 ','망포동쪽에 치킨트럭 온데 있어요?',1,to_date('22-11-03','yy-mm-dd'),7);
 
 
 INSERT INTO comm_board(comm_board_num,comm_content,comm_title,comm_ctgr_num,comm_upload_date,member_num)
-
 Values(seq_board.nextval,'보통 기존에 살던 전세집 계약일 몇달전에 집을 알아보나요?  예를 들어 8월말이 만료라면 언제부터 새로 계약할 전세집을 알아보는게 좋을까요?
  ','전세 계약 궁금증',2,to_date('24-01-01','yy-mm-dd'),3);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'안녕하세요:) 얼마 전 수원 이사와서 기존 풋살팀은 갈수 없게 되어  성인 축구교실이라도 다녀볼까 합니다.  괜찮은 곳 있으면 소개 부탁드려요 감사합니다
  ','망포근처 성인축구교실 문의드립니다',2,to_date('23-07-16','yy-mm-dd'),1);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,' 히피펌 하고 싶은데
  ','남자 펌 잘하는 곳 있나요',2,to_date('23-09-12','yy-mm-dd'),2);
  
  
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,' 댓글 달아주세요!
  ','베이스 치시는분 계신가요?',3,to_date('23-05-02','yy-mm-dd'),4);
 
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'저랑 해장국에 소주한잔하실래요? 3 0 남
 
  ','망포역근처퇴근하신분',3,to_date('23-06-11','yy-mm-dd'),8);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'지금 영통구청 앞에 버거킹쪽에 사람많고 촬영하는데 뭔지 아시는분?
  ','지금 영통구청 앞에 버거킹쪽에 사람많고 촬영하는데 뭔지 아시는분?',3,to_date('23-10-01','yy-mm-dd'),7);
  
  
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'영통부근에 좋은내과좀 알려주십시요. 지금 다니는 연세내과 맘에 안들어서요. 너무 상업적으로 환자를 상대하는것 같아요
 
  ','병원문의',4,to_date('23-05-10','yy-mm-dd'),4);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 Values(seq_board.nextval,'너무 목이 간질거리며 심하게 기침이 나옵니다'. '병원 안내좀 해주시면 감사합니다.
 
  ','목이아파요',4,to_date('23-01-21','yy-mm-dd'),8);
@@ -446,57 +345,48 @@ Values(seq_board.nextval,'너무 목이 간질거리며 심하게 기침이 나옵니다'. '병원 안
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'영통구 쪽에 옥탑방을 좀 구하고 싶은데요, 매물이 잘 없네요ㅠ 앱 말고 방 찾아볼 수 있는 방법좀 있을까요?
 
  ','영통구 옥탑방',4,to_date('23-12-11','yy-mm-dd'),5);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 Values(seq_board.nextval,'어른 중간 정강이까지 오는 크기의 갈색 포메라니안 입니다 보신 분은 댓글 달아주세요 ㅜㅜ',  '저희 집 백돌이를 읽어 버렸어요 ㅜㅡㅜ
 ',5,to_date('23-02-12','yy-mm-dd'),9);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'오늘 오후 5시에 망포역에서 국민은행 체크카드 분실했는데 매장에 들어오 분실물이 없다고 하네요 혹시
 보신 분 계시면 댓글로 좀 알려주세요 ㅜㅜㅜ','오늘 오후 5시에 망포역 스타벅스에서 카드 주우신분?',5,to_date('23-06-01','yy-mm-dd'),1);
 
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 Values(seq_board.nextval,'오늘 경희대 앞에 자전거를 잠깐 세워놨는데 누가 가져갔네요 저한테 정말 소중한 자전거 입니다 혹시 찾아 주시는 분 있으면 사례 해드릴게요 ㅜㅜ 
 로드 바이크고 색상은 빨강색입니다.!!',
 '오늘 오전 9시쯤 자전거를 잃어 버렸습니다. ',5,to_date('23-01-30','yy-mm-dd'),4);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 values(seq_board.nextval,'오늘 홈플러스 1층 이디야 앞 복도에서 우리은행 체크카드를 주웠습니다. 그냥 경찰에 가져다 줄까 하다가 여기에다 글 올립니다!! 카드 주인은 김x진 98년1월 30일 생이라고 적혀있습니다.!',
 ' 체크카드를 주웠습니다. ',5,to_date('24-02-27','yy-mm-dd'),6);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'어제 밤 수원대 근처 호수에서 50대 여자시신이 발견됐다고 하네요 ㅜㅜ 다들 조심하세요',
 ' 수원대 여자 시신 ',6,to_date('24-03-06','yy-mm-dd'),3);
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'요즘 밤만 되면 전깃 줄에 까마귀 떼들이 앉아서 난리네요 ㅜㅜ 저번에 새똥 맞을 뻔 했는데 다들 전깃줄 밑으로는 지나다니시지 않는게 좋을거 같아요 !!',
 ' 까마귀 떼 ',6,to_date('23-08-27','yy-mm-dd'),4);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'오늘 영동초등학교 앞에서 우회전 하는 차량에 초등학생 아이가 치여 크게 다쳤다고 하네요 차량들도 조심히 다녀야 겠지만 집안에서 각자 아이들에게 교통 교육을 확실히 시킬 필요가 있을거 같네요 ㅜㅜ 걱정이 많습니다 ㅜㅜㅜㅜ',
 ' 영동초 앞 교통사고 ',6,to_date('23-2-27','yy-mm-dd'),2);
 
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
-
 VALUES(seq_board.nextval,'오늘 큰 사거리에 있는 5백년 된 나무가 번개를 맡고 부러졌네요 ㅜㅜ 뭔가 마을을 지켜주는 수호신 같은 존재였는데 부러지니까 괜히 마음이 안 좋습니다 ㅜㅜ',
 '500년 된 나무 ... ',6,to_date('22-08-16','yy-mm-dd'),8);
 
@@ -520,8 +410,6 @@ VALUES (1, 100, '뿡빵이', TO_DATE('21-04-21','YY-MM-DD'), '인기게시판', '댓글 내
        (8, 800, 'kamel94', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
        (9, 900, '동동', TO_DATE('21-01-01','YY-MM-DD'), '질문게시판', '댓글 내용입니다.'),
        (10, 1000, '오쪼꼬미니미', TO_DATE('21-01-01','YY-MM-DD'), '정보공유', '댓글 내용입니다.');
-
--- 동네생활 대댓글
 COMMIT;
 
 
@@ -546,10 +434,6 @@ VALUES (1, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21',
        (9, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD')),
        (10, 1, '답변 작성자 닉네임', 100, '답변 내용입니다.', TO_DATE('21-04-21','YY-MM-DD'));
 
--- 동네생활 게시판 좋아요
-
-
--- 동네생활 댓글 좋아요
 COMMIT;
 
 -- COMM_CMT_LIKE 테이블
@@ -569,9 +453,6 @@ VALUES (1, 100, 1, 1),
        (8, 800, 1, 1),
        (9, 900, 1, 1),
        (10, 1000, 1, 1);
-
-
--- 동네생활 대댓글 좋아요
 COMMIT;
 
 -- CMT_REPLY_LIKE 테이블
@@ -590,7 +471,6 @@ VALUES (1, 1, 1),
        (8, 1, 1),
        (9, 1, 1),
        (10, 1, 1);
-
 COMMIT;
 
 
@@ -632,7 +512,6 @@ CREATE SEQUENCE seq_item_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 -- 이걸로 속성값 수정 먼저 진행해주세요
 ALTER TABLE item_image MODIFY ( item_image_url VARCHAR2(4000));
 
-
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
@@ -655,6 +534,7 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/commo
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
 
+
 -- 접이식 헤어드라이기
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
@@ -663,7 +543,7 @@ VALUES (
     , 1
     , '다이슨 수퍼소닉 헤어드라이어 블루 블러쉬 판매합니다.'
      , '미개봉 새제품 정품입니다. 직거래는 신장동에서 가능합니다.'
-    , SYSDATE
+    , '2024-03-01'
     , 100000
     , '중동'
     );
@@ -683,7 +563,7 @@ VALUES (
     , 2
     , '오븐 토스터'
     , '교체를 위해 내놓습니다. 혼자사는 분이라면 충분히 사용할 만한 크기입니다.'
-    , SYSDATE
+    , '2024-02-28'
     , 40000  
     , '강남역'
     );
@@ -703,7 +583,7 @@ VALUES (
     , 2
     , '와인 글라스'
     , '에노테카의 와인글라스입니다. 큰 사이즈로 깨끗한 상태입니다. 눈에 띄는 흠집이나 얼룩없음.'
-    , SYSDATE
+    , '2024-02-16'
     , 30000  
     , '노원역'
     );
@@ -723,7 +603,7 @@ VALUES (
     , 3
     , '여성의류 캘빈클라인 반팔티 팝니다.'
     , '3회 착용했습니다. 거의 새상품입니다. 직거래 원합니다 쿨거래 가능'
-    , SYSDATE
+    , '2024-02-04'
     , 25000   
     , '마포역'
     );
@@ -745,7 +625,7 @@ VALUES (
     , 3
     , '까스텔바작 골프의류 니트조끼 사이즈95'
     , '까스텔바작 골프의류 니트조끼 사이즈95 몇 번 안입었습니다.'
-    , SYSDATE
+    , '2024-02-01'
     , 35000
     , '수성구청'
     ); 
@@ -757,7 +637,8 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/comm
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832');
 
---4. 메리다 어린이 자전거
+
+-- 메리다 어린이 자전거
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
     SEQ_BOARD.NEXTVAL
@@ -765,7 +646,7 @@ VALUES (
     , 4
     , '메리다 어린이 자전거'
     , '주니어 자전거입니다. 사용감 있습니다. 직접오셔야해요'
-    , SYSDATE
+    , '2024-01-30'
     , 70000
     , '좌동'
     );   
@@ -779,6 +660,7 @@ VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/commo
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832' );
 
+
 -- 아동 사운드펜
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
@@ -787,7 +669,7 @@ VALUES (
     , 4
     , '아동 사운드펜 팝니다.'
     , '해요펜과 함께 볼 수 있는 영어책입니다. 잘 안봐서 책은 깨끗해요~'
-    , SYSDATE
+    , TO_DATE('2023-02-23','YY-MM-DD')
     , 15000
     , '중동 스타벅스'
     );     
@@ -812,7 +694,7 @@ VALUES
     , 1
     , '모니터 24인치 커브드 AK'
     , '사무실에서 사용했습니다 집기처분 중입니다. 커브드로 보기좋아요'
-    , SYSDATE
+    , TO_DATE('2023-02-21','YY-MM-DD')
     , 20000
     , '중동'
     );
@@ -833,7 +715,7 @@ VALUES
     , 5
     , 'RITE WAY 주니어 자전거'
     , '18 인치 주니어 자전거입니다. 1년간의 사용이므로 상태는 좋습니다만, 약간의 스크래치라면 신경이 쓰이지 않는 분의 연락을 기다리고 있습니다.'
-    , SYSDATE
+    , TO_DATE('2023-01-30','YY-MM-DD')
     , 1000000
     , '강남역'
     );
@@ -860,7 +742,7 @@ VALUES
     , 1
     , 'iPhone 8 Gold 64GB'
     , '심 잠금 해제 된 아이폰입니다. 배터리 최대 용량: 95% .'
-    , SYSDATE
+    , TO_DATE('2023-01-21','YY-MM-DD')
     , 350000
     , '강남역'
     );
@@ -881,10 +763,11 @@ VALUES (
     , 5
     , '나이키 스포츠 크로스백'
     , '컨디션 굿굿굿/보시는것처럼 디자인이 훌륭하여 스포츠,여행,책가방 다양하게 매고 다닐 수 있습니다. 많은 문의 부탁드려요'
-    , SYSDATE
+    , TO_DATE('2022-12-13','YY-MM-DD')
     , 48000    
     , '아라일동'
     );  
+    
 -- 나이키 스포츠 크로스백 이미지
 INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_BOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/dab501b13199011884360972c1c83a6359920d1183ec11858b692996b8fae9ba.jpg?q=95&s=1440x1440&t=inside&f=webp');
@@ -904,7 +787,7 @@ VALUES (
     , 6
     , '(새제품)건강식품 홍삼/산삼/인삼/벌꿀 판매'
     , '모두 새상품이지만 중고거래 특성상 반품/환불X, 낱개&일괄 구매가능/네고가능'
-    , SYSDATE
+    , TO_DATE('2022-08-21','YY-MM-DD')
     , 10000
     , '중동'
     );   
@@ -926,7 +809,7 @@ VALUES (
     , 7
     , '취미 게임 할리갈리 보드게임'
     , '유아보드게임으로도 좋고 친구들이랑 술 마시면서 게임하기도 좋은 순발력 보드게임!'
-    , SYSDATE
+    , TO_DATE('22-07-25','YY-MM-DD')
     , 8000
     , '망월동'
     );
@@ -949,7 +832,7 @@ VALUES (
     , 8
     , '안유진 모켓샵 삽니다'
     , '10000~15000까지 사고 택배비 포함한 가격입니다. 실물인증이나 빛비춤사진 꼭 보내주셔야합니다.직거래도 가능해요~'
-    , SYSDATE
+    , TO_DATE('22-04-20','YY-MM-DD')
     , 15000
     , '연산제8동'
     );
@@ -971,7 +854,7 @@ VALUES (
     , 8
     , '10만원권 신세계상품권 삽니다.'
     , '9.4에 50장까지 사봅니다~~'
-    , SYSDATE
+    , TO_DATE('2021-04-21','YY-MM-DD')
     , 94000
     , '연산제8동'
     );
