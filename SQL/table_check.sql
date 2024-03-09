@@ -26,7 +26,7 @@ SELECT * FROM chat;
 SELECT * FROM chat_board;
 
 -- 당근페이
-SELECT * FROM danngn_pay;
+SELECT * FROM DANGGEUN_pay;
 
 
 -- 결제
@@ -37,16 +37,16 @@ SELECT * FROM notice_board;
 
 
 -- 판매 물품 카테고리
-
+SELECT * FROM ITEM_CTGR;
 
 -- 중고거래 게시판
-
+SELECT * FROM TRADE_BOARD;
 
 -- 상품 이미지
-
+SELECT * FROM item_image;
 
 -- 중고거래 게시판 좋아요
-
+SELECT * FROM trade_board_like;
 
 -- 동네생활 카테고리
 
