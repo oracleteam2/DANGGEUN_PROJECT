@@ -20,8 +20,8 @@ CREATE OR REPLACE PROCEDURE up_selTradeBoard
 )
 AS
     vtrade_num NUMBER;
+    PREVIOUS_RECORD VARCHAR2(4000);
 BEGIN
-    
     SELECT trade_num INTO vtrade_num
     FROM trade_board
     WHERE trade_num = ptrade_num;
@@ -32,7 +32,10 @@ BEGIN
         FOR rec IN (
             SELECT  
                 tb.trade_num
-                ,LISTAGG(ii.item_image_url, ', ') WITHIN GROUP (ORDER BY ii.item_image_url) item_images
+                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url) 
+                  FROM item_image ii 
+                  WHERE ii.trade_num = tb.trade_num
+                  GROUP BY ii.trade_num) item_images
                 ,m.member_profile member_profile_image
                 ,m.member_nickname nickname
                 ,SUBSTR(m.member_address, INSTR(m.member_address, '½Ã ') + 1) address
@@ -64,8 +67,9 @@ BEGIN
                 , tb.trade_content
         )
         LOOP
+            IF PREVIOUS_RECORD IS NULL OR PREVIOUS_RECORD != rec.trade_num THEN
                 DBMS_OUTPUT.PUT_LINE('Item Image:');
-                DBMS_OUTPUT.PUT_LINE(rec.item_images);
+                DBMS_OUTPUT.PUT(rec.item_images);
                 DBMS_OUTPUT.PUT_LINE(' ');
                 DBMS_OUTPUT.PUT_LINE('Member Profile Image: ' || rec.member_profile_image);
                 DBMS_OUTPUT.PUT_LINE('Nickname: ' || rec.nickname);
@@ -78,6 +82,7 @@ BEGIN
                 DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
                 DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
                 DBMS_OUTPUT.PUT_LINE('Like Count: ' || rec.like_count);
+            END IF;
         END LOOP;
     END IF;
 EXCEPTION
