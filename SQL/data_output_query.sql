@@ -14,46 +14,6 @@
 
 
 -- 중고거래 게시판 상세 조회
---테이블명 거래게시판 좋아요 : trade_board_like
--- item_image이미지 사진 테이블, trade_board 거래게시판 테이블, member 멤버테이블
-
---필요한 거 
---item_image : item_image_url
---member : member_profile, member_nickname, member_manner_points
---trade_board : trade_title, upload_date, trade_content, trade_location, trade_price
---ITEM_CTGR : item_ctgr_name, 
---trade_board_like : 좋아요수
-
-SELECT  trade_num, item_image, member_profile_image, nickname, address, manner_point, title, category_name
-, CASE 
-    WHEN time < 1 THEN time * 24 * 60 || '분 전'
-    ELSE TRUNC(time) || '일 전'
-  END AS time
-, content, COUNT(like_member) AS like_count
-FROM(
-    SELECT tb.trade_num trade_num
-    , ii.item_image_url item_image
-    , m.member_profile member_profile_image
-    , m.member_nickname nickname
-    , SUBSTR(m.member_address, INSTR(m.member_address, '시 ')+1) address
-    , m.member_manner_points manner_point
-    , tb.trade_title title
-    , ic.item_ctgr_name category_name
-    , SYSDATE - TO_DATE(tb.upload_date) time
-    , tb.trade_content content
-    , tb.trade_location location
-    , tbl.member_num like_member
-    FROM item_image ii JOIN trade_board tb ON ii.trade_num = tb.trade_num
-                       JOIN member m ON m.member_num = tb.member_num
-                       JOIN item_ctgr ic ON ic.item_ctgr_num = tb.selitem_ctgr_num
-                       LEFT JOIN trade_board_like tbl ON tbl.trade_num = tb.trade_num
-    
-)
-WHERE trade_num = 2
-GROUP BY trade_num, item_image, member_profile_image, nickname, address
-,manner_point, title,category_name, time, content
-ORDER BY trade_num;
-
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
     ptrade_num NUMBER
