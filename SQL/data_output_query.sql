@@ -18,9 +18,8 @@ CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
     ptrade_num NUMBER
 )
-AS
+IS
     vtrade_num NUMBER;
-    PREVIOUS_RECORD VARCHAR2(4000);
 BEGIN
     SELECT trade_num INTO vtrade_num
     FROM trade_board
@@ -47,6 +46,7 @@ BEGIN
                     ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || '일 전'
                 END time
                 ,tb.trade_content content
+                ,tb.trade_price price
                 ,COUNT(DISTINCT tbl.member_num) like_count
             FROM 
                 item_image ii 
@@ -57,7 +57,7 @@ BEGIN
             WHERE 
                 tb.trade_num = ptrade_num
             GROUP BY 
-                tb.trade_num, m.member_profile, m.member_nickname
+                tb.trade_num, m.member_profile, m.member_nickname, tb.trade_price
                 ,SUBSTR(m.member_address, INSTR(m.member_address, '시 ') + 1) 
                 ,m.member_manner_points, tb.trade_title, ic.item_ctgr_name
                 , CASE 
@@ -67,22 +67,21 @@ BEGIN
                 , tb.trade_content
         )
         LOOP
-            IF PREVIOUS_RECORD IS NULL OR PREVIOUS_RECORD != rec.trade_num THEN
-                DBMS_OUTPUT.PUT_LINE('Item Image:');
-                DBMS_OUTPUT.PUT(rec.item_images);
-                DBMS_OUTPUT.PUT_LINE(' ');
-                DBMS_OUTPUT.PUT_LINE('Member Profile Image: ' || rec.member_profile_image);
-                DBMS_OUTPUT.PUT_LINE('Nickname: ' || rec.nickname);
-                DBMS_OUTPUT.PUT_LINE('Address: ' || rec.address);
-                DBMS_OUTPUT.PUT_LINE('Manner Point: ' || rec.manner_point);
-                DBMS_OUTPUT.PUT_LINE(' ');
-                DBMS_OUTPUT.PUT_LINE('Title: ' || rec.title);
-                DBMS_OUTPUT.PUT_LINE('Content: ' || rec.content);
-                DBMS_OUTPUT.PUT_LINE(' ');
-                DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
-                DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
-                DBMS_OUTPUT.PUT_LINE('Like Count: ' || rec.like_count);
-            END IF;
+            DBMS_OUTPUT.PUT_LINE('Item Image:');
+            DBMS_OUTPUT.PUT(rec.item_images);
+            DBMS_OUTPUT.PUT_LINE(' ');
+            DBMS_OUTPUT.PUT_LINE('Member Profile Image: ' || rec.member_profile_image);
+            DBMS_OUTPUT.PUT_LINE('Nickname: ' || rec.nickname);
+            DBMS_OUTPUT.PUT_LINE('Address: ' || rec.address);
+            DBMS_OUTPUT.PUT_LINE('Manner Point: ' || rec.manner_point);
+            DBMS_OUTPUT.PUT_LINE(' ');
+            DBMS_OUTPUT.PUT_LINE('Title: ' || rec.title);
+            DBMS_OUTPUT.PUT_LINE('Content: ' || rec.content);
+            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || '원');
+            DBMS_OUTPUT.PUT_LINE(' ');
+            DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
+            DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
+            DBMS_OUTPUT.PUT_LINE('Like Count: ' || rec.like_count);
         END LOOP;
     END IF;
 EXCEPTION
@@ -90,6 +89,55 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
+END;
+
+-- 게시판 수정 프로시저 
+CREATE OR REPLACE PROCEDURE up_updTradeBoard(
+    ptrade_num IN NUMBER
+    ,pmember_num IN NUMBER
+    ,pselitem_ctgr_num IN NUMBER DEFAULT NULL
+    ,ptrade_title IN trade_board.trade_title%TYPE := NULL
+    ,ptrade_content trade_board.trade_content%TYPE := NULL
+    ,ptrade_price IN NUMBER DEFAULT NULL
+    ,ptrade_location trade_board.trade_location%TYPE := NULL
+    ,pupload_date IN DATE DEFAULT TO_DATE(SYSDATE, 'YY-MM-DD')
+)
+IS
+    vmember_num trade_board.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
+    SELECT member_num INTO vmember_num
+    FROM trade_board
+    WHERE trade_num = ptrade_num;
+
+    -- 매개변수로 받은 member_num과 trade_board 테이블에서 가져온 member_num이 다른 경우 예외를 처리합니다.
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
+
+    UPDATE trade_board
+    SET trade_title = NVL(ptrade_title, trade_title)
+        ,trade_content = NVL(ptrade_content, trade_content)
+        ,trade_price = NVL(ptrade_price, trade_price)
+        ,trade_location = NVL(ptrade_location, trade_location)
+        ,upload_date = NVL(pupload_date, upload_date)
+    WHERE trade_num = ptrade_num;
+    
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Trade details updated successfully.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred');
+END;
+
+BEGIN
+up_updtradeboard(1, pmember_num => 2
+,ptrade_title => '제목 수정2', pupload_date => '24/03/08');
 END;
 
 EXEC up_selTradeBoard(1);

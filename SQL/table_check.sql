@@ -39,6 +39,7 @@ SELECT * FROM notice_board;
 -- 판매 물품 카테고리
 SELECT * FROM ITEM_CTGR;
 
+
 -- 중고거래 게시판
 SELECT * FROM TRADE_BOARD;
 
@@ -46,7 +47,8 @@ SELECT * FROM TRADE_BOARD;
 SELECT * FROM item_image;
 
 -- 중고거래 게시판 좋아요
-SELECT * FROM trade_board_like;
+SELECT * FROM trade_board_like
+ORDER BY trade_like_num;
 
 -- 동네생활 카테고리
 
