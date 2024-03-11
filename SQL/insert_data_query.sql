@@ -640,12 +640,12 @@ COMMIT;
 -- trade_num, item_image_num (PK) ,item_image_url
 
 -- TRADE_BOARD INSERT 하나 하고 ITEM_IMAGE INSERT를 순차적으로 진행하시면 됩니다.
-
+--
 -- 시퀀스 생성
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
-
+--
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
