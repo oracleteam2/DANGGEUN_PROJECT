@@ -72,9 +72,6 @@ INSERT INTO admin
 VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자3', 'admin9753', '84651321');
 
 
-
-
-
 -- DANNGN_PAY 테이블, 회원 넘버 ( PK ), 계좌번호, 은행이름, 잔액
 INSERT INTO DANGGEUN_pay
 VALUES(1, '91098112453', 'KB국민은행', 1350000);
@@ -133,8 +130,6 @@ INSERT INTO chat_board(CHAT_ROOM_NUM, CHAT_NUM, CHAT_CONTENT, CHAT_TIME )
 VALUES (1,SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '첫채팅', SYSDATE);
 SELECT *
 FROM chat_board;
-
-DESC chat_board;
 
 -- 신고
 CREATE SEQUENCE SEQ_REPORT_ID
@@ -220,9 +215,6 @@ INSERT INTO comm_ctgr VALUES( 5,'분실');
 INSERT INTO comm_ctgr VALUES( 6,'사건사고');
 
 COMMIT;
-
-
-SELECT * FROM comm_ctgr;
 
 -- 동네생활 게시판
 -- COMM_BOARD 테이블 
@@ -500,8 +492,6 @@ CREATE SEQUENCE SEQ_COMM_CMT_LIKE
 START WITH 1
 INCREMENT BY 1;
 
-SELECT * FROM comm_cmt_like;
-
 --1
 INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
 VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 1, 2);
@@ -659,7 +649,7 @@ CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_TBOARD.NEXTVAL
+    1
     , 1
     , 1
     , '에어팟맥스 새상품'
@@ -669,14 +659,14 @@ VALUES (
     , '중동'
     );   
 -- 에어팟맥스 새상품
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 1, 1,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 2, 1,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 3, 1, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340', 1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 4, 1, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340', 1);
 
 
 -- 접이식 헤어드라이기
@@ -911,7 +901,7 @@ INCREMENT BY 1
 START WITH 1 
 NOCYCLE NOCACHE;
 
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 1);
+INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( 1, 1, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 2);
