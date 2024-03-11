@@ -76,6 +76,7 @@ WHERE trade_like_num = 1;
 
 -- 동네생활 대댓글 좋아요
 
+dkdkdkdkdkdkdkdkd
 
 
 
