@@ -1,6 +1,6 @@
 -- SCOTT
 -- 각 테이블 조회
-
+--
 -- 회원
 SELECT * FROM member;
 
