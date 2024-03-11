@@ -1,4 +1,5 @@
 -- 모든 관리자 정보 조회
+
 CREATE OR REPLACE PROCEDURE up_selAdminAll
 IS
     vadmin_nickname admin.admin_nickname%TYPE;
