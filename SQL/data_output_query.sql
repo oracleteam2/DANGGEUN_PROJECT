@@ -106,9 +106,67 @@ EXEC up_selTradeBoard(1);
 
 
 -- 채팅방 목록 조회
+CREATE OR REPLACE PROCEDURE seek_list
+(
+    ptrade_num chat.trade_num%type
+)
+is
+    vtrade_num chat.trade_num%type;
+    vmember_num2 chat.member_num2%type;
+    vmember_nickname member.member_nickname%type;
+    vtrade_title trade_board.trade_title%type;
+begin 
+for slc in(
+    select c.trade_num, member_num2, member_nickname, trade_title 
+    from chat c join member m on c.member_num2 = m.member_num
+                join trade_board t on c.trade_num = t.trade_num
+    where c.trade_num= ptrade_num)
+    
+    loop
+    
+    DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname);    
+   
+    end loop;
+end;
+
 
 
 -- 채팅 내용 조회
 
+
+
+CREATE OR REPLACE PROCEDURE seek_chat_content
+(
+    ptrade_num chat.trade_num%type
+)
+is
+--    vchat_content chat_board.chat_content%type;
+--    vmember_num2 chat.member_num2%type;
+--    vmember_nickname member.member_nickname%type;
+    vtrade_title trade_board.trade_title%type;
+begin 
+    select trade_title into vtrade_title
+    from trade_board
+    where trade_num = ptrade_num;
+    
+ DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title);
+
+for vcc in(
+ select chat_content , member_num2, member_nickname, trade_title, b.chat_time
+    from chat c join member m on c.member_num2 = m.member_num
+                join chat_board  b on c.trade_num = b.trade_num
+                join trade_board t on c.member_num2 = t.member_num
+    where c.trade_num=ptrade_num
+
+)
+
+ 
+  loop  
+  
+  
+    DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content  ||'   '||   '채팅 상대방 : ' ||  vcc.member_nickname || '   ' || '채팅 시간 : ' || vcc.chat_time);    
+   end loop;
+
+end;
 
 -- 결제 페이지

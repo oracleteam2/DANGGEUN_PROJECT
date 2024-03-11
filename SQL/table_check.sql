@@ -1,6 +1,5 @@
 -- SCOTT
 -- 각 테이블 조회
-----
 -- 회원
 SELECT * FROM member;
 
@@ -77,6 +76,7 @@ WHERE trade_like_num = 1;
 
 -- 동네생활 대댓글 좋아요
 
+dkdkdkdkdkdkdkdkd
 
 
 
