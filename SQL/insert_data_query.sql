@@ -72,10 +72,14 @@ INSERT INTO admin
 VALUES (SEQ_ADMIN_ID.NEXTVAL, '관리자3', 'admin9753', '84651321');
 
 
+<<<<<<< HEAD
 
 
 
 -- DANGGEUN_pay 테이블, 회원 넘버 ( PK ), 계좌번호, 은행이름, 잔액
+=======
+-- DANNGN_PAY 테이블, 회원 넘버 ( PK ), 계좌번호, 은행이름, 잔액
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 INSERT INTO DANGGEUN_pay
 VALUES(1, '91098112453', 'KB국민은행', 1350000);
 INSERT INTO DANGGEUN_pay
@@ -133,8 +137,11 @@ INSERT INTO chat_board(CHAT_ROOM_NUM, CHAT_NUM, CHAT_CONTENT, CHAT_TIME )
 VALUES (1,SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '첫채팅', SYSDATE);
 SELECT *
 FROM chat_board;
+<<<<<<< HEAD
 
 DESC chat_board;
+=======
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 
 -- 신고
 CREATE SEQUENCE SEQ_REPORT_ID
@@ -221,9 +228,12 @@ INSERT INTO comm_ctgr VALUES( 6,'사건사고');
 
 COMMIT;
 
+<<<<<<< HEAD
 
 SELECT * FROM comm_ctgr;
 
+=======
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 -- 동네생활 게시판
 -- COMM_BOARD 테이블 
 -- COMM_BOARD_NUM ( PK ), COMM_CTGR_NUM, MEMBER_NUM, COMM_TITLE, COMM_CONTENT, COMM_UPLOAD_DATE
@@ -500,8 +510,11 @@ CREATE SEQUENCE SEQ_COMM_CMT_LIKE
 START WITH 1
 INCREMENT BY 1;
 
+<<<<<<< HEAD
 SELECT * FROM comm_cmt_like;
 
+=======
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 --1
 INSERT INTO COMM_CMT_LIKE (COMM_CMT_LIKE, COMM_BOARD_NUM, MEMBER_NUM, CMT_NUM)
 VALUES (SEQ_COMM_CMT_LIKE.NEXTVAL, 1, 1, 2);
@@ -650,15 +663,20 @@ COMMIT;
 -- trade_num, item_image_num (PK) ,item_image_url
 
 -- TRADE_BOARD INSERT 하나 하고 ITEM_IMAGE INSERT를 순차적으로 진행하시면 됩니다.
-
+--
 -- 시퀀스 생성
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
+--
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
+<<<<<<< HEAD
     SEQ_TBOARD.NEXTVAL
+=======
+    1
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
     , 1
     , 1
     , '에어팟맥스 새상품'
@@ -668,6 +686,7 @@ VALUES (
     , '중동'
     );   
 -- 에어팟맥스 새상품
+<<<<<<< HEAD
 INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
 INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
@@ -676,6 +695,16 @@ INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340');
 INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
 VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
+=======
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 1, 1,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 2, 1,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 3, 1, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340', 1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 4, 1, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340', 1);
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 
 
 -- 접이식 헤어드라이기
@@ -910,7 +939,7 @@ INCREMENT BY 1
 START WITH 1 
 NOCYCLE NOCACHE;
 
-INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 1);
+INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( 1, 1, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 2);

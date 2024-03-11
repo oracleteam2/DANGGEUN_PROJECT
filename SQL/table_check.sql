@@ -1,6 +1,5 @@
 -- SCOTT
 -- 각 테이블 조회
-
 -- 회원
 SELECT * FROM member;
 
@@ -22,7 +21,6 @@ SELECT * FROM chat;
 
 
 -- 채팅 내용
-
 SELECT * FROM chat_board;
 
 -- 당근페이
@@ -38,6 +36,7 @@ SELECT * FROM notice_board;
 
 -- 판매 물품 카테고리
 SELECT * FROM ITEM_CTGR;
+<<<<<<< HEAD
 
 -- 중고거래 게시판
 SELECT * FROM TRADE_BOARD;
@@ -48,6 +47,28 @@ SELECT * FROM item_image;
 -- 중고거래 게시판 좋아요
 SELECT * FROM trade_board_like;
 
+=======
+
+
+-- 중고거래 게시판
+SELECT * FROM TRADE_BOARD
+ORDER BY trade_num;
+DELETE trade_board
+WHERE trade_num = 12;
+
+-- 상품 이미지
+SELECT * FROM item_image
+ORDER BY trade_num, item_image_num;
+ALTER TABLE item_image ADD member_num NUMBER;
+ROLLBACK;
+
+-- 중고거래 게시판 좋아요
+SELECT * FROM trade_board_like
+ORDER BY trade_like_num;
+
+DELETE trade_board_like
+WHERE trade_like_num = 1;
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 -- 동네생활 카테고리
 SELECT * FROM
 
@@ -68,7 +89,12 @@ SELECT * FROM comm_cmt_like;
 SELECT * FROM comm_cmt_like;
 
 -- 동네생활 대댓글 좋아요
+<<<<<<< HEAD
 SELECT * FROM CMT_REPLY_LIKE;
+=======
+
+dkdkdkdkdkdkdkdkd
+>>>>>>> 1be24fee4c738d4ee927daa68b494c0e27f70f08
 
 
 
