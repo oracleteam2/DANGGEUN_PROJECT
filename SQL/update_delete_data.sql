@@ -242,29 +242,28 @@ END;
 -- 중고거래 게시판 좋아요
 -- 이미 해당게시판에 해당회원이 좋아요를 누르면 행 삭제 없으면 삽입
 CREATE OR REPLACE TRIGGER ut_insTradeBoardLike
-BEFORE 
-INSERT ON trade_board_like
+BEFORE INSERT ON trade_board_like
 FOR EACH ROW
 DECLARE
-    v_count NUMBER;
+    vcount NUMBER;
 BEGIN
     SELECT COUNT(*)
-    INTO v_count
+    INTO vcount
     FROM trade_board_like
     WHERE trade_num = :NEW.trade_num AND member_num = :NEW.member_num;
 
-    IF v_count > 0 THEN
-        DELETE FROM trade_board_like WHERE trade_num = :NEW.trade_num AND member_num = :NEW.member_num;
-    END IF;
-    
-    IF v_count = 0 AND :OLD.trade_num != :NEW.trade_num AND :OLD.member_num != :NEW.member_num THEN
-        NULL;
+    IF vcount > 0 THEN
+        DELETE FROM trade_board_like
+        WHERE trade_num = :NEW.trade_num AND member_num = :NEW.member_num;
+        
+        :NEW.trade_num := NULL;
+        :NEW.member_num := NULL;
+        
     END IF;
 END;
 
--- 좋아요 눌렀을때 거래게시판 상세조회에 반영되는 트리거
 INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
-VALUES(17, 1, 1);
+VALUES(21, 7, 2);
 
 DELETE trade_board_like
 where trade_like_num = 1;

@@ -51,7 +51,9 @@ ALTER TABLE item_image ADD member_num NUMBER;
 -- 중고거래 게시판 좋아요
 SELECT * FROM trade_board_like
 ORDER BY trade_like_num;
-
+ROLLBACK;
+DELETE trade_board_like
+WHERE trade_like_num = 19;
 -- 동네생활 카테고리
 
 
