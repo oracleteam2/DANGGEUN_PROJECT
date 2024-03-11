@@ -22,7 +22,6 @@ SELECT * FROM chat;
 
 
 -- 채팅 내용
-
 SELECT * FROM chat_board;
 
 -- 당근페이
@@ -44,7 +43,10 @@ SELECT * FROM ITEM_CTGR;
 SELECT * FROM TRADE_BOARD;
 
 -- 상품 이미지
-SELECT * FROM item_image;
+SELECT * FROM item_image
+ORDER BY trade_num, item_image_num;
+ALTER TABLE item_image ADD member_num NUMBER;
+
 
 -- 중고거래 게시판 좋아요
 SELECT * FROM trade_board_like

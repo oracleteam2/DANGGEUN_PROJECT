@@ -46,7 +46,7 @@ BEGIN
                     ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ÀÏ Àü'
                 END time
                 ,tb.trade_content content
-                ,tb.trade_price price
+                ,TO_CHAR(tb.trade_price, '999,999,999') price
                 ,COUNT(DISTINCT tbl.member_num) like_count
             FROM 
                 item_image ii 

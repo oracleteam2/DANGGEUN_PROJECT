@@ -46,7 +46,7 @@ WHERE item_ctgr_num = 3;
 COMMIT;
 
 -- 중고거래 게시판
--- 중고거래 테이블 수정시 상세조회 화면 수정되는 프로시저
+-- 중고거래 데이터 수정
 CREATE OR REPLACE PROCEDURE up_updTradeBoard(
     ptrade_num IN NUMBER
     ,pmember_num IN NUMBER
@@ -89,70 +89,155 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred');
 END;
 
+-- 수정문
 BEGIN
 up_updtradeboard(1, pmember_num => 1
-,ptrade_title => '에어팟 맥스 새상품', pupload_date => '24/03/08');
+,ptrade_title => '에어팟 맥스 새상품', pupload_date => '24/03/08', ptrade_price => 200000);
 END;
 
--- 상품 이미지
-CREATE OR REPLACE TRIGGER utItemImage
-BEFORE INSERT OR UPDATE OR DELETE ON item_image
+
+-- 중고거래 데이터 삭제
+-- 중고거래 테이블이 삭제되면 아이템이미지 테이블도 삭제되는 트리거
+CREATE OR REPLACE TRIGGER ut_delItemImage
+BEFORE
+DELETE ON trade_board
+FOR EACH ROW
+BEGIN
+    DELETE FROM item_image
+    WHERE trade_num = :OLD.trade_num;
+END;
+
+-- 중고거래 게시판 삭제되면 해당 좋아요 테이블도 삭제되는 트리거
+CREATE OR REPLACE TRIGGER ut_delTradeBoardLike
+BEFORE
+DELETE ON trade_board
 FOR EACH ROW
 DECLARE
-    vmember_num trade_board.member_num%TYPE;
 BEGIN
-    -- item_image 테이블에 새로운 데이터가 삽입될 때
-    IF INSERTING THEN
-        -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
-        SELECT member_num INTO vmember_num
-        FROM trade_board
-        WHERE trade_num = :NEW.trade_num;
-
-        -- 가져온 member_num 값과 현재 사용자의 member_num 값을 비교하여 다른 경우에는 오류를 발생시킵니다.
-        IF vmember_num != :NEW.trade_num THEN
-            RAISE_APPLICATION_ERROR(-20025, '해당 trade_num에 대한 수정 권한이 없습니다.');
-        END IF;
-    END IF;
-
-    -- item_image 테이블의 데이터가 수정될 때
-    IF UPDATING THEN
-        -- 변경된 데이터가 있는지 확인하고, 변경된 trade_num에 대한 member_num 값을 가져옵니다.
-        IF :OLD.trade_num != :NEW.trade_num THEN
-            -- 새로운 trade_num에 대한 member_num 값을 가져옵니다.
-            SELECT member_num INTO vmember_num
-            FROM trade_board
-            WHERE trade_num = :NEW.trade_num;
-
-            -- 가져온 member_num 값과 현재 사용자의 member_num 값을 비교하여 다른 경우에는 오류를 발생시킵니다.
-            IF vmember_num != :NEW.trade_num THEN
-                RAISE_APPLICATION_ERROR(-20025, '해당 trade_num에 대한 수정 권한이 없습니다.');
-            END IF;
-        END IF;
-    END IF;
-
-    -- item_image 테이블의 데이터가 삭제될 때
-    IF DELETING THEN
-        -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
-        SELECT member_num INTO vmember_num
-        FROM trade_board
-        WHERE trade_num = :OLD.trade_num;
-
-        -- 가져온 member_num 값과 현재 사용자의 member_num 값을 비교하여 다른 경우에는 오류를 발생시킵니다.
-        IF vmember_num != :OLD.trade_num THEN
-            RAISE_APPLICATION_ERROR(-20025, '해당 trade_num에 대한 수정 권한이 없습니다.');
-        END IF;
-    END IF;
+    DELETE FROM trade_board_like
+    WHERE trade_num = :OLD.trade_num;
 END;
 
-INSERT INTO item_image (trade_num, item_image_num, item_image_url) 
-VALUES (1, seq_image.NEXTVAL, '새로운 이미지 URL');
+-- 거래게시판 삭제
+CREATE OR REPLACE PROCEDURE up_delTradeBoard(
+    ptrade_num IN NUMBER
+    ,pmember_num IN NUMBER
+)
+IS
+    vmember_num trade_board.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
+    SELECT member_num INTO vmember_num
+    FROM trade_board
+    WHERE trade_num = ptrade_num;
 
-UPDATE item_image
-SET item_image_url = '수정된 이미지 URL'
-WHERE item_image_num = 40;
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
 
-DELETE item_image
-WHERE item_image_num = 40;
+    DELETE trade_board
+    WHERE trade_num = ptrade_num;
+        
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('삭제 완료');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+END;
+
+BEGIN
+    up_delTradeBoard(ptrade_num => 1, pmember_num => 1);
+END;
+
+CREATE OR REPLACE TRIGGER delete_related_data_trigger
+BEFORE DELETE ON trade_board
+FOR EACH ROW
+BEGIN
+    -- trade_board_like 테이블에서 해당 trade_num에 대응하는 데이터 삭제
+    DELETE FROM trade_board_like
+    WHERE trade_num = :OLD.trade_num;
+
+    -- item_image 테이블에서 해당 trade_num에 대응하는 데이터 삭제
+    DELETE FROM item_image
+    WHERE trade_num = :OLD.trade_num;
+END;
+
+
+-- 상품 이미지
+-- 이미지 수정
+CREATE OR REPLACE PROCEDURE up_updItemImage
+(
+    ptrade_num IN NUMBER
+    ,pitem_image_num IN NUMBER
+    ,pmember_num IN NUMBER
+    ,pitem_image_url item_image.item_image_url%TYPE := NULL
+)
+IS
+    vmember_num item_image.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    SELECT member_num INTO vmember_num
+    FROM trade_board
+    WHERE trade_num = ptrade_num;
+    
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
+    
+    UPDATE item_image
+    SET item_image_url = NVL(pitem_image_url, item_image_url)
+    WHERE item_image_num = pitem_image_num;
+    
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('수정 완료');
+EXCEPTION
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred');
+END;
+
+BEGIN
+    up_upditemimage(ptrade_num => 1, pitem_image_num => 1, pmember_num => 1, pitem_image_url => '신규이미지url');
+END;
+
+-- 이미지 삭제
+CREATE OR REPLACE PROCEDURE up_delItemImage
+(
+    ptrade_num IN NUMBER
+    ,pitem_image_num IN NUMBER
+    ,pmember_num IN NUMBER
+)
+IS
+    vmember_num item_image.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    SELECT member_num INTO vmember_num
+    FROM trade_board
+    WHERE trade_num = ptrade_num;
+    
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
+    
+    DELETE item_image
+    WHERE item_image_num = pitem_image_num;
+    
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('삭제 완료');
+EXCEPTION
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred');
+END;
+
+BEGIN
+    up_delItemImage(ptrade_num => 1, pitem_image_num => 1, pmember_num => 1);
+END;
 
 -- 중고거래 게시판 좋아요
 -- 이미 해당게시판에 해당회원이 좋아요를 누르면 행 삭제 없으면 삽입
@@ -178,17 +263,8 @@ BEGIN
 END;
 
 -- 좋아요 눌렀을때 거래게시판 상세조회에 반영되는 트리거
-CREATE OR REPLACE TRIGGER ut_updSelTradeBoard
-AFTER INSERT OR DELETE OR UPDATE ON trade_board_like
-FOR EACH ROW
-BEGIN
-    IF INSERTING OR DELETING OR UPDATING THEN
-        up_selTradeBoard(:NEW.trade_num);
-    END IF;
-END;
-
 INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
-VALUES(16, 7, 3);
+VALUES(17, 1, 1);
 
 DELETE trade_board_like
 where trade_like_num = 1;
