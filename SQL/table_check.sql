@@ -40,20 +40,23 @@ SELECT * FROM ITEM_CTGR;
 
 
 -- 중고거래 게시판
-SELECT * FROM TRADE_BOARD;
+SELECT * FROM TRADE_BOARD
+ORDER BY trade_num;
+DELETE trade_board
+WHERE trade_num = 12;
 
 -- 상품 이미지
 SELECT * FROM item_image
 ORDER BY trade_num, item_image_num;
 ALTER TABLE item_image ADD member_num NUMBER;
-
+ROLLBACK;
 
 -- 중고거래 게시판 좋아요
 SELECT * FROM trade_board_like
 ORDER BY trade_like_num;
-ROLLBACK;
+
 DELETE trade_board_like
-WHERE trade_like_num = 19;
+WHERE trade_like_num = 1;
 -- 동네생활 카테고리
 
 

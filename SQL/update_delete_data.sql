@@ -30,18 +30,9 @@
 
 -- 판매물품 카테고리
 -- 판매물품 카테고리 명 수정 트리거
-CREATE OR REPLACE TRIGGER ut_updItemCtgr
-AFTER 
-UPDATE OF item_ctgr_name ON item_ctgr 
-FOR EACH ROW
-DECLARE
-BEGIN
-    up_selTradeBoard(:OLD.item_ctgr_num);
-END;
-
 UPDATE item_ctgr
-SET item_ctgr_name = '의류'
-WHERE item_ctgr_num = 3;
+SET item_ctgr_name = '디지털'
+WHERE item_ctgr_num = 1;
 
 COMMIT;
 
@@ -97,26 +88,49 @@ END;
 
 
 -- 중고거래 데이터 삭제
--- 중고거래 테이블이 삭제되면 아이템이미지 테이블도 삭제되는 트리거
-CREATE OR REPLACE TRIGGER ut_delItemImage
-BEFORE
-DELETE ON trade_board
-FOR EACH ROW
-BEGIN
-    DELETE FROM item_image
-    WHERE trade_num = :OLD.trade_num;
-END;
+---- 중고거래 테이블이 삭제되면 아이템이미지 테이블도 삭제되는 트리거
+--CREATE OR REPLACE TRIGGER ut_deImage_Like
+--BEFORE
+--DELETE ON trade_board -- 중고거래 게시판 테이블
+--FOR EACH ROW
+--BEGIN
+--    DELETE FROM item_image  -- 중고거래 상품 이미지 저장테이블
+--    WHERE trade_num = :OLD.trade_num;
+--    
+--    DELETE FROM trade_board_like
+--    WHERE trade_num = :OLD.trade_num;
+----EXCEPTION
+----  WHEN OTHERS THEN
+----    raise_application_error(-20002,'XXX');    
+--END;
 
 -- 중고거래 게시판 삭제되면 해당 좋아요 테이블도 삭제되는 트리거
-CREATE OR REPLACE TRIGGER ut_delTradeBoardLike
-BEFORE
-DELETE ON trade_board
-FOR EACH ROW
-DECLARE
-BEGIN
-    DELETE FROM trade_board_like
-    WHERE trade_num = :OLD.trade_num;
-END;
+--CREATE OR REPLACE TRIGGER ut_delTradeBoardLike
+--BEFORE
+--DELETE ON trade_board -- 중고거래 게시판 테이블
+--FOR EACH ROW
+--DECLARE
+--BEGIN
+--    DELETE FROM trade_board_like
+--    WHERE trade_num = :OLD.trade_num;
+--END;
+
+ALTER TABLE trade_board
+DROP CONSTRAINT PK_TRADEBOARD CASCADE;
+
+SELECT *
+FROM trade_board;
+
+SELECT *
+FROM item_image
+WHERE trade_num = 1;
+
+SELECT *
+FROM trade_board_like
+WHERE trade_num = 1;
+
+DELETE FROm trade_board
+WHERE trade_num = 1;
 
 -- 거래게시판 삭제
 CREATE OR REPLACE PROCEDURE up_delTradeBoard(
@@ -241,6 +255,8 @@ END;
 
 -- 중고거래 게시판 좋아요
 -- 이미 해당게시판에 해당회원이 좋아요를 누르면 행 삭제 없으면 삽입
+DROP  TRIGGER ut_insTradeBoardLike;
+
 CREATE OR REPLACE TRIGGER ut_insTradeBoardLike
 BEFORE INSERT ON trade_board_like
 FOR EACH ROW

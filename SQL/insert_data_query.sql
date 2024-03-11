@@ -649,7 +649,7 @@ CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
-    SEQ_TBOARD.NEXTVAL
+    1
     , 1
     , 1
     , '에어팟맥스 새상품'
@@ -659,14 +659,14 @@ VALUES (
     , '중동'
     );   
 -- 에어팟맥스 새상품
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 1, 1,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/f3cc3e8742b9f393e3a0294691d87e4a24254b200cf7fbde7b1df4c512dd0590.jpg?q=95&s=1440x1440&t=inside&f=webp',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 2, 1,  'https://search.pstatic.net/common/?src=https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8711646%2F87116460443.jpg&type=f372_372',1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 3, 1, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDVfMTU4%2FMDAxNzAxNzY0Mjk0MDc4.iDJ3j4hn_JIb1eL1BLSkxrtmFn7PCNcoVusyNmeDzXwg.42yYugGj2rjwedgzSYFmzOer2zHl1bejswZ96rkQsqEg.JPEG.sol__l2%2FKakaoTalk_20231205_170011141_01.jpg&type=a340', 1);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( 4, 1, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.msscdn.net%2Fimages%2Fgoods_img%2F20240118%2F3806183%2F3806183_17080610408383_500.jpg&type=a340', 1);
 
 
 -- 접이식 헤어드라이기
