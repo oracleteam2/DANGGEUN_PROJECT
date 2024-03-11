@@ -645,7 +645,7 @@ COMMIT;
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
-
+--
 -- ø°æÓ∆Ã∏∆Ω∫ ªıªÛ«∞
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
