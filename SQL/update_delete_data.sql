@@ -12,11 +12,48 @@
 
 -- 차단
 
-
 -- 채팅
+
+-------
+
+CREATE OR REPLACE PROCEDURE delchat
+( ptrade_num chat.trade_num%type
+)
+IS
+   -- vchat_room_num chat_board.chat_room_num%type;
+BEGIN
+    DELETE chat 
+    Where trade_num = ptrade_num;
+    
+    dbms_output.put_line(ptrade_num || '번 채팅방이 삭제 됐습니다.');
+END;
+
+  
 
 
 -- 채팅 내용
+
+
+CREATE Or REPLACE PROCEDURE delcontent
+( ptrade_num chat_board.trade_num%type
+)
+IS
+vchat_num chat_board.chat_num%type;
+    
+BEGIN
+    SELECT MAX(chat_num)
+    INTO vchat_num
+    FROM chat_board
+    WHERE trade_num = ptrade_num;
+
+DELETE 
+FROM CHAT_BOARD
+    WHERE chat_num=vchat_num;
+
+--exception
+
+    dbms_output.put_line('마지막 채팅이 삭제됐습니다.');
+END;
 
 
 -- 당근페이
