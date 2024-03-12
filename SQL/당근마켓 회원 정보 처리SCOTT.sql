@@ -12,7 +12,7 @@
 -- 회원 관련데이터 삭제
 -- 매너온도
 -- 결제
--- 수정사항
+
 
 
 -- 회원 마이페이지 조회
@@ -185,33 +185,29 @@ BEGIN
 END;
 
 -- 결제 테이블
--- 채팅에서 거래게시판 번호 1개있으면 그거 들고와서 2명의 유저간의 거래를 한다. 
-CREATE SEQUENCE seq_pay 
-INCREMENT BY 1 
-START WITH 1 
-NOCYCLE NOCACHE;
-
 --채팅에서 거래번호를 넣어야한다.
 --pay_num NUMBER : 결제 번호 ( PK )
 --chat_room_num NUMBER : 채팅방 번호 ( FK )
---member_num NUMBER : 유저번호1 
---member_num2 NUMBER : 유저번호2 
+--member_num NUMBER : 유저번호1 판매자
+--member_num2 NUMBER : 유저번호2 구매자
 --pay_date DATE : 송금날짜
 --remittance_amount NUMBER : 송금금액
+
+SELECT * FROM chat;
 
 CREATE OR REPLACE PROCEDURE up_insert_pay
 (
     p_chat_num chat.chat_room_num%TYPE
 )
 IS
-    vmem_num1 chat.member_num%TYPE;
-    vmem_num2 chat.member_num2%TYPE;
+--    vmem_num1 chat.member_num%TYPE; -- 판매자
+--    vmem_num2 chat.member_num2%TYPE; -- 구매자
     vtrade_num chat.trade_num%TYPE; -- chat에서 trade번호가 있을때
     vprice NUMBER;
 BEGIN
-
-    SELECT member_num, member_num2, trade_num
-        INTO vmem_num1, vmem_num2, vtrade_num
+    -- 구매자
+    SELECT trade_num
+        INTO vtrade_num
     FROM chat
     WHERE chat_room_num = p_chat_num;
     
@@ -220,8 +216,8 @@ BEGIN
     FROM trade_board
     WHERE trade_num = vtrade_num;
     
-    INSERT INTO pay ( pay_num, chat_room_num, member_num, member_num2, pay_date, remittance_amount )
-    VALUES (seq_pay.NEXTVAL, p_chat_num, vmem_num1, vmem_num2, SYSDATE, vprice);
+    INSERT INTO pay ( pay_num, chat_room_num, pay_date, remittance_amount )
+    VALUES (seq_pay.NEXTVAL, p_chat_num, SYSDATE, vprice);
 --EXCEPTION
 END;
 
@@ -235,15 +231,15 @@ BEGIN
 
     UPDATE danggeun_pay 
     SET balance = balance + :NEW.remittance_amount
-    WHERE member_num = :NEW.member_num;
+    WHERE member_num = :NEW.seler_num;
     
     UPDATE danggeun_pay
     SET balance = balance - :NEW.remittance_amount
-    WHERE member_num = :NEW.member_num2;
+    WHERE member_num = :NEW.buyer_num;
 END;
 
 
-
+-- 수정사항
 -- 매너온도 테이블
 -- 거래가 이뤄진 사람들(채팅방이 있고, 거래가 완료된 사람들)끼리 매너온도 올리거나 낮출 수 있다.
 -- 거래완료 상태를 체크해야할것 같다.
@@ -256,6 +252,57 @@ NOCYCLE NOCACHE;
 --chat_room_num : 채팅방 
 --manner_points: 매너온도 점수.
 --updateDate: 매너온도 업데이트 날짜.
+-- 누군가 매너온도를 눌렀을때 어떤 회원의
+-- 1 -> 2번의 매너온도 눌렀다.
+-- 매개변수 2개주고
+-- 1번과 2번의 pay게시판이 생성이 되어 있는지 확인
+-- 있으면 온도 올려주는 INSERT하고 회원 매너온도 테이블에서 UPDATE트리거 작동
+
+-- 매너온도 테이블에 press_mem_num, compress_mem_num 추가할 데이터
+-- 매너온도 ++ 해주는 로직 ( -- 하는 로직은 생각해 봐야할듯 )
+CREATE OR REPLACE PROCEDURE up_insert_manner_points
+(
+    p_chat_room_num pay.chat_room_num%TYPE,
+    p_press_mem_num  NUMBER,        --매너온도 누른사람
+    p_compress_mem_num NUMBER       --매너온도 눌러진 사람
+)
+IS
+    v_p_count NUMBER;
+    v_m_count NUMBER;
+    vmem_manner_points member.member_manner_points%TYPE;
+BEGIN
+    
+    SELECT member_manner_points
+        INTO vmem_manner_points
+    FROM member
+    WHERE member_num = p_compress_mem_num;
+    
+    SELECT COUNT(*)
+        INTO v_m_count
+    FROM manner_points
+    WHERE chat_room_num = p_chat_room_num AND press_mem_num = p_press_mem_num;
+    
+    SELECT COUNT(*)
+        INTO v_p_count
+    FROM pay
+    WHERE (buyer_num = p_press_mem_num AND seler_num = p_compress_mem_num) OR
+          (buyer_num = p_compress_mem_num AND seler_num = p_press_mem_num);
+          
+    IF v_m_count = 0 AND v_p_count = 1 THEN
+    INSERT INTO manner_points ( manner_proints_num, chat_room_num, manner_points, update_date )
+    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, vmem_manner_points+(vmem_manner_points*0.025)  ,SYSDATE );
+    ELSE
+    RAISE_APPLICATION_ERROR(-20001, '이미 매너온도를 평가한 회원입니다.');
+    END IF;
+--EXCEPTION
+END;
+
+CREATE OR REPLACE TRIGGER ut_update_mem_manner
+AFTER
+INSERT ON manner_points
+FOR EACH ROW
+EXECUTE up_insert_pay(6);
+EXECUTE up_select_mpage(1);
 
 
-
+SELECT * FROM tbl_dept;
