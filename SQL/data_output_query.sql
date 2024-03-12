@@ -222,6 +222,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
 END;
 
+ExEC up_selTradeBoard(1);
 
 -- 동네생활 게시판 전체 조회
 DECLARE

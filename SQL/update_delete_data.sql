@@ -421,22 +421,22 @@ END;
 
 
 -- 중고거래 데이터 삭제
-ALTER TABLE trade_board
-DROP CONSTRAINT PK_TRADEBOARD CASCADE;
-
-SELECT *
-FROM trade_board;
-
-SELECT *
-FROM item_image
-WHERE trade_num = 1;
-
-SELECT *
-FROM trade_board_like
-WHERE trade_num = 1;
-
-DELETE FROM trade_board
-WHERE trade_num = 1;
+--ALTER TABLE trade_board
+--DROP CONSTRAINT PK_TRADEBOARD CASCADE;
+--
+--SELECT *
+--FROM trade_board;
+--
+--SELECT *
+--FROM item_image
+--WHERE trade_num = 1;
+--
+--SELECT *
+--FROM trade_board_like
+--WHERE trade_num = 1;
+--
+--DELETE FROM trade_board
+--WHERE trade_num = 1;
 
 -- 거래게시판 삭제
 CREATE OR REPLACE PROCEDURE up_delTradeBoard(
@@ -587,7 +587,7 @@ BEGIN
     WHERE trade_num IS NULL AND member_num IS NULL;
 END;
 
-<<<<<<< HEAD
+
 INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
 VALUES(16, 1, 1);
 
@@ -595,7 +595,7 @@ SELECT * FROM trade_board_like;
 
 DELETE trade_board_like
 where trade_like_num = 16;
-=======
+
 -- 멤버넘버, 트레이드 넘버 같은거에서 트레이드 보드 라이크 넘버 가져와서 그번호 삭제
 CREATE OR REPLACE PROCEDURE up_insert_t_board_like
 (
