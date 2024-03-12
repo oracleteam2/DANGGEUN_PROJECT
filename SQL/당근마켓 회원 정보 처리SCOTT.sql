@@ -9,13 +9,11 @@
 -- 회원 추가
 
 
--- 회원 관련데이터 삭제
--- 결제
 
 
 
 -- 회원 마이페이지 조회
-CREATE OR REPLACE PROCEDURE up_selmypage
+CREATE OR REPLACE PROCEDURE up_select_mpage
 (
     pmember_num member.member_num%TYPE
 )
@@ -25,8 +23,14 @@ IS
     vmem_profile member.member_profile%TYPE;
     vmem_mpoints member.member_manner_points%TYPE;
     vmem_addr   member.member_address%TYPE;
+    vbalance danggeun_pay.balance%TYPE;
 BEGIN
-
+    
+    SELECT COUNT(*)
+        INTO v_mem_count
+    FROM member
+    WHERE member_num = 1;
+    
     SELECT m.member_profile, m.member_nickname, m.member_manner_points, t.count_mem_tboard, m.member_address
         INTO  vmem_profile , vmem_nickname, vmem_mpoints, vcount_memb_tboard, vmem_addr
     FROM member m ,(
@@ -35,9 +39,15 @@ BEGIN
         WHERE m.member_num = pmember_num
             ) t
     WHERE m.member_num = pmember_num;
-
+    
+    SELECT balance
+        INTO vbalance
+    FROM danggeun_pay
+    WHERE member_num = pmember_num;
+    
     DBMS_OUTPUT.PUT( vmem_profile );
     DBMS_OUTPUT.PUT_LINE( vmem_nickname );
+    DBMS_OUTPUT.PUT_LINE( '당근페이 금액 : ' || vbalance ||'원');
     DBMS_OUTPUT.PUT_LINE( '매너온도 : ' || vmem_mpoints || '℃' );
     DBMS_OUTPUT.PUT_LINE( '판매물품 : ' ||vcount_memb_tboard || '개' );
     DBMS_OUTPUT.PUT_LINE( '주소 : ' || vmem_addr );
@@ -148,12 +158,30 @@ CREATE OR REPLACE PROCEDURE up_charge_danggeun_pay
 )
 IS
     v_count NUMBER;
+    v_account NUMBER;
+    v_balance NUMBER;
+    v_bank_name VARCHAR2;
 BEGIN
     SELECT COUNT(*)
         INTO v_count
     FROM danggeun_pay
     WHERE member_num = pmem_num;
-
+    
+    SELECT account, balance, bank_name
+        INTO v_account, v_balance, v_bank_name
+    FROM danggeun_pay
+    WHERE member_num = pmem_num;
+    
+    v_balance := v_balance + pmem_charge_amount;
+    
+    DBMS_OUTPUT.PUT_LINE ( v_bank_name || v_account  );
+    DBMS_OUTPUT.PUT_LINE ( pmem_charge_amount || '원');
+    DBMS_OUTPUT.PUT_LINE ( '충전후 잔액' || v_balance || '원' );
+    DBMS_OUTPUT.PUT_LINE ( '1' || '2' || '3' );
+    DBMS_OUTPUT.PUT_LINE ( '4' || '5' || '6' );
+    DBMS_OUTPUT.PUT_LINE ( '7' || '8' || '9' );
+    DBMS_OUTPUT.PUT_LINE ( ''  || '0' || '<-' );
+    
     IF v_count = 1 THEN
     UPDATE danggeun_pay
     SET balance = balance + pmem_charge_amount
@@ -188,24 +216,18 @@ BEGIN
 --EXCEPTION
 END;
 
--- 결제 테이블
---채팅에서 거래번호를 넣어야한다.
---pay_num NUMBER : 결제 번호 ( PK )
---chat_room_num NUMBER : 채팅방 번호 ( FK )
---member_num NUMBER : 유저번호1 판매자
---member_num2 NUMBER : 유저번호2 구매자
---pay_date DATE : 송금날짜
---remittance_amount NUMBER : 송금금액
 
-
+-- 결제 테이블 INSERT
 CREATE OR REPLACE PROCEDURE up_insert_pay
 (
     p_chat_num chat.chat_room_num%TYPE
 )
 IS
+    vmem_nickname member.member_nickname%TYPE;
     vseller_num trade.member_num%TYPE; -- 판매자
     vbuyer_num chat.buyer_num%TYPE; -- 구매자
     vtrade_num chat.trade_num%TYPE; -- chat에서 trade번호가 있을때
+    vbalance danggeun_pay.balance%TYPE;
     vprice NUMBER;
 BEGIN
     -- 구매자
@@ -214,15 +236,38 @@ BEGIN
     FROM chat
     WHERE chat_room_num = p_chat_num;
     
+    SELECT balance
+        INTO vbalance
+    FROM danggeun_pay
+    WHERE member_num = vbuyer_num;
+    
     SELECT trade_price, member_num 
-        INTO vprice, seller_num
+        INTO vprice, vseller_num
     FROM trade_board
     WHERE trade_num = vtrade_num;
     
+    SELECT member_nickname
+        INTO vmem_nickname
+    FROM member
+    WHERE member_num = vbuyer_num;
+    
+    DBMS_OUTPUT.PUT_LINE ( vmem_nickname );
+    DBMS_OUTPUT.PUT_LINE ( vprice || '원');
+    DBMS_OUTPUT.PUT_LINE ( '남은금액' || vbalance || '원' );
+    DBMS_OUTPUT.PUT_LINE ( '1' || '2' || '3' );
+    DBMS_OUTPUT.PUT_LINE ( '4' || '5' || '6' );
+    DBMS_OUTPUT.PUT_LINE ( '7' || '8' || '9' );
+    DBMS_OUTPUT.PUT_LINE ( ''  || '0' || '<-' );
+    
+    IF vbalance >= vprice THEN
     INSERT INTO pay ( pay_num, chat_room_num, seller_num, buyer_num, pay_date, remittance_amount )
-    VALUES (seq_pay.NEXTVAL, p_chat_num, seller_num, vbuyer_num, SYSDATE, vprice);
+    VALUES (seq_pay.NEXTVAL, p_chat_num, vseller_num, vbuyer_num, SYSDATE, vprice);
+    ELSE 
+    RAISE_APPLICATION_ERROR(-06502, '계좌 잔액이 부족합니다.');
+    END IF;
 --EXCEPTION
 END;
+--  Encountered the symbol "INSERT" when expecting one of the following: 
 
 -- num1은 무조건 판매자 당근페이 금액 ++
 -- num2는 무조건 구매자 당근페이 금액 --
@@ -314,6 +359,8 @@ END;
 
 
 
+
+
 -- 회원넘버
 EXECUTE up_select_mpage(1);
 
@@ -323,10 +370,13 @@ EXECUTE up_insert_member( '981012', '동스', '울산시 울주군 언양읍', '010-1111-22
 -- 회원넘버, 회원닉네임, 회원주소, 회원전화번호, 회원 프로필이미지
 EXECUTE up_update_member(10, '진스');
 
--- 회원넘버, 계좌번호, 은행이름, 충전할 돈(기본은 null값)
+-- 회원넘버, 계좌번호, 은행이름, 충전할 돈(기본은 0원값)
 EXECUTE up_insert_danggeun_pay( 13, 0901091101878, '국민은행');
 
--- 회원넘버 ( 관련있는 데이터 전부 삭제하는 BEFORE 트리거 있어야할듯 )
+-- 회원넘버, 충전금액
+EXECUTE up_charge_danggeun_pay( 13, 30000);
+
+-- 회원넘버 ( 관련있는 데이터 전부 삭제하는 BEFORE 트리거 있어야할듯 어지러움 )
 EXECUTE up_delete_member(13);
 
 -- 채팅방 번호
@@ -337,10 +387,8 @@ EXECUTE( 6, 2, 1, '부정');
 
 
 
-DELETE FROM danggeun_pay
-WHERE member_num = 13;
 
-EXECUTE up_charge_danggeun_pay( 13, 30000);
+
 EXECUTE up_insert_pay(6);
 SELECT * FROM danggeun_pay;
 SELECT * FROM member;
