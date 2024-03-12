@@ -587,6 +587,15 @@ BEGIN
     WHERE trade_num IS NULL AND member_num IS NULL;
 END;
 
+<<<<<<< HEAD
+INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
+VALUES(16, 1, 1);
+
+SELECT * FROM trade_board_like;
+
+DELETE trade_board_like
+where trade_like_num = 16;
+=======
 -- 멤버넘버, 트레이드 넘버 같은거에서 트레이드 보드 라이크 넘버 가져와서 그번호 삭제
 CREATE OR REPLACE PROCEDURE up_insert_t_board_like
 (
@@ -618,6 +627,7 @@ EXECUTE up_insert_t_board_like(1, 1);
 
 DELETE trade_board_like
 where trade_like_num = 23;
+>>>>>>> 5da3f60c1f2560e5291e97cd8aca8c76f90f331e
 
 
 -- 매너온도
@@ -693,7 +703,55 @@ EXECUTE up_insert_pay(6);
 EXECUTE up_select_mpage(1);
 
 -- 동네생활 카테고리
+-- 추가/수정/삭제
+SELECT * FROM comm_ctgr ;
+-- UP_INSCOMMCTAR 동네카테고리 추가프로시저
+CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
+(
+    pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
+    , pcomm_ctgr_name  comm_ctgr.comm_ctgr_name%TYPE 
+)
+IS
+BEGIN
+    INSERT INTO comm_ctgr ( comm_ctgr_num, comm_ctgr_name )
+    values (pcomm_ctgr_num, pcomm_ctgr_name );
+    commit;
+    
+    DBMS_OUTPUT.PUT_LINE('카테고리번호: ' || pcomm_ctgr_num || ', ' || '카테고리이름 : ' || pcomm_ctgr_name );
+-- 
+END ;
 
+--up_updcommctgr 동네카테고리 수정프로시저
+CREATE OR REPLACE PROCEDURE up_updcommctgr
+(
+    pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
+    , pcomm_ctgr_name  comm_ctgr.comm_ctgr_name%TYPE := NULL
+)
+IS
+BEGIN    
+       UPDATE comm_ctgr
+       SET comm_ctgr_name  = NVL(pcomm_ctgr_name, comm_ctgr_name)
+       WHERE comm_ctgr_num = pcomm_ctgr_num; 
+       COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('카테고리번호: ' || pcomm_ctgr_num || ', ' || '카테고리이름 : ' || pcomm_ctgr_name );
+-- EXCEPTION
+END;
+
+-- 삭제
+CREATE OR REPLACE PROCEDURE up_delcommctgr
+(
+    pcomm_ctgr_num NUMBER
+)
+IS
+BEGIN
+    DELETE FROM comm_ctgr
+    where comm_ctgr_num = pcomm_ctgr_num ;
+    commit ;
+--EXCEPTION
+END;
+
+--
 
 -- 동네생활 게시판
 
@@ -705,9 +763,119 @@ EXECUTE up_select_mpage(1);
 
 
 -- 동네생활 게시판 좋아요
+-- 추가/삭제
+SELECT * FROM comm_board_like ;
+-- up_udtcmtreplylike 게시판좋아요 추가 (완료)
+CREATE OR REPLACE PROCEDURE up_insboardlike
+(
+    pcomm_like_num  comm_board_like.comm_like_num%TYPE
+    , pmember_num   comm_board_like.member_num%TYPE
+    , pcomm_board_num     comm_board_like.comm_board_num%TYPE
+)
+IS
+    vrow comm_board_like%ROWTYPE;
+BEGIN
+    --PLS-00103: Encountered the symbol "DISTINCT" when expecting one of the following:
+    select * into vrow
+    from comm_board_like where member_num != pmember_num and comm_board_num = pcomm_board_num ;
+    
+    INSERT INTO comm_board_like ( comm_like_num, member_num, comm_board_num )
+    values (pcomm_like_num, pmember_num, pcomm_board_num );
+    commit;
+    
+    DBMS_OUTPUT.PUT_LINE('동네생활 게시판 좋아요 넘버: ' || pcomm_like_num || ', ' || '회원 넘버 : ' || pmember_num
+                        || ', ' || '동네생활 게시판 넘버: ' || ', ' || pcomm_board_num );
+--EXCEPTION
+END;
 
+--select * 
+--from comm_board_like where member_num != 1 and comm_board_num = 1 ;
+--exec up_insboardlike ( 20, 2, 1);
+
+--up_delcmtreplylike 게시판좋아요 삭제 ( 완료 )
+CREATE OR REPLACE PROCEDURE up_delboardlike
+(
+    pcomm_like_num  comm_board_like.comm_like_num%TYPE
+    , pmember_num   comm_board_like.member_num%TYPE
+    , pcomm_board_num     comm_board_like.comm_board_num%TYPE
+)
+IS
+    vrow comm_board_like%ROWTYPE;
+BEGIN
+    SELECT * INTO vrow
+    from comm_board_like where member_num = pmember_num and comm_like_num = pcomm_like_num ;
+    
+    DELETE FROM comm_board_like
+    where member_num = pmember_num ;
+    commit ;
+--EXCEPTION
+END;
+
+--
+--EXEC up_delboardlike( 20, 2, 1);
+--
+--DESC comm_board_like;
+--SELECT * FROM comm_board_like WHERE COMM_BOARD_NUM = 1;
+--INSERT INTO comm_board_like VALUES (15,2,1 );
 
 -- 동네생활 댓글 좋아요
 
 
 -- 동네생활 대댓글 좋아요
+-- 추가/삭제
+SELECT * FROM cmt_reply_like ;
+DESC cmt_reply_like;
+
+-- 동네생활 대댓글 좋아요
+---- 추가/삭제
+-- up_inscmtreplylike 대댓글좋아요 추가
+CREATE OR REPLACE PROCEDURE up_inscmtreplylike
+(
+    prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
+    , pmember_num   cmt_reply_like.member_num%TYPE
+    , prcmt_num     cmt_reply_like.rcmt_num%TYPE
+)
+IS
+    vrlrow cmt_reply_like%ROWTYPE;
+    select * into vrlrow
+    from cmt_reply_like where member_num != pmember_num and rcmt_num = prcmt_num
+                       
+BEGIN
+      
+    INSERT INTO cmt_reply_like ( rcmt_like_num, member_num, rcmt_num )
+    values (prcmt_like_num, pmember_num, prcmt_num );
+    commit;
+    
+--    DBMS_OUTPUT.PUT_LINE('동네생활 대댓글 좋아요 넘버: ' || prcmt_like_num || ', ' || '회원 넘버 : ' || pmember_num
+--                        || ', ' || '동네생활 대댓글 넘버: ' || ', ' || prcmt_num );
+    
+--EXCEPTION
+END;
+
+--EXEC up_inscmtreplylike(20, 2, 1);
+--select * from cmt_reply_like;
+--delete from cmt_reply_like where rcmt_like_num = 23;
+--select * 
+--from cmt_reply_like where member_num != 2 and rcmt_num = 1 ;
+--up_delcmtreplylike 대댓글좋아요 삭제
+CREATE OR REPLACE PROCEDURE up_delcmtreplylike
+(
+    prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
+    , pmember_num   cmt_reply_like.member_num%TYPE
+    , prcmt_num     cmt_reply_like.rcmt_num%TYPE
+)
+IS
+    vrlrow cmt_reply_like%ROWTYPE;
+BEGIN
+    SELECT * INTO vrow
+    from comm_board_like where member_num = pmember_num and rcmt_num = prcmt_num ;
+    
+    DELETE FROM cmt_reply_like
+    where member_num = pmember_num ;
+    commit ;
+    
+--EXCEPTION
+END;
+
+--EXEC up_delcmtreplylike(19, 5, 1);
+--SELECT * FROM cmt_reply_like;
