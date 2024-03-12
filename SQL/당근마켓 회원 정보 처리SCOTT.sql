@@ -10,7 +10,6 @@
 
 
 -- 회원 관련데이터 삭제
--- 매너온도
 -- 결제
 
 
@@ -45,6 +44,7 @@ BEGIN
 
 --EXCEPTION
 END;
+
 
 -- 회원 정보 수정
 CREATE OR REPLACE PROCEDURE up_update_member
@@ -81,6 +81,7 @@ EXCEPTION
 END;
 
 
+-- 회원 정보 수정
 -- 회원 추가
 CREATE OR REPLACE PROCEDURE up_insert_member
 (   
@@ -99,13 +100,14 @@ BEGIN
 --EXCEPTION
 END;
 
+
 -- 회원 당근페이 추가
 create or replace PROCEDURE up_insert_danggeun_pay
 (
     pmem_num danggeun_pay.member_num%TYPE,
-    paccount danggeun_pay.account%TYPE,
+    paccount VARCHAR2,
     pbank_name danggeun_pay.bank_name%TYPE,
-    pbalance danggeun_pay.balance%TYPE
+    pbalance danggeun_pay.balance%TYPE := 0
 )
 IS
     v_count NUMBER;
@@ -137,6 +139,7 @@ EXCEPTION
     THEN RAISE;
 END;
 
+
 -- 당근페이 금액 충전
 CREATE OR REPLACE PROCEDURE up_charge_danggeun_pay
 (
@@ -160,6 +163,7 @@ BEGIN
     END IF;
 --EXCEPTION 
 END;
+
 
 -- 회원 삭제
 CREATE OR REPLACE PROCEDURE up_delete_member
@@ -193,31 +197,30 @@ END;
 --pay_date DATE : 송금날짜
 --remittance_amount NUMBER : 송금금액
 
-SELECT * FROM chat;
 
 CREATE OR REPLACE PROCEDURE up_insert_pay
 (
     p_chat_num chat.chat_room_num%TYPE
 )
 IS
---    vmem_num1 chat.member_num%TYPE; -- 판매자
---    vmem_num2 chat.member_num2%TYPE; -- 구매자
+    vseller_num trade.member_num%TYPE; -- 판매자
+    vbuyer_num chat.buyer_num%TYPE; -- 구매자
     vtrade_num chat.trade_num%TYPE; -- chat에서 trade번호가 있을때
     vprice NUMBER;
 BEGIN
     -- 구매자
-    SELECT trade_num
-        INTO vtrade_num
+    SELECT trade_num, buyer_num
+        INTO vtrade_num, vbuyer_num
     FROM chat
     WHERE chat_room_num = p_chat_num;
     
-    SELECT trade_price
-        INTO vprice
+    SELECT trade_price, member_num 
+        INTO vprice, seller_num
     FROM trade_board
     WHERE trade_num = vtrade_num;
     
-    INSERT INTO pay ( pay_num, chat_room_num, pay_date, remittance_amount )
-    VALUES (seq_pay.NEXTVAL, p_chat_num, SYSDATE, vprice);
+    INSERT INTO pay ( pay_num, chat_room_num, seller_num, buyer_num, pay_date, remittance_amount )
+    VALUES (seq_pay.NEXTVAL, p_chat_num, seller_num, vbuyer_num, SYSDATE, vprice);
 --EXCEPTION
 END;
 
@@ -244,10 +247,7 @@ END;
 -- 거래가 이뤄진 사람들(채팅방이 있고, 거래가 완료된 사람들)끼리 매너온도 올리거나 낮출 수 있다.
 -- 거래완료 상태를 체크해야할것 같다.
 -- 채팅관련해서도 트러블이 있을수 있어서 굳이 거래완료가 아니더라도 채팅을 했으면 매너온도 올리거나 낮추는거 가능한걸로 가면 좋을것같다.
-CREATE SEQUENCE seq_manner_points 
-INCREMENT BY 1
-START WITH 1
-NOCYCLE NOCACHE;
+
 --manner_point_num: 매너온도 ( PK )
 --chat_room_num : 채팅방 
 --manner_points: 매너온도 점수.
@@ -257,14 +257,16 @@ NOCYCLE NOCACHE;
 -- 매개변수 2개주고
 -- 1번과 2번의 pay게시판이 생성이 되어 있는지 확인
 -- 있으면 온도 올려주는 INSERT하고 회원 매너온도 테이블에서 UPDATE트리거 작동
-
+SELECT * FROM chat;
 -- 매너온도 테이블에 press_mem_num, compress_mem_num 추가할 데이터
 -- 매너온도 ++ 해주는 로직 ( -- 하는 로직은 생각해 봐야할듯 )
+
 CREATE OR REPLACE PROCEDURE up_insert_manner_points
 (
     p_chat_room_num pay.chat_room_num%TYPE,
     p_press_mem_num  NUMBER,        --매너온도 누른사람
-    p_compress_mem_num NUMBER       --매너온도 눌러진 사람
+    p_compress_mem_num NUMBER,       --매너온도 눌러진 사람
+    p_평가 VARCHAR2
 )
 IS
     v_p_count NUMBER;
@@ -285,12 +287,15 @@ BEGIN
     SELECT COUNT(*)
         INTO v_p_count
     FROM pay
-    WHERE (buyer_num = p_press_mem_num AND seler_num = p_compress_mem_num) OR
-          (buyer_num = p_compress_mem_num AND seler_num = p_press_mem_num);
+    WHERE (buyer_num = p_press_mem_num AND seller_num = p_compress_mem_num) OR
+          (buyer_num = p_compress_mem_num AND seller_num = p_press_mem_num);
           
-    IF v_m_count = 0 AND v_p_count = 1 THEN
-    INSERT INTO manner_points ( manner_proints_num, chat_room_num, manner_points, update_date )
-    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, vmem_manner_points+(vmem_manner_points*0.025)  ,SYSDATE );
+    IF v_m_count = 0 AND v_p_count = 1 AND p_평가 LIKE '긍정' THEN
+    INSERT INTO manner_points ( manner_proints_num, chat_room_num, press_mem_num, compress_mem_numm manner_points, update_date )
+    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, p_press_mem_num, p_compress_mem_num, vmem_manner_points+(vmem_manner_points*0.025)  ,SYSDATE );
+    ELSIF v_m_count = 0 AND v_p_count = 1 AND p_평가 LIKE '부정' THEN
+    INSERT INTO manner_points ( manner_proints_num, chat_room_num, press_mem_num, compress_mem_numm manner_points, update_date )
+    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, p_press_mem_num, p_compress_mem_num, vmem_manner_points-(vmem_manner_points*0.025)  ,SYSDATE );
     ELSE
     RAISE_APPLICATION_ERROR(-20001, '이미 매너온도를 평가한 회원입니다.');
     END IF;
@@ -301,8 +306,43 @@ CREATE OR REPLACE TRIGGER ut_update_mem_manner
 AFTER
 INSERT ON manner_points
 FOR EACH ROW
-EXECUTE up_insert_pay(6);
+BEGIN
+    UPDATE member
+    SET manner_points = :NEW.manner_points
+    WHERE member_num = :NEW.compress_mem_num;
+END;
+
+
+
+-- 회원넘버
 EXECUTE up_select_mpage(1);
 
+-- 주민등록번호, 닉네임, 주소, 전화번호, 프로필이미지
+EXECUTE up_insert_member( '981012', '동스', '울산시 울주군 언양읍', '010-1111-2222', 'https://image.newsis.com/2012/05/25/NISI20120525_0006401508_web.jpg');
 
-SELECT * FROM tbl_dept;
+-- 회원넘버, 회원닉네임, 회원주소, 회원전화번호, 회원 프로필이미지
+EXECUTE up_update_member(10, '진스');
+
+-- 회원넘버, 계좌번호, 은행이름, 충전할 돈(기본은 null값)
+EXECUTE up_insert_danggeun_pay( 13, 0901091101878, '국민은행');
+
+-- 회원넘버 ( 관련있는 데이터 전부 삭제하는 BEFORE 트리거 있어야할듯 )
+EXECUTE up_delete_member(13);
+
+-- 채팅방 번호
+EXECUTE up_insert_pay(1);
+
+-- 채팅방번호, 누른사람넘버, 눌러진사람 넘버, 평가(부정, 긍정)
+EXECUTE( 6, 2, 1, '부정'); 
+
+
+
+DELETE FROM danggeun_pay
+WHERE member_num = 13;
+
+EXECUTE up_charge_danggeun_pay( 13, 30000);
+EXECUTE up_insert_pay(6);
+SELECT * FROM danggeun_pay;
+SELECT * FROM member;
+
+ALTER TABLE member DISABLE CONSTRAINT [제약 조건 이름];
