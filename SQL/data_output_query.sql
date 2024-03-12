@@ -233,53 +233,57 @@ is
     vmember_num2 chat.member_num2%type;
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
+    vmember_adress member.member_address%type;
+    vmember_manner_points member.member_manner_points%type;
 begin 
 for slc in(
-    select c.trade_num, member_num2, member_nickname, trade_title 
+    select c.trade_num, member_num2, member_nickname, trade_title , member_address, member_manner_points
     from chat c join member m on c.member_num2 = m.member_num
                 join trade_board t on c.trade_num = t.trade_num
     where c.trade_num= ptrade_num)
     
     loop
     
-    DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname);    
-   
+    DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname || ' 상대방 주소 : ' || slc.member_address ||'   '|| '매너 온도 : ' || slc.member_manner_points);    
+    
     end loop;
 end;
+
+exec seek_list(2); 
 
 -- 채팅 내용 조회
 CREATE OR REPLACE PROCEDURE seek_chat_content
 (
-    ptrade_num chat.trade_num%type
+    ptrade_num chat_board.trade_num%type
 )
 is
 --    vchat_content chat_board.chat_content%type;
---    vmember_num2 chat.member_num2%type;
---    vmember_nickname member.member_nickname%type;
+ --   vmember_num2 chat.member_num2%type;
+    vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
+    vmember_manner_points member.member_manner_points%type;
 begin 
-    select trade_title into vtrade_title
-    from trade_board
+    select trade_title, member_manner_points, member_nickname into vtrade_title, vmember_manner_points, vmember_nickname
+    from trade_board t join member m on t.member_num = m.member_num
     where trade_num = ptrade_num;
     
- DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title);
+ DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title  ||'   '||   '채팅 상대방 : ' ||  vmember_nickname  ||'  '|| ' 상대방 매너온도 : ' || vmember_manner_points);
 
 for vcc in(
- select chat_content , member_num2, member_nickname, trade_title, b.chat_time
+ select chat_content , member_num2, b.chat_time
     from chat c join member m on c.member_num2 = m.member_num
-                join chat_board  b on c.trade_num = b.trade_num
-                join trade_board t on c.member_num2 = t.member_num
-    where c.trade_num=ptrade_num
+                join chat_board  b on c.trade_num = b.trade_num            
+    where b.trade_num=ptrade_num
 
 )
-
- 
   loop  
   
   
-    DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content  ||'   '||   '채팅 상대방 : ' ||  vcc.member_nickname || '   ' || '채팅 시간 : ' || vcc.chat_time);    
+    DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content || '   ' || '채팅 시간 : ' || vcc.chat_time);    
    end loop;
 
 end;
+
+exec seek_chat_content(2);
 
 -- 결제 페이지
