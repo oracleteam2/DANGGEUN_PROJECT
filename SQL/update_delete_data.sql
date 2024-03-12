@@ -704,7 +704,7 @@ EXECUTE up_select_mpage(1);
 
 -- 동네생활 카테고리
 -- 추가/수정/삭제
-
+SELECT * FROM comm_ctgr ;
 -- UP_INSCOMMCTAR 동네카테고리 추가프로시저
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
 (
@@ -820,6 +820,11 @@ END;
 
 -- 동네생활 댓글 좋아요
 
+
+-- 동네생활 대댓글 좋아요
+-- 추가/삭제
+SELECT * FROM cmt_reply_like ;
+DESC cmt_reply_like;
 
 -- 동네생활 대댓글 좋아요
 ---- 추가/삭제

@@ -295,7 +295,7 @@ BEGIN
 --EXCEPTION
   -- ROLLBACK;
 END;
-EXEC up_selcommboard(4); 
+--EXEC up_selcommboard(4); 
 
 -- 동네생활 게시판 댓글 조회
 
