@@ -311,10 +311,14 @@ BEGIN
         
         :NEW.trade_num := NULL;
         :NEW.member_num := NULL;
-        
+--        
     END IF;
+--    
+    DELETE FROM trade_board_like
+    WHERE trade_num IS NULL AND member_num IS NULL;
 END;
 
+<<<<<<< HEAD
 INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
 VALUES(16, 1, 1);
 
@@ -322,6 +326,39 @@ SELECT * FROM trade_board_like;
 
 DELETE trade_board_like
 where trade_like_num = 16;
+=======
+-- 멤버넘버, 트레이드 넘버 같은거에서 트레이드 보드 라이크 넘버 가져와서 그번호 삭제
+CREATE OR REPLACE PROCEDURE up_insert_t_board_like
+(
+
+    pt_num NUMBER,
+    pmember_num NUMBER
+)
+IS
+    v_count NUMBER;
+BEGIN
+        SELECT COUNT(*)
+            INTO v_count
+        FROM trade_board_like
+        WHERE trade_num = pt_num AND member_num = pmember_num;
+        
+        IF v_count = 0 THEN
+            INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
+            VALUES(seq_tboard_like.NEXTVAL, 1, 1);
+        ELSIF v_count > 0 THEN
+            DELETE FROM trade_board_like
+            WHERE trade_num = pt_num AND member_num = pmember_num;
+--        ELSE
+        END IF;
+--EXCEPTION
+END;
+
+EXECUTE up_insert_t_board_like(1, 1);
+
+
+DELETE trade_board_like
+where trade_like_num = 23;
+>>>>>>> 5da3f60c1f2560e5291e97cd8aca8c76f90f331e
 
 -- 동네생활 카테고리
 -- 추가/수정/삭제
@@ -384,51 +421,114 @@ END;
 
 
 -- 동네생활 게시판 좋아요
--- [[동네생활 게시판 좋아요]]
 -- 추가/삭제
-CREATE OR REPLACE TRIGGER ut_inscommboardlike
-BEFORE INSERT ON comm_board_like  
-FOR EACH ROW
-DECLARE
-    vblcount NUMBER;
+SELECT * FROM comm_board_like ;
+-- up_udtcmtreplylike 게시판좋아요 추가 (완료)
+CREATE OR REPLACE PROCEDURE up_insboardlike
+(
+    pcomm_like_num  comm_board_like.comm_like_num%TYPE
+    , pmember_num   comm_board_like.member_num%TYPE
+    , pcomm_board_num     comm_board_like.comm_board_num%TYPE
+)
+IS
+    vrow comm_board_like%ROWTYPE;
 BEGIN
-    SELECT COUNT(*) INTO vblcount
-    FROM comm_board_like
-    WHERE member_num = :NEW.member_num AND comm_board_num = :NEW.comm_board_num;
-
-    IF vblcount > 0 THEN
-        DELETE FROM comm_board_like
-        WHERE member_num = :NEW.member_num AND comm_board_num = :NEW.comm_board_num;       
-        
-        :NEW.comm_board_num := NULL;
-        :NEW.member_num := NULL;
-     END IF;       
+    --PLS-00103: Encountered the symbol "DISTINCT" when expecting one of the following:
+    select * into vrow
+    from comm_board_like where member_num != pmember_num and comm_board_num = pcomm_board_num ;
+    
+    INSERT INTO comm_board_like ( comm_like_num, member_num, comm_board_num )
+    values (pcomm_like_num, pmember_num, pcomm_board_num );
+    commit;
+    
+    DBMS_OUTPUT.PUT_LINE('동네생활 게시판 좋아요 넘버: ' || pcomm_like_num || ', ' || '회원 넘버 : ' || pmember_num
+                        || ', ' || '동네생활 게시판 넘버: ' || ', ' || pcomm_board_num );
+--EXCEPTION
 END;
+
+--select * 
+--from comm_board_like where member_num != 1 and comm_board_num = 1 ;
+--exec up_insboardlike ( 20, 2, 1);
+
+--up_delcmtreplylike 게시판좋아요 삭제 ( 완료 )
+CREATE OR REPLACE PROCEDURE up_delboardlike
+(
+    pcomm_like_num  comm_board_like.comm_like_num%TYPE
+    , pmember_num   comm_board_like.member_num%TYPE
+    , pcomm_board_num     comm_board_like.comm_board_num%TYPE
+)
+IS
+    vrow comm_board_like%ROWTYPE;
+BEGIN
+    SELECT * INTO vrow
+    from comm_board_like where member_num = pmember_num and comm_like_num = pcomm_like_num ;
+    
+    DELETE FROM comm_board_like
+    where member_num = pmember_num ;
+    commit ;
+--EXCEPTION
+END;
+
+--
+--EXEC up_delboardlike( 20, 2, 1);
+--
+--DESC comm_board_like;
+--SELECT * FROM comm_board_like WHERE COMM_BOARD_NUM = 1;
+--INSERT INTO comm_board_like VALUES (15,2,1 );
 
 -- 동네생활 댓글 좋아요
 
 
 -- 동네생활 대댓글 좋아요
 ---- 추가/삭제
-
--- 대댓글 추가/삭제 트리거 생성
-CREATE OR REPLACE TRIGGER ut_inscmtreplylike
-BEFORE INSERT ON cmt_reply_like   
-FOR EACH ROW
-DECLARE
-    vrlcount NUMBER;
+-- up_inscmtreplylike 대댓글좋아요 추가
+CREATE OR REPLACE PROCEDURE up_inscmtreplylike
+(
+    prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
+    , pmember_num   cmt_reply_like.member_num%TYPE
+    , prcmt_num     cmt_reply_like.rcmt_num%TYPE
+)
+IS
+    vrlrow cmt_reply_like%ROWTYPE;
+    select * into vrlrow
+    from cmt_reply_like where member_num != pmember_num and rcmt_num = prcmt_num
+                       
 BEGIN
-    SELECT COUNT(*) INTO vrlcount
-    FROM cmt_reply_like
-    WHERE member_num = :NEW.member_num AND rcmt_num = :NEW.rcmt_num;
-
-    IF vrlcount > 0 THEN
-        DELETE FROM cmt_reply_like
-        WHERE member_num = :NEW.member_num AND rcmt_num = :NEW.rcmt_num;       
-        
-        :NEW.rcmt_num := NULL;
-        :NEW.member_num := NULL;
-     END IF;       
+      
+    INSERT INTO cmt_reply_like ( rcmt_like_num, member_num, rcmt_num )
+    values (prcmt_like_num, pmember_num, prcmt_num );
+    commit;
+    
+--    DBMS_OUTPUT.PUT_LINE('동네생활 대댓글 좋아요 넘버: ' || prcmt_like_num || ', ' || '회원 넘버 : ' || pmember_num
+--                        || ', ' || '동네생활 대댓글 넘버: ' || ', ' || prcmt_num );
+    
+--EXCEPTION
 END;
 
---
+--EXEC up_inscmtreplylike(20, 2, 1);
+--select * from cmt_reply_like;
+--delete from cmt_reply_like where rcmt_like_num = 23;
+--select * 
+--from cmt_reply_like where member_num != 2 and rcmt_num = 1 ;
+--up_delcmtreplylike 대댓글좋아요 삭제
+CREATE OR REPLACE PROCEDURE up_delcmtreplylike
+(
+    prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
+    , pmember_num   cmt_reply_like.member_num%TYPE
+    , prcmt_num     cmt_reply_like.rcmt_num%TYPE
+)
+IS
+    vrlrow cmt_reply_like%ROWTYPE;
+BEGIN
+    SELECT * INTO vrow
+    from comm_board_like where member_num = pmember_num and rcmt_num = prcmt_num ;
+    
+    DELETE FROM cmt_reply_like
+    where member_num = pmember_num ;
+    commit ;
+    
+--EXCEPTION
+END;
+
+--EXEC up_delcmtreplylike(19, 5, 1);
+--SELECT * FROM cmt_reply_like;

@@ -1,81 +1,94 @@
 -- SCOTT
--- 각 테이블 조회
--- 회원
+-- 媛? ?뀒?씠釉? 議고쉶
+-- ?쉶?썝
 SELECT * FROM member;
 
 
--- 관리자
+-- 愿?由ъ옄
 SELECT * FROM admin;
 
 
--- 신고
+-- ?떊怨?
 SELECT * FROM report;
 
 
--- 차단
+-- 李⑤떒
 SELECT * FROM block;
 
 
--- 채팅
+-- 梨꾪똿
 SELECT * FROM chat;
 
 
--- 채팅 내용
+-- 梨꾪똿 ?궡?슜
 SELECT * FROM chat_board;
 
--- 당근페이
+-- ?떦洹쇳럹?씠
 SELECT * FROM DANGGEUN_pay;
 
 
--- 결제
+-- 寃곗젣
 SELECT * FROM pay;
 
--- 공지사항 게시판
+-- 怨듭??궗?빆 寃뚯떆?뙋
 SELECT * FROM notice_board;
 
 
--- 판매 물품 카테고리
+-- ?뙋留? 臾쇳뭹 移댄뀒怨좊━
 SELECT * FROM ITEM_CTGR;
 
 
--- 중고거래 게시판
+-- 以묎퀬嫄곕옒 寃뚯떆?뙋
 SELECT * FROM TRADE_BOARD
 ORDER BY trade_num;
 DELETE trade_board
 WHERE trade_num = 12;
 
+
+
+
 -- 상품 이미지
-SELECT * FROM item_image
+SELECT * FROM item_image;
+
+SELECT trade_num, item_image_num, member_num FROM item_image
 ORDER BY trade_num, item_image_num;
 ALTER TABLE item_image ADD member_num NUMBER;
 ROLLBACK;
 
--- 중고거래 게시판 좋아요
+-- 以묎퀬嫄곕옒 寃뚯떆?뙋 醫뗭븘?슂
 SELECT * FROM trade_board_like
 ORDER BY trade_like_num;
 
 DELETE trade_board_like
 WHERE trade_like_num = 1;
--- 동네생활 카테고리
+-- ?룞?꽕?깮?솢 移댄뀒怨좊━
+
+-- ?룞?꽕?깮?솢 寃뚯떆?뙋
 
 
--- 동네생활 게시판
+-- ?룞?꽕?깮?솢 ?뙎湲?
 
 
--- 동네생활 댓글
+-- ?룞?꽕?깮?솢 ???뙎湲?
 
 
--- 동네생활 대댓글
+-- ?룞?꽕?깮?솢 寃뚯떆?뙋 醫뗭븘?슂
 
 
--- 동네생활 게시판 좋아요
+-- ?룞?꽕?깮?솢 ?뙎湲? 醫뗭븘?슂
 
 
+<<<<<<< HEAD
 -- 동네생활 댓글 좋아요
 
 
 -- 동네생활 대댓글 좋아요
 
+=======
+-- ?룞?꽕?깮?솢 ???뙎湲? 醫뗭븘?슂
+
+
+>>>>>>> 5da3f60c1f2560e5291e97cd8aca8c76f90f331e
 
 
 
