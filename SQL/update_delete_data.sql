@@ -316,13 +316,63 @@ BEGIN
 END;
 
 INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
-VALUES(21, 7, 2);
+VALUES(16, 1, 1);
+
+SELECT * FROM trade_board_like;
 
 DELETE trade_board_like
-where trade_like_num = 1;
+where trade_like_num = 16;
 
 -- 동네생활 카테고리
+-- 추가/수정/삭제
 
+-- UP_INSCOMMCTAR 동네카테고리 추가프로시저
+CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
+(
+    pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
+    , pcomm_ctgr_name  comm_ctgr.comm_ctgr_name%TYPE 
+)
+IS
+BEGIN
+    INSERT INTO comm_ctgr ( comm_ctgr_num, comm_ctgr_name )
+    values (pcomm_ctgr_num, pcomm_ctgr_name );
+    commit;
+    
+    DBMS_OUTPUT.PUT_LINE('카테고리번호: ' || pcomm_ctgr_num || ', ' || '카테고리이름 : ' || pcomm_ctgr_name );
+-- 
+END ;
+
+--up_updcommctgr 동네카테고리 수정프로시저
+CREATE OR REPLACE PROCEDURE up_updcommctgr
+(
+    pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
+    , pcomm_ctgr_name  comm_ctgr.comm_ctgr_name%TYPE := NULL
+)
+IS
+BEGIN    
+       UPDATE comm_ctgr
+       SET comm_ctgr_name  = NVL(pcomm_ctgr_name, comm_ctgr_name)
+       WHERE comm_ctgr_num = pcomm_ctgr_num; 
+       COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('카테고리번호: ' || pcomm_ctgr_num || ', ' || '카테고리이름 : ' || pcomm_ctgr_name );
+-- EXCEPTION
+END;
+
+-- 삭제
+CREATE OR REPLACE PROCEDURE up_delcommctgr
+(
+    pcomm_ctgr_num NUMBER
+)
+IS
+BEGIN
+    DELETE FROM comm_ctgr
+    where comm_ctgr_num = pcomm_ctgr_num ;
+    commit ;
+--EXCEPTION
+END;
+
+--
 
 -- 동네생활 게시판
 
@@ -334,9 +384,51 @@ where trade_like_num = 1;
 
 
 -- 동네생활 게시판 좋아요
+-- [[동네생활 게시판 좋아요]]
+-- 추가/삭제
+CREATE OR REPLACE TRIGGER ut_inscommboardlike
+BEFORE INSERT ON comm_board_like  
+FOR EACH ROW
+DECLARE
+    vblcount NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO vblcount
+    FROM comm_board_like
+    WHERE member_num = :NEW.member_num AND comm_board_num = :NEW.comm_board_num;
 
+    IF vblcount > 0 THEN
+        DELETE FROM comm_board_like
+        WHERE member_num = :NEW.member_num AND comm_board_num = :NEW.comm_board_num;       
+        
+        :NEW.comm_board_num := NULL;
+        :NEW.member_num := NULL;
+     END IF;       
+END;
 
 -- 동네생활 댓글 좋아요
 
 
 -- 동네생활 대댓글 좋아요
+---- 추가/삭제
+
+-- 대댓글 추가/삭제 트리거 생성
+CREATE OR REPLACE TRIGGER ut_inscmtreplylike
+BEFORE INSERT ON cmt_reply_like   
+FOR EACH ROW
+DECLARE
+    vrlcount NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO vrlcount
+    FROM cmt_reply_like
+    WHERE member_num = :NEW.member_num AND rcmt_num = :NEW.rcmt_num;
+
+    IF vrlcount > 0 THEN
+        DELETE FROM cmt_reply_like
+        WHERE member_num = :NEW.member_num AND rcmt_num = :NEW.rcmt_num;       
+        
+        :NEW.rcmt_num := NULL;
+        :NEW.member_num := NULL;
+     END IF;       
+END;
+
+--
