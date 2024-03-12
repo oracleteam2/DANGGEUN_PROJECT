@@ -44,8 +44,13 @@ ORDER BY trade_num;
 DELETE trade_board
 WHERE trade_num = 12;
 
+<<<<<<< HEAD
 -- ìƒí’ˆ ì´ë¯¸ì§€
 SELECT * FROM item_image
+=======
+-- »óÇ° ÀÌ¹ÌÁö
+SELECT trade_num, item_image_num, member_num FROM item_image
+>>>>>>> 9b40dae8a61619ba57caa5ce462a032f603ad474
 ORDER BY trade_num, item_image_num;
 ALTER TABLE item_image ADD member_num NUMBER;
 ROLLBACK;
