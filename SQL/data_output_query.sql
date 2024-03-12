@@ -220,7 +220,7 @@ BEGIN
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || '시간 전'
                             ELSE 
                                 TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
                         END
@@ -280,7 +280,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
 END;
 
+<<<<<<< HEAD
+ExEC up_selTradeBoard(1);
+=======
 EXEC up_selTradeBoard(1);
+>>>>>>> f18a682367c179c541f4f956841bc02bba456d54
 
 -- 동네생활 게시판 전체 조회
 DECLARE

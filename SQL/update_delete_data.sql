@@ -489,15 +489,15 @@ END;
 
 -- 수정문
 BEGIN
-up_updtradeboard(1, pmember_num => 1
+up_updtradeboard(1, pmember_num => 2
 ,ptrade_title => '에어팟', pupload_date => '24/03/08', ptrade_price => 200000);
 END;
 
 
 -- 중고거래 데이터 삭제
-ALTER TABLE trade_board
-DROP CONSTRAINT PK_TRADEBOARD CASCADE;
-
+--ALTER TABLE trade_board
+--DROP CONSTRAINT PK_TRADEBOARD CASCADE;
+--
 SELECT *
 FROM trade_board;
 
@@ -508,11 +508,11 @@ WHERE trade_num = 1;
 SELECT *
 FROM trade_board_like
 WHERE trade_num = 1;
+--
+--DELETE FROM trade_board
+--WHERE trade_num = 1;
 
-DELETE FROM trade_board
-WHERE trade_num = 1;
-
-ROLLBACK;
+--ROLLBACK;
 
 -- 거래게시판 삭제
 CREATE OR REPLACE PROCEDURE up_delTradeBoard(
@@ -535,7 +535,7 @@ BEGIN
     DELETE trade_board
     WHERE trade_num = ptrade_num;
         
-    COMMIT;
+
     DBMS_OUTPUT.PUT_LINE('삭제 완료');
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -545,7 +545,7 @@ EXCEPTION
 END;
 
 BEGIN
-    up_delTradeBoard(ptrade_num => 1, pmember_num => 2);
+    up_delTradeBoard(ptrade_num => 1, pmember_num => 1);
 END;
 
 CREATE OR REPLACE TRIGGER delete_related_data_trigger
@@ -638,7 +638,8 @@ BEGIN
 END;
 
 -- 중고거래 게시판 좋아요
--- 멤버넘버, 트레이드 넘버 같은거에서 트레이드 보드 라이크 넘버 가져와서 그번호 삭제
+-- 이미 해당게시판에 해당회원이 좋아요를 누르면 행 삭제 없으면 삽입
+
 CREATE OR REPLACE PROCEDURE up_insert_t_board_like
 (
 
@@ -663,13 +664,11 @@ BEGIN
         END IF;
 --EXCEPTION
 END;
-
 EXECUTE up_insert_t_board_like(1, 1);
 
-SELECT * FROM trade_board_like;
+SELECT * FROM trade_board_like
+ORDER BY trade_like_num;
 
-DELETE trade_board_like
-where trade_like_num = 16;
 
 ROLLBACK;
 
@@ -810,6 +809,53 @@ EXEC up_delcommctgr(1);
 
 
 -- 동네생활 게시판
+-- 동네생활 게시판 수정
+SELECT * FROM comm_board;
+CREATE OR REPLACE PROCEDURE up_updCommBoard(
+    pcomm_board_num IN NUMBER
+    ,pmember_num IN NUMBER
+    ,pcomm_ctgr_num IN NUMBER DEFAULT NULL
+    ,pcomm_title IN comm_board.comm_title%TYPE := NULL
+    ,pcomm_content comm_board.comm_content%TYPE := NULL
+    ,pcomm_upload_date IN DATE DEFAULT TO_DATE(SYSDATE, 'YY-MM-DD')
+)
+IS
+    vmember_num comm_board.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
+    SELECT member_num INTO vmember_num
+    FROM comm_board
+    WHERE comm_board_num = pcomm_board_num;
+
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
+
+    UPDATE comm_board
+    SET comm_title = NVL(pcomm_title, comm_title)
+        ,comm_ctgr_num = NVL(pcomm_ctgr_num, comm_ctgr_num)
+        ,comm_content = NVL(pcomm_content, comm_content)
+        ,comm_upload_date = pcomm_upload_date
+    WHERE comm_board_num = pcomm_board_num;
+    
+    
+    DBMS_OUTPUT.PUT_LINE('수정 완료');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Comm board number ' || pcomm_board_num || ' does not exist.');
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred');
+END;
+
+BEGIN
+    up_updCommBoard(pcomm_board_num => 1, pmember_num => 9, pcomm_title => '제목 수정');
+END;
+SELECT * FROM comm_Board;
+-- 동네생활 게시판 삭제
+
 
 
 -- 동네생활 댓글
