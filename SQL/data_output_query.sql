@@ -13,12 +13,13 @@ IS
     vmem_mpoints member.member_manner_points%TYPE;
     vmem_addr   member.member_address%TYPE;
     vbalance danggeun_pay.balance%TYPE;
+    v_mem_count NUMBER;
 BEGIN
     
     SELECT COUNT(*)
         INTO v_mem_count
     FROM member
-    WHERE member_num = 1;
+    WHERE member_num = pmember_num;
     
     SELECT m.member_profile, m.member_nickname, m.member_manner_points, t.count_mem_tboard, m.member_address
         INTO  vmem_profile , vmem_nickname, vmem_mpoints, vcount_memb_tboard, vmem_addr
@@ -44,6 +45,8 @@ BEGIN
 --EXCEPTION
 END;
 
+EXEC up_select_mpage(1);
+
 -- 차단 조회
 CREATE OR REPLACE PROCEDURE up_selBLOCK
 (
@@ -55,20 +58,16 @@ IS
     vtnickname member.member_nickname%TYPE;
     vfnickname member.member_nickname%TYPE;
     vmember_num NUMBER;
+    
 BEGIN
+    
+    SELECT member_num INTO vmember_num
+    FROM member
+    WHERE member_num = pmember_num;
     
     SELECT member_nickname INTO vfnickname
     FROM member
     WHERE member_num = pmember_num;
-    
---    FOR rec IN(
---        SELECT DISTINCT member_nickname INTO vfnickname
---        FROM member m JOIN BLOCK b ON m.member_num = f_block_mem_num)
---    LOOP
---        vfnickname := rec.member_nickname;
---        DBMS_OUTPUT.PUT_LINE(vfnickname || '이');
---    LOOP END;
-
     FOR rec IN(
         SELECT DISTINCT member_nickname INTO vtnickname
         FROM member m JOIN BLOCK b ON m.member_num = t_block_mem_num
@@ -80,6 +79,7 @@ BEGIN
     
 END;
 
+EXEC up_selBLOCK(2);
 
 -- 공지사항 게시판 전체 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
@@ -110,6 +110,8 @@ EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('오류 발생: ');
 END;
+
+EXEC up_selNoticeBoardAll;
 
 -- 공지사항 게시판 상세 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardInfo
@@ -144,6 +146,8 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('공지사항이 없습니다.');
 END;
+
+EXEC up_selNoticeBoardInfo(1);
 
 -- 중고거래 게시판 전체 조회
 DECLARE
@@ -213,8 +217,15 @@ BEGIN
                 ,tb.trade_title title
                 ,ic.item_ctgr_name category_name
                 ,CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || '일 전'
+                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
+                        CASE 
+                            WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
+                            ELSE 
+                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
+                        END
+                    ELSE 
+                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || '일 전'
                 END time
                 ,tb.trade_content content
                 ,TO_CHAR(tb.trade_price, '999,999,999') price
@@ -232,8 +243,15 @@ BEGIN
                 ,SUBSTR(m.member_address, INSTR(m.member_address, '시 ') + 1) 
                 ,m.member_manner_points, tb.trade_title, ic.item_ctgr_name
                 , CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || '일 전'
+                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
+                        CASE 
+                            WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
+                            ELSE 
+                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
+                        END
+                    ELSE 
+                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || '일 전'
                 END
                 , tb.trade_content
         )
@@ -262,6 +280,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
 END;
 
+EXEC up_selTradeBoard(1);
 
 -- 동네생활 게시판 전체 조회
 DECLARE
@@ -312,6 +331,7 @@ BEGIN
                     , SUBSTR(m.member_address,7)    member_address   --게시글회원주소
                     , CASE 
                         WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) * 24 * 60) || '분 전'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) > 30 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) / 30 ) || '개월 전'
                         ELSE TRUNC(SYSDATE - TO_DATE(cb.comm_upload_date)) || '일 전'
                       END upload_date    --업로드일자
                     , cb.comm_title                 title       --게시글제목
@@ -335,13 +355,72 @@ BEGIN
 --EXCEPTION
   -- ROLLBACK;
 END;
---EXEC up_selcommboard(4); 
+
+EXEC up_selcommboard(1);
 
 -- 동네생활 게시판 댓글 조회
+CREATE OR REPLACE PROCEDURE up_checkcmt
+IS
+  vcomm_num comm_cmt.comm_num%TYPE;
+  vmember_num comm_cmt.member_num%TYPE;
+  vcomm_date comm_cmt.comm_date%TYPE;
+  vcomm_content comm_cmt.comm_content%TYPE;
+BEGIN
+  FOR vrow IN 
+  (SELECT 
+    comm_num, member_num, comm_date, comm_content
+   FROM comm_cmt)
+  LOOP
+    vcomm_num := vrow.comm_num;
+    vmember_num := vrow.member_num;
+    vcomm_date := vrow.comm_date;
+    vcomm_content := vrow.comm_content;
 
+    -- 댓글 정보 출력
+    DBMS_OUTPUT.put_line('**댓글 번호: ' || vcomm_num);
+    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
+    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD HH24:MI:SS'));
+    DBMS_OUTPUT.put_line('**댓글 내용: ' || vcomm_content);
+    DBMS_OUTPUT.put_line('-----------------------------');
+  END LOOP;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('**댓글이 존재하지 않습니다.');
+END;
+
+EXEC up_checkcmt;
 
 -- 동네생활 게시판 대댓글 조회
+CREATE OR REPLACE PROCEDURE up_checkReply
+IS
+  vrcmt_num cmt_reply.rcmt_num%TYPE;
+  vmember_num cmt_reply.member_num%TYPE;
+  vrcmt_date cmt_reply.rcmt_date%TYPE;
+  vrcmt_content cmt_reply.rcmt_content%TYPE;
+BEGIN
+  FOR vrow IN 
+  (SELECT 
+    rcmt_num, member_num, rcmt_date, rcmt_content
+   FROM cmt_reply)
+  LOOP
+    vrcmt_num := vrow.rcmt_num;
+    vmember_num := vrow.member_num;
+    vrcmt_date := vrow.rcmt_date;
+    vrcmt_content := vrow.rcmt_content;
 
+    -- 댓글 정보 출력
+    DBMS_OUTPUT.put_line('**대댓글 번호: ' || vrcmt_num);
+    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
+    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vrcmt_date, 'YYYY-MM-DD'));
+    DBMS_OUTPUT.put_line('**대댓글 내용: ' || vrcmt_content);
+    DBMS_OUTPUT.put_line('-----------------------------');
+  END LOOP;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
+END;
+
+EXEC up_checkReply;
 
 -- 채팅방 목록 조회
 CREATE OR REPLACE PROCEDURE seek_list
@@ -350,15 +429,15 @@ CREATE OR REPLACE PROCEDURE seek_list
 )
 is
     vtrade_num chat.trade_num%type;
-    vmember_num2 chat.member_num2%type;
+    vbuyer_num chat.buyer_num%type;
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
     vmember_adress member.member_address%type;
     vmember_manner_points member.member_manner_points%type;
 begin 
 for slc in(
-    select c.trade_num, member_num2, member_nickname, trade_title , member_address, member_manner_points
-    from chat c join member m on c.member_num2 = m.member_num
+    select c.trade_num, buyer_num, member_nickname, trade_title , member_address, member_manner_points
+    from chat c join member m on c.buyer_num = m.member_num
                 join trade_board t on c.trade_num = t.trade_num
     where c.trade_num= ptrade_num)
     
@@ -390,8 +469,8 @@ begin
  DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title  ||'   '||   '채팅 상대방 : ' ||  vmember_nickname  ||'  '|| ' 상대방 매너온도 : ' || vmember_manner_points);
 
 for vcc in(
- select chat_content , member_num2, b.chat_time
-    from chat c join member m on c.member_num2 = m.member_num
+ select chat_content , buyer_num, b.chat_time
+    from chat c join member m on c.buyer_num = m.member_num
                 join chat_board  b on c.trade_num = b.trade_num            
     where b.trade_num=ptrade_num
 
@@ -405,8 +484,3 @@ for vcc in(
 end;
 
 exec seek_chat_content(2);
-
--- 결제 페이지
-
-
-

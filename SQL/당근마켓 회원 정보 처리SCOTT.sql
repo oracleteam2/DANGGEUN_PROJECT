@@ -1,15 +1,4 @@
 
--- 회원 수정
--- 회원 마이페이지 조회
--- 회원삭제
--- 당근페이 금액충전
--- 회원 당근페이 추가
--- 회원 추가
-
-
-
-
-
 -- 회원 마이페이지 조회
 CREATE OR REPLACE PROCEDURE up_select_mpage
 (
@@ -382,13 +371,3 @@ EXECUTE up_insert_pay(1);
 
 -- 채팅방번호, 누른사람넘버, 눌러진사람 넘버, 평가(부정, 긍정)
 EXECUTE( 6, 2, 1, '부정'); 
-
-
-
-
-
-EXECUTE up_insert_pay(6);
-SELECT * FROM danggeun_pay;
-SELECT * FROM member;
-
-ALTER TABLE member DISABLE CONSTRAINT [제약 조건 이름];
