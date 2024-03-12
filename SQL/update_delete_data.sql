@@ -311,15 +311,44 @@ BEGIN
         
         :NEW.trade_num := NULL;
         :NEW.member_num := NULL;
-        
+--        
     END IF;
+--    
+    DELETE FROM trade_board_like
+    WHERE trade_num IS NULL AND member_num IS NULL;
 END;
 
-INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
-VALUES(21, 7, 2);
+-- 멤버넘버, 트레이드 넘버 같은거에서 트레이드 보드 라이크 넘버 가져와서 그번호 삭제
+CREATE OR REPLACE PROCEDURE up_insert_t_board_like
+(
+
+    pt_num NUMBER,
+    pmember_num NUMBER
+)
+IS
+    v_count NUMBER;
+BEGIN
+        SELECT COUNT(*)
+            INTO v_count
+        FROM trade_board_like
+        WHERE trade_num = pt_num AND member_num = pmember_num;
+        
+        IF v_count = 0 THEN
+            INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
+            VALUES(seq_tboard_like.NEXTVAL, 1, 1);
+        ELSIF v_count > 0 THEN
+            DELETE FROM trade_board_like
+            WHERE trade_num = pt_num AND member_num = pmember_num;
+--        ELSE
+        END IF;
+--EXCEPTION
+END;
+
+EXECUTE up_insert_t_board_like(1, 1);
+
 
 DELETE trade_board_like
-where trade_like_num = 1;
+where trade_like_num = 23;
 
 -- 동네생활 카테고리
 
