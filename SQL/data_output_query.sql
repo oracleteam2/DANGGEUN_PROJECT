@@ -1,16 +1,74 @@
 -- SCOTT
--- ë°ì´í„° ì¶œë ¥ìš©(í™”ë©´)
-----
--- íšŒì› ë§ˆì´í˜ì´ì§€ ì¡°íšŒ
+-- µ¥ÀÌÅÍ Ãâ·Â¿ë(È­¸é)
+
+-- È¸¿ø ¸¶ÀÌÆäÀÌÁö Á¶È¸
 
 
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-- °øÁö»çÇ× °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
+CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
 
+IS
+    vnotice_title notice_board.notice_title%TYPE;
+    vnotice_date notice_board.notice_date%TYPE;
+    vadmin_nickname admin.admin_nickname%TYPE;
+    
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×');
+    DBMS_OUTPUT.PUT_LINE(' ');
+    FOR vrow IN (
+    SELECT notice_title
+    , notice_date
+    , admin_nickname
+    FROM notice_board nb JOIN admin a USING(admin_num)
+    ORDER BY vnotice_date
+    )
+    LOOP
+    DBMS_OUTPUT.PUT_LINE('[°øÁö] ' || ' ' || vrow.notice_title);
+    DBMS_OUTPUT.PUT_LINE('Date : ' || vrow.notice_date || '              ' || 'Writer : '|| vrow.admin_nickname);
+    DBMS_OUTPUT.PUT_LINE(' ');
+    END LOOP;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×ÀÌ ¾ø½À´Ï´Ù.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('¿À·ù ¹ß»ı: ');
+END;
 
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- °øÁö»çÇ× °Ô½ÃÆÇ »ó¼¼ Á¶È¸
+CREATE OR REPLACE PROCEDURE up_selNoticeBoardInfo
+(
+    pnotice_num notice_board.notice_num%TYPE
+)
+IS
+    vnotice_title notice_board.notice_title%TYPE;
+    vnotice_content notice_board.notice_content%TYPE;
+    vnotice_date notice_board.notice_date%TYPE;
+    vadmin_nickname admin.admin_nickname%TYPE;
+    
+BEGIN
+    SELECT notice_title
+    , notice_content
+    , notice_date
+    , admin_nickname
+        INTO vnotice_title, vnotice_content, vnotice_date, vadmin_nickname
+    FROM notice_board nb JOIN admin a USING(admin_num)
+    WHERE notice_num = pnotice_num;
+    DBMS_OUTPUT.PUT_LINE('°øÁö');
+    DBMS_OUTPUT.PUT_LINE(' ');
+    DBMS_OUTPUT.PUT_LINE('Title : ' || vnotice_title);
+    DBMS_OUTPUT.PUT_LINE('Date : ' || vnotice_date);
+    DBMS_OUTPUT.PUT_LINE('-------------------------');
+    DBMS_OUTPUT.PUT_LINE(' ');
+    DBMS_OUTPUT.PUT_LINE(vnotice_content);
+    DBMS_OUTPUT.PUT_LINE(' ');
+    DBMS_OUTPUT.PUT_LINE('-------------------------');
+    DBMS_OUTPUT.PUT_LINE('Writer : ' || vadmin_nickname);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×ÀÌ ¾ø½À´Ï´Ù.');
+END;
 
-
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-- Áß°í°Å·¡ °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 DECLARE
   CURSOR trade_board_cursor IS
     SELECT tb.TRADE_NUM,
@@ -35,21 +93,21 @@ BEGIN
   LOOP
     FETCH trade_board_cursor INTO trade_board_rec;
     EXIT WHEN trade_board_cursor%NOTFOUND;
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ë²ˆí˜¸: ' || trade_board_rec.TRADE_NUM);
-    DBMS_OUTPUT.PUT_LINE('íšŒì› ë‹‰ë„¤ì„: ' || trade_board_rec.MEMBER_NICKNAME);
-    DBMS_OUTPUT.PUT_LINE('ì¹´í…Œê³ ë¦¬ : ' || trade_board_rec.item_ctgr_name);
-    DBMS_OUTPUT.PUT_LINE('ì œëª©: ' || trade_board_rec.TRADE_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ë‚´ìš©: ' || trade_board_rec.TRADE_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ì—…ë¡œë“œ ì¼ì: ' || trade_board_rec.UPLOAD_DATE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ê°€ê²©: ' || trade_board_rec.TRADE_PRICE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ìœ„ì¹˜: ' || trade_board_rec.TRADE_LOCATION);
-    DBMS_OUTPUT.PUT_LINE('ì´ë¯¸ì§€ URL: ' || trade_board_rec.IMAGE_URLS);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ ¹øÈ£: ' || trade_board_rec.TRADE_NUM);
+    DBMS_OUTPUT.PUT_LINE('È¸¿ø ´Ğ³×ÀÓ: ' || trade_board_rec.MEMBER_NICKNAME);
+    DBMS_OUTPUT.PUT_LINE('Ä«Å×°í¸® : ' || trade_board_rec.item_ctgr_name);
+    DBMS_OUTPUT.PUT_LINE('Á¦¸ñ: ' || trade_board_rec.TRADE_TITLE);
+    DBMS_OUTPUT.PUT_LINE('³»¿ë: ' || trade_board_rec.TRADE_CONTENT);
+    DBMS_OUTPUT.PUT_LINE('¾÷·Îµå ÀÏÀÚ: ' || trade_board_rec.UPLOAD_DATE);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ °¡°İ: ' || trade_board_rec.TRADE_PRICE);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ À§Ä¡: ' || trade_board_rec.TRADE_LOCATION);
+    DBMS_OUTPUT.PUT_LINE('ÀÌ¹ÌÁö URL: ' || trade_board_rec.IMAGE_URLS);
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
   END LOOP;
   CLOSE trade_board_cursor;
 END;
 
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- Áß°í°Å·¡ °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
     ptrade_num NUMBER
@@ -73,13 +131,13 @@ BEGIN
                   GROUP BY ii.trade_num) item_images
                 ,m.member_profile member_profile_image
                 ,m.member_nickname nickname
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) address
+                ,SUBSTR(m.member_address, INSTR(m.member_address, '½Ã ') + 1) address
                 ,m.member_manner_points manner_point
                 ,tb.trade_title title
                 ,ic.item_ctgr_name category_name
                 ,CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
+                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ºĞ Àü'
+                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ÀÏ Àü'
                 END time
                 ,tb.trade_content content
                 ,TO_CHAR(tb.trade_price, '999,999,999') price
@@ -94,11 +152,11 @@ BEGIN
                 tb.trade_num = ptrade_num
             GROUP BY 
                 tb.trade_num, m.member_profile, m.member_nickname, tb.trade_price
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) 
+                ,SUBSTR(m.member_address, INSTR(m.member_address, '½Ã ') + 1) 
                 ,m.member_manner_points, tb.trade_title, ic.item_ctgr_name
                 , CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
+                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ºĞ Àü'
+                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ÀÏ Àü'
                 END
                 , tb.trade_content
         )
@@ -113,7 +171,7 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE(' ');
             DBMS_OUTPUT.PUT_LINE('Title: ' || rec.title);
             DBMS_OUTPUT.PUT_LINE('Content: ' || rec.content);
-            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || 'ì›');
+            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || '¿ø');
             DBMS_OUTPUT.PUT_LINE(' ');
             DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
             DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
@@ -127,9 +185,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
 END;
 
-EXEC up_selTradeBoard(1);
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 DECLARE
   CURSOR comm_board_cursor IS
     SELECT cb.COMM_BOARD_NUM,
@@ -147,26 +204,26 @@ BEGIN
     FETCH comm_board_cursor INTO comm_board_rec;
     EXIT WHEN comm_board_cursor%NOTFOUND;
     board_number := board_number + 1;
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë²ˆí˜¸: ' || board_number);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì œëª©: ' || comm_board_rec.COMM_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë‚´ìš©: ' || comm_board_rec.COMM_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì¼: ' || comm_board_rec.UPLOAD_DATE);
-    --DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì: ' || comm_board_rec.MEMBER_NICKNAME);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ¹øÈ£: ' || board_number);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° Á¦¸ñ: ' || comm_board_rec.COMM_TITLE);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ³»¿ë: ' || comm_board_rec.COMM_CONTENT);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ÀÛ¼ºÀÏ: ' || comm_board_rec.UPLOAD_DATE);
+    --DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ÀÛ¼ºÀÚ: ' || comm_board_rec.MEMBER_NICKNAME);
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
   END LOOP;
   CLOSE comm_board_cursor;
 END;
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ“ê¸€ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ñ±Û Á¶È¸
 
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ€ëŒ“ê¸€ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ë´ñ±Û Á¶È¸
 
 
--- ì±„íŒ…ë°© ëª©ë¡ ì¡°íšŒ
+-- Ã¤ÆÃ¹æ ¸ñ·Ï Á¶È¸
 CREATE OR REPLACE PROCEDURE seek_list
 (
     ptrade_num chat.trade_num%type
@@ -185,17 +242,12 @@ for slc in(
     
     loop
     
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œíŒ ì œëª© : ' || slc.trade_title ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  slc.member_nickname);    
+    DBMS_OUTPUT.PUT_LINE('°Ô½ÃÆÇ Á¦¸ñ : ' || slc.trade_title ||'   '||   'Ã¤ÆÃ »ó´ë¹æ : ' ||  slc.member_nickname);    
    
     end loop;
 end;
 
-
-
--- ì±„íŒ… ë‚´ìš© ì¡°íšŒ
-
-
-
+-- Ã¤ÆÃ ³»¿ë Á¶È¸
 CREATE OR REPLACE PROCEDURE seek_chat_content
 (
     ptrade_num chat.trade_num%type
@@ -210,7 +262,7 @@ begin
     from trade_board
     where trade_num = ptrade_num;
     
- DBMS_OUTPUT.PUT_LINE('íŒë§¤ì¤‘ì¸ ë¬¼í’ˆ : ' || vtrade_title);
+ DBMS_OUTPUT.PUT_LINE('ÆÇ¸ÅÁßÀÎ ¹°Ç° : ' || vtrade_title);
 
 for vcc in(
  select chat_content , member_num2, member_nickname, trade_title, b.chat_time
@@ -225,9 +277,9 @@ for vcc in(
   loop  
   
   
-    DBMS_OUTPUT.PUT_LINE('ì±„íŒ…ë‚´ìš© : ' || vcc.chat_content  ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  vcc.member_nickname || '   ' || 'ì±„íŒ… ì‹œê°„ : ' || vcc.chat_time);    
+    DBMS_OUTPUT.PUT_LINE('Ã¤ÆÃ³»¿ë : ' || vcc.chat_content  ||'   '||   'Ã¤ÆÃ »ó´ë¹æ : ' ||  vcc.member_nickname || '   ' || 'Ã¤ÆÃ ½Ã°£ : ' || vcc.chat_time);    
    end loop;
 
 end;
 
--- ê²°ì œ í˜ì´ì§€
+-- °áÁ¦ ÆäÀÌÁö
