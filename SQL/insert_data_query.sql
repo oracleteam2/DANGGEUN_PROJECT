@@ -1,7 +1,7 @@
 -- SCOTT
 -- 데이터 삽입
 11
-
+22
 --COMM : COMMUNITY
 --CMT : COMMENT
 --CTGR : CATEGORY
