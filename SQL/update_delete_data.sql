@@ -56,6 +56,9 @@ BEGIN
 END;
 
 -- 회원 삭제
+ALTER TABLE memeber
+DROP CONSTRAINT PK_member CASCADE;
+
 CREATE OR REPLACE PROCEDURE up_delete_member
 (
     pmem_num member.member_num%TYPE
@@ -115,6 +118,10 @@ END;
 EXEC up_updAdmin(1, padmin_id => 'admin1241');
 
 -- 관리자 삭제 프로시저
+
+ALTER TABLE admin
+DROP CONSTRAINT PK_admin CASCADE;
+
 CREATE OR REPLACE PROCEDURE up_delAdmin
 (
     padmin_num admin.admin_num%TYPE
@@ -148,6 +155,7 @@ END;
 
 
 -- 차단
+-- 차단 추가
 CREATE OR REPLACE PROCEDURE up_insBlock
 (
     pf_block_mem_num block.f_block_mem_num%TYPE := NULL
@@ -175,8 +183,6 @@ END;
 
 
 -- 채팅 내용
-
-
 CREATE Or REPLACE PROCEDURE delcontent
 ( ptrade_num chat_board.trade_num%type
 )

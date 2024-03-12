@@ -2,7 +2,47 @@
 -- 데이터 출력용(화면)
 
 -- 회원 마이페이지 조회
+CREATE OR REPLACE PROCEDURE up_select_mpage
+(
+    pmember_num member.member_num%TYPE
+)
+IS
+    vcount_memb_tboard NUMBER;
+    vmem_nickname member.member_nickname%TYPE;
+    vmem_profile member.member_profile%TYPE;
+    vmem_mpoints member.member_manner_points%TYPE;
+    vmem_addr   member.member_address%TYPE;
+    vbalance danggeun_pay.balance%TYPE;
+BEGIN
+    
+    SELECT COUNT(*)
+        INTO v_mem_count
+    FROM member
+    WHERE member_num = 1;
+    
+    SELECT m.member_profile, m.member_nickname, m.member_manner_points, t.count_mem_tboard, m.member_address
+        INTO  vmem_profile , vmem_nickname, vmem_mpoints, vcount_memb_tboard, vmem_addr
+    FROM member m ,(
+        SELECT COUNT(t.member_num) count_mem_tboard
+        FROM member m JOIN trade_board t ON m.member_num = t.member_num 
+        WHERE m.member_num = pmember_num
+            ) t
+    WHERE m.member_num = pmember_num;
+    
+    SELECT balance
+        INTO vbalance
+    FROM danggeun_pay
+    WHERE member_num = pmember_num;
+    
+    DBMS_OUTPUT.PUT( vmem_profile );
+    DBMS_OUTPUT.PUT_LINE( vmem_nickname );
+    DBMS_OUTPUT.PUT_LINE( '당근페이 금액 : ' || vbalance ||'원');
+    DBMS_OUTPUT.PUT_LINE( '매너온도 : ' || vmem_mpoints || '℃' );
+    DBMS_OUTPUT.PUT_LINE( '판매물품 : ' ||vcount_memb_tboard || '개' );
+    DBMS_OUTPUT.PUT_LINE( '주소 : ' || vmem_addr );
 
+--EXCEPTION
+END;
 
 -- 차단 조회
 CREATE OR REPLACE PROCEDURE up_selBLOCK
