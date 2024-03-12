@@ -45,7 +45,7 @@ DELETE trade_board
 WHERE trade_num = 12;
 
 -- 상품 이미지
-SELECT * FROM item_image
+SELECT trade_num, item_image_num, member_num FROM item_image
 ORDER BY trade_num, item_image_num;
 ALTER TABLE item_image ADD member_num NUMBER;
 ROLLBACK;

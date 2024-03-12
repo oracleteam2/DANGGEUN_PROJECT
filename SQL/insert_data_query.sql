@@ -682,12 +682,12 @@ VALUES (
     , '중동'
     );
 -- 접이식 헤어드라이기
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/861b835995343e320e6259fa92c2d3c9b3f059c7b1b226a5cafa3993773daba7_1.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_2.webp?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_0.webp?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/861b835995343e320e6259fa92c2d3c9b3f059c7b1b226a5cafa3993773daba7_1.webp?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/9887accfc129500a7c887f3a94b6441752b6db9f061b690f82777ec7e06e7ed5_2.webp?q=95&s=1440x1440&t=inside&f=webp', 2);
 
 -- 오븐 토스터
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -702,12 +702,12 @@ VALUES (
     , '강남역'
     );
 -- 오븐 토스터
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/08ec535f0dc069be48db7970231f52a662446f8e07d334b7e44f23d97ffa145f_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/community/community/20240216/2ffbac14-1384-480d-acc4-4fdeb42fabb5.png?&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fdnvefa72aowie.cloudfront.net%2Forigin%2Farticle%2F202312%2Fac867456b1fe127309cf94a172a46ac2d514cafc2a982e622383af25493a2f60.jpg%3Fq%3D95%26s%3D1440x1440%26t%3Dinside%26f%3Dwebp&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/08ec535f0dc069be48db7970231f52a662446f8e07d334b7e44f23d97ffa145f_0.webp?q=95&s=1440x1440&t=inside&f=webp', 3);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/community/community/20240216/2ffbac14-1384-480d-acc4-4fdeb42fabb5.png?&f=webp', 3);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fdnvefa72aowie.cloudfront.net%2Forigin%2Farticle%2F202312%2Fac867456b1fe127309cf94a172a46ac2d514cafc2a982e622383af25493a2f60.jpg%3Fq%3D95%26s%3D1440x1440%26t%3Dinside%26f%3Dwebp&type=sc960_832', 3);
 
 -- 와인 글라스 세트
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -722,12 +722,12 @@ VALUES (
     , '노원역'
     );
 -- 와인 글라스 세트
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202402/cc6cf7e733f70887fb9d4963c4e96d22af16021f9a86729c4f1b5f08dd6a8e68.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshopping.phinf.naver.net%2Fmain_3754868%2F37548689017.20230131125646.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20230324_114%2F1679637966978NtLwq_JPEG%2FTLbli_100901_7.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202402/cc6cf7e733f70887fb9d4963c4e96d22af16021f9a86729c4f1b5f08dd6a8e68.jpg?q=95&s=1440x1440&t=inside&f=webp', 4);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshopping.phinf.naver.net%2Fmain_3754868%2F37548689017.20230131125646.jpg&type=sc960_832', 4);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20230324_114%2F1679637966978NtLwq_JPEG%2FTLbli_100901_7.jpg&type=sc960_832', 4);
 
  -- 여성의류 캘빈클라인 반팔티
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -742,14 +742,14 @@ VALUES (
     , '마포역'
     );
  -- 여성의류 캘빈클라인 반팔티
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/51a2ebe878d07f4ff8223922c38bea16a348775645e01ab5ff4fc146499ca61d.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.musinsa.com%2Fmfile_s01%2F2022%2F04%2F15%2Fff67c3458fdaa4d4f3b5e3dc23c5506d184029.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA1MTVfOTkg%2FMDAxNjg0MTUwNTU0MjM4.QyxnLWV6NqLFYleqyR-PK8W_Z7_hgeoXg2RKDEQ6QdQg.kWGLc6KYE0tnxdvtGlQHbtkfQ79kteDu199f559s1Tog.JPEG.tnstnqorqo%2FIMG_8125.JPG&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fck-s3.s3.ap-northeast-2.amazonaws.com%2Fecom%2F24SS%2FCKJ%2FJ223860-YAF%2FJ223860-YAF-ITEM-2.jpg&type=a340');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/51a2ebe878d07f4ff8223922c38bea16a348775645e01ab5ff4fc146499ca61d.jpg?q=95&s=1440x1440&t=inside&f=webp', 5);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.musinsa.com%2Fmfile_s01%2F2022%2F04%2F15%2Fff67c3458fdaa4d4f3b5e3dc23c5506d184029.jpg&type=sc960_832', 5);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA1MTVfOTkg%2FMDAxNjg0MTUwNTU0MjM4.QyxnLWV6NqLFYleqyR-PK8W_Z7_hgeoXg2RKDEQ6QdQg.kWGLc6KYE0tnxdvtGlQHbtkfQ79kteDu199f559s1Tog.JPEG.tnstnqorqo%2FIMG_8125.JPG&type=sc960_832', 5);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fck-s3.s3.ap-northeast-2.amazonaws.com%2Fecom%2F24SS%2FCKJ%2FJ223860-YAF%2FJ223860-YAF-ITEM-2.jpg&type=a340', 5);
 
 -- 까스텔바작 골프의류 니트조끼 사이즈 95
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -764,12 +764,12 @@ VALUES (
     , '수성구청'
     ); 
 -- 까스텔바작 골프의류 니트조끼 사이즈 95
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210828_228%2F163013337942202vwE_JPEG%2F31269162995911619_1021975160.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210710_203%2F1625916196021Ubx5S_JPEG%2F33380828139819908_936957536.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210828_228%2F163013337942202vwE_JPEG%2F31269162995911619_1021975160.jpg&type=sc960_832', 6);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20210710_203%2F1625916196021Ubx5S_JPEG%2F33380828139819908_936957536.jpg&type=sc960_832', 6);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fccimg.hellomarket.com%2Fimages%2F2023%2Fitem%2F02%2F16%2F13%2F2522936_5731861_1.jpg%3Fsize%3Ds6&type=sc960_832', 6);
 
 
 -- 메리다 어린이 자전거
@@ -785,14 +785,14 @@ VALUES (
     , '좌동'
     );   
 -- 메리다 어린이 자전거
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/ac29d7c003f5c248866caf0beb4b197ecfad62315987dbb241d512aa66d4d574_0.webp?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODA0MjdfNTEg%2FMDAxNTI0ODMwNDU5MjM0.EEzN1PjwOjDrsQt6AMdKGUGqZ7GWp8FE17w6Ff5oLgYg.1SUuiexNmY8B7L9vEgMnjcYzvX_iUZdZP0cOvF7ZHZUg.JPEG.1984velo%2FKakaoTalk_20180427_200934077.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA0MDdfMjcg%2FMDAxNTU0NTkxMTA2ODE1.uCJ7D0xtEAz85zKy0c510bZML4FGoZPPWw1kRX9mRrMg.H7DLcFWg2Iry0ZOJ9A0a_keNHGjIOQVRJSF9H5_Olygg.JPEG.kyungin0315%2FAE5B12D6-F4F9-451A-8825-8A539D88F208.jpeg&type=sc960_832' );
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832' );
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/ac29d7c003f5c248866caf0beb4b197ecfad62315987dbb241d512aa66d4d574_0.webp?q=95&s=1440x1440&t=inside&f=webp', 7);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODA0MjdfNTEg%2FMDAxNTI0ODMwNDU5MjM0.EEzN1PjwOjDrsQt6AMdKGUGqZ7GWp8FE17w6Ff5oLgYg.1SUuiexNmY8B7L9vEgMnjcYzvX_iUZdZP0cOvF7ZHZUg.JPEG.1984velo%2FKakaoTalk_20180427_200934077.jpg&type=sc960_832', 7);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTA0MDdfMjcg%2FMDAxNTU0NTkxMTA2ODE1.uCJ7D0xtEAz85zKy0c510bZML4FGoZPPWw1kRX9mRrMg.H7DLcFWg2Iry0ZOJ9A0a_keNHGjIOQVRJSF9H5_Olygg.JPEG.kyungin0315%2FAE5B12D6-F4F9-451A-8825-8A539D88F208.jpeg&type=sc960_832', 7);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMjdfMjA3%2FMDAxNzA2MzQzNjc5MjE0.Ma3dduyAiiLYPyGbnhlADUZnC0ftAZaNrGO8eAUveKgg.z9rEJ1hwJtwifePsI2izr_uxh7kWulM94rqEmSpUfmIg.JPEG.okuro1977%2F%25B8%25DE%25B8%25AE%25B4%25D920.jpg&type=sc960_832', 7 );
 
 
 -- 아동 사운드펜
@@ -808,16 +808,16 @@ VALUES (
     , '중동 스타벅스'
     );     
 -- 아동 사운드펜
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/c05c5dbd0a7f9024e140997cfb00a0d97aba1a67ef280682dccd3a3eabadd00a_0.webp?q=95&s=1440x1440&t=inside&f=webp');    
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDRfNTkg%2FMDAxNzA0MzU5MzQ2MzYw.SnuXXedY-d-o69g7wa4U5rFq0uOGx6I8m3gT5VMX6k4g.iU1C4BUd1IQ-xeHEp-e9wT-lwvUk6IKjj8mFlZZB-SQg.JPEG.yaena1143%2FIMG_2961.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20200304_158%2F1583306549050vLuw0_JPEG%2F20668882615659850_1383306984.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTExMjhfMjYg%2FMDAxNTc0OTIwNDE3NTQ4.SBjpdDpT1NVClTOyhy6zoEA5iYg_cuLKEbkcDoP5JDYg.E7Z3seCuctdf6b5lvyjmUFFmfN8mNrg_v1sdRLk1-ZUg.JPEG%2FexternalFile.jpg&type=sc960_832');
-INSERT INTO item_image ( item_image_num , trade_num , item_image_url)
-VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220503_138%2F1651533711184nSJx7_JPEG%2F52669539010215726_920666573.jpg&type=sc960_832');
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,  'https://dnvefa72aowie.cloudfront.net/origin/article/202403/c05c5dbd0a7f9024e140997cfb00a0d97aba1a67ef280682dccd3a3eabadd00a_0.webp?q=95&s=1440x1440&t=inside&f=webp', 8);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAxMDRfNTkg%2FMDAxNzA0MzU5MzQ2MzYw.SnuXXedY-d-o69g7wa4U5rFq0uOGx6I8m3gT5VMX6k4g.iU1C4BUd1IQ-xeHEp-e9wT-lwvUk6IKjj8mFlZZB-SQg.JPEG.yaena1143%2FIMG_2961.jpg&type=sc960_832', 8);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20200304_158%2F1583306549050vLuw0_JPEG%2F20668882615659850_1383306984.jpg&type=sc960_832', 8);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL,'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxOTExMjhfMjYg%2FMDAxNTc0OTIwNDE3NTQ4.SBjpdDpT1NVClTOyhy6zoEA5iYg_cuLKEbkcDoP5JDYg.E7Z3seCuctdf6b5lvyjmUFFmfN8mNrg_v1sdRLk1-ZUg.JPEG%2FexternalFile.jpg&type=sc960_832', 8);
+INSERT INTO item_image ( item_image_num , trade_num , item_image_url, member_num)
+VALUES ( SEQ_IMAGE.NEXTVAL, SEQ_TBOARD.CURRVAL, 'https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220503_138%2F1651533711184nSJx7_JPEG%2F52669539010215726_920666573.jpg&type=sc960_832', 8);
 
 -- 모니터 거래
 INSERT INTO trade_board ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
@@ -834,10 +834,10 @@ VALUES
     );
 
 -- 모니터 거래 이미지
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/e66df18442ef31f0ebb34d6171d91626863ea6cacdc7e4bc3ef91241d3daafa7.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/5dca6ae7ff3000b33d78f98595a1f0bbbce56472bcdbd7c1ec4628aab36802c9.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/e66df18442ef31f0ebb34d6171d91626863ea6cacdc7e4bc3ef91241d3daafa7.jpg?q=95&s=1440x1440&t=inside&f=webp', 1);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202309/5dca6ae7ff3000b33d78f98595a1f0bbbce56472bcdbd7c1ec4628aab36802c9.jpg?q=95&s=1440x1440&t=inside&f=webp', 1);
 
 
 -- 주니어 자전거
@@ -855,16 +855,16 @@ VALUES
     );
 
 -- 주니어 자전거 이미지    
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/a42229bfc28ea3427d8a61c3032e91bd91d557fef62de6b5b136adf6c1373c53.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/d32d07b745d60a6d252608cce09a3fdfaebfab329a6fc4bd433d6fa0033a83b1.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/ad34d9b59c5e2d1a586113bed1262ff763323741f7c331382e620c293e941d75.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/8c9314be1295267df2b22832cd46b3be30c12e4e1cd552d293a52e1caa9198db.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/7e7eff3d0e19c0f0d63bea281872492944515ebc25e729a4ba60d02275011ea2.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/a42229bfc28ea3427d8a61c3032e91bd91d557fef62de6b5b136adf6c1373c53.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/d32d07b745d60a6d252608cce09a3fdfaebfab329a6fc4bd433d6fa0033a83b1.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/ad34d9b59c5e2d1a586113bed1262ff763323741f7c331382e620c293e941d75.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/8c9314be1295267df2b22832cd46b3be30c12e4e1cd552d293a52e1caa9198db.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202401/7e7eff3d0e19c0f0d63bea281872492944515ebc25e729a4ba60d02275011ea2.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
 
 
 -- 아이폰 거래
@@ -882,12 +882,12 @@ VALUES
     );
 
 -- 아이폰 거래 이미지
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/CF1D735E3998828421B45FCBD98687B733405FCF51E2EA8FD64219FD7A741EE0.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/E9E849356D1CB51E516EB459E5D593F8159705A15FEAF2C899783737A4EB0C7A.jpg?q=95&s=1440x1440&t=inside&f=webp');
-INSERT INTO item_image ( trade_num, item_image_num, item_image_url)
-VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/6EA3286D098D6EF7041FACC4CD0210F197F872987848678C25130E5E848FDEFF.jpg?q=95&s=1440x1440&t=inside&f=webp');
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/CF1D735E3998828421B45FCBD98687B733405FCF51E2EA8FD64219FD7A741EE0.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/E9E849356D1CB51E516EB459E5D593F8159705A15FEAF2C899783737A4EB0C7A.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
+INSERT INTO item_image ( trade_num, item_image_num, item_image_url, member_num)
+VALUES ( seq_tboard.CURRVAL, seq_image.NEXTVAL, 'https://d3pl61q8x5fmnh.cloudfront.net/origin/article/202210/6EA3286D098D6EF7041FACC4CD0210F197F872987848678C25130E5E848FDEFF.jpg?q=95&s=1440x1440&t=inside&f=webp', 2);
 
 COMMIT;
 
