@@ -220,7 +220,7 @@ BEGIN
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || '시간 전'
                             ELSE 
                                 TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
                         END
