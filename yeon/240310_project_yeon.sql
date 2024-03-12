@@ -1,6 +1,6 @@
--------------------------------------------------------------------------Á¶¿¬È­
--- [[µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸]] 
--- up_seltblcommboard µ¿³×°Ô½ÃÆÇÁ¶È¸
+-------------------------------------------------------------------------ì¡°ì—°í™”
+-- [[ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ]] 
+-- up_seltblcommboard ë™ë„¤ê²Œì‹œíŒì¡°íšŒ
 CREATE OR REPLACE PROCEDURE up_selcommboard
 (
     pcomm_board_num NUMBER
@@ -12,19 +12,19 @@ BEGIN
     FROM comm_board
     WHERE comm_board_num = pcomm_board_num;
     
-    FOR com IN ( SELECT  distinct cb.comm_board_num           board_num  --µ¿³×»ıÈ°°Ô½ÃÆÇ³Ñ¹ö
-                    , cc.comm_ctgr_num              ctgr_num  --Ä«Å×°í¸®¹øÈ£
-                    , cc.comm_ctgr_name             ctgr_name  --Ä«Å×°í¸®ÀÌ¸§
-                    , member_profile                profile  --È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö
-                    , member_nickname               nickname  --È¸¿ø´Ğ³×ÀÓ
-                    , SUBSTR(m.member_address,7)    member_address   --°Ô½Ã±ÛÈ¸¿øÁÖ¼Ò
+    FOR com IN ( SELECT  distinct cb.comm_board_num           board_num  --ë™ë„¤ìƒí™œê²Œì‹œíŒë„˜ë²„
+                    , cc.comm_ctgr_num              ctgr_num  --ì¹´í…Œê³ ë¦¬ë²ˆí˜¸
+                    , cc.comm_ctgr_name             ctgr_name  --ì¹´í…Œê³ ë¦¬ì´ë¦„
+                    , member_profile                profile  --íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€
+                    , member_nickname               nickname  --íšŒì›ë‹‰ë„¤ì„
+                    , SUBSTR(m.member_address,7)    member_address   --ê²Œì‹œê¸€íšŒì›ì£¼ì†Œ
                     , CASE 
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) * 24 * 60) || 'ºĞ Àü'
-                        ELSE TRUNC(SYSDATE - TO_DATE(cb.comm_upload_date)) || 'ÀÏ Àü'
-                      END upload_date    --¾÷·ÎµåÀÏÀÚ
-                    , cb.comm_title                 title       --°Ô½Ã±ÛÁ¦¸ñ
-                    , cb.comm_content               comm_content     --°Ô½Ã±Û³»¿ë
-                    , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --°Ô½ÃÆÇÁÁ¾Æ¿ä°¹¼ö 
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) * 24 * 60) || 'ë¶„ ì „'
+                        ELSE TRUNC(SYSDATE - TO_DATE(cb.comm_upload_date)) || 'ì¼ ì „'
+                      END upload_date    --ì—…ë¡œë“œì¼ì
+                    , cb.comm_title                 title       --ê²Œì‹œê¸€ì œëª©
+                    , cb.comm_content               comm_content     --ê²Œì‹œê¸€ë‚´ìš©
+                    , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --ê²Œì‹œíŒì¢‹ì•„ìš”ê°¯ìˆ˜ 
                     FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                                JOIN member m ON cb.member_num = m.member_num 
                                JOIN comm_board_like bl ON cb.member_num = bl.member_num
@@ -46,12 +46,12 @@ END;
 EXEC up_selcommboard(4); 
 
 --------------------------------------------------------------------------------
--- [[µ¿³×»ıÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä]]
--- Ãß°¡/»èÁ¦
+-- [[ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš”]]
+-- ì¶”ê°€/ì‚­ì œ
 SELECT * FROM comm_board_like;
 desc comm_board_like ;
---ÇÁ·Î½ÃÀú
--- up_udtcmtreplylike °Ô½ÃÆÇÁÁ¾Æ¿ä Ãß°¡
+--í”„ë¡œì‹œì €
+-- up_udtcmtreplylike ê²Œì‹œíŒì¢‹ì•„ìš” ì¶”ê°€
 CREATE OR REPLACE PROCEDURE up_insboardlike
 (
     pcomm_like_num  comm_board_like.comm_like_num%TYPE
@@ -64,13 +64,13 @@ BEGIN
     values (pcomm_like_num, pmember_num, pcomm_board_num );
     commit;
     
-    DBMS_OUTPUT.PUT_LINE('µ¿³×»ıÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä ³Ñ¹ö: ' || pcomm_like_num || ', ' || 'È¸¿ø ³Ñ¹ö : ' || pmember_num
-                        || ', ' || 'µ¿³×»ıÈ° °Ô½ÃÆÇ ³Ñ¹ö: ' || ', ' || pcomm_board_num );
+    DBMS_OUTPUT.PUT_LINE('ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš” ë„˜ë²„: ' || pcomm_like_num || ', ' || 'íšŒì› ë„˜ë²„ : ' || pmember_num
+                        || ', ' || 'ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ë„˜ë²„: ' || ', ' || pcomm_board_num );
 --EXCEPTION
 END;
 EXEC up_insboardlike(SEQ_COMM_LIKE.NEXTVAL, 10, 2);
 
---up_delcmtreplylike °Ô½ÃÆÇÁÁ¾Æ¿ä »èÁ¦
+--up_delcmtreplylike ê²Œì‹œíŒì¢‹ì•„ìš” ì‚­ì œ
 CREATE OR REPLACE PROCEDURE up_delboardlike
 (
     pcomm_like_num  comm_board_like.comm_like_num%TYPE
@@ -87,7 +87,15 @@ BEGIN
 END;
 EXEC up_delboardlike(25,10,2);
 
---°Ô½ÃÆÇÁÁ¾Æ¿ä Ãß°¡/»èÁ¦ Æ®¸®°Å
+-- ê²Œì‹œíŒì¢‹ì•„ìš” ì¶”ê°€/ì‚­ì œ íŠ¸ë¦¬ê±° ìƒì„±
+-- íŠ¸ë¦¬ê±° ë§Œë“¤ê¸°ì „ ì„ì‹œí…Œì´ë¸”ìƒì„±
+create table tbl_boardlike
+(   member_num      NUMBER      PRIMARY KEY
+    ,cnt_boardlike    NUMBER    
+    ,  CONSTRAINT FK_tblboardlike_member_num FOREIGN KEY(member_num) REFERENCES tbl_boardlike(member_num)
+);
+
+--ê²Œì‹œíŒì¢‹ì•„ìš” ì¶”ê°€/ì‚­ì œ íŠ¸ë¦¬ê±°
 CREATE OR REPLACE TRIGGER ut_insboardlike
 AFTER
 INSERT OR DELETE ON comm_board_like   
@@ -105,10 +113,10 @@ DESC comm_board_like;
 SELECT * FROM comm_board_like WHERE COMM_BOARD_NUM = 1;
 INSERT INTO comm_board_like VALUES (SEQ_COMM_LIKE.NEXTVAL,2,1 );
 ---------------------------------------------------------------------------------
--- µ¿³×»ıÈ° Ä«Å×°í¸®
--- Ãß°¡/¼öÁ¤/»èÁ¦
+-- ë™ë„¤ìƒí™œ ì¹´í…Œê³ ë¦¬
+-- ì¶”ê°€/ìˆ˜ì •/ì‚­ì œ
 SELECT * FROM comm_ctgr ;
--- UP_INSCOMMCTAR µ¿³×Ä«Å×°í¸® Ãß°¡ÇÁ·Î½ÃÀú
+-- UP_INSCOMMCTAR ë™ë„¤ì¹´í…Œê³ ë¦¬ ì¶”ê°€í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
 (
     pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
@@ -120,13 +128,13 @@ BEGIN
     values (pcomm_ctgr_num, pcomm_ctgr_name );
     commit;
     
-    DBMS_OUTPUT.PUT_LINE('Ä«Å×°í¸®¹øÈ£: ' || pcomm_ctgr_num || ', ' || 'Ä«Å×°í¸®ÀÌ¸§ : ' || pcomm_ctgr_name );
--- EXCEPTION Ä«Å×°í¸® ³Ñ¹ö°¡°°Àº°æ¿ì´Â ÀÔ·ÂµÇÁö¾Êµµ·Ï
+    DBMS_OUTPUT.PUT_LINE('ì¹´í…Œê³ ë¦¬ë²ˆí˜¸: ' || pcomm_ctgr_num || ', ' || 'ì¹´í…Œê³ ë¦¬ì´ë¦„ : ' || pcomm_ctgr_name );
+-- EXCEPTION ì¹´í…Œê³ ë¦¬ ë„˜ë²„ê°€ê°™ì€ê²½ìš°ëŠ” ì…ë ¥ë˜ì§€ì•Šë„ë¡
 END ;
 -- ORA-06502: PL/SQL: numeric or value error: character to number conversion error
-EXEC UP_INSCOMMCTAR ( 7, 'Ãß°¡ÇÏ±â' );
+EXEC UP_INSCOMMCTAR ( 7, 'ì¶”ê°€í•˜ê¸°' );
 
---up_updcommctgr µ¿³×Ä«Å×°í¸® ¼öÁ¤ÇÁ·Î½ÃÀú
+--up_updcommctgr ë™ë„¤ì¹´í…Œê³ ë¦¬ ìˆ˜ì •í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE up_updcommctgr
 (
     pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
@@ -139,12 +147,12 @@ BEGIN
        WHERE comm_ctgr_num = pcomm_ctgr_num; 
        COMMIT;
     
-    DBMS_OUTPUT.PUT_LINE('Ä«Å×°í¸®¹øÈ£: ' || pcomm_ctgr_num || ', ' || 'Ä«Å×°í¸®ÀÌ¸§ : ' || pcomm_ctgr_name );
+    DBMS_OUTPUT.PUT_LINE('ì¹´í…Œê³ ë¦¬ë²ˆí˜¸: ' || pcomm_ctgr_num || ', ' || 'ì¹´í…Œê³ ë¦¬ì´ë¦„ : ' || pcomm_ctgr_name );
 -- EXCEPTION
 END;
-EXEC up_updcommctgr( 7, '»ç¶óÁ®¶ó');
+EXEC up_updcommctgr( 7, 'ì‚¬ë¼ì ¸ë¼');
 
--- »èÁ¦
+-- ì‚­ì œ
 CREATE OR REPLACE PROCEDURE up_delcommctgr
 (
     pcomm_ctgr_num NUMBER
@@ -159,12 +167,12 @@ END;
 EXEC up_delcommctgr(7);
 --
 -----------------------------------------------------------------------------------
--- [[µ¿³×»ıÈ° ´ë´ñ±Û ÁÁ¾Æ¿ä]]
--- Ãß°¡/»èÁ¦
+-- [[ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš”]]
+-- ì¶”ê°€/ì‚­ì œ
 SELECT * FROM cmt_reply_like ;
 DESC cmt_reply_like;
--- ÇÁ·Î½ÃÀú
--- up_inscmtreplylike ´ë´ñ±ÛÁÁ¾Æ¿ä Ãß°¡
+-- í”„ë¡œì‹œì €
+-- up_inscmtreplylike ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš” ì¶”ê°€
 CREATE OR REPLACE PROCEDURE up_inscmtreplylike
 (
     prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
@@ -177,13 +185,13 @@ BEGIN
     values (prcmt_like_num, pmember_num, prcmt_num );
     commit;
     
-    DBMS_OUTPUT.PUT_LINE('µ¿³×»ıÈ° ´ë´ñ±Û ÁÁ¾Æ¿ä ³Ñ¹ö: ' || prcmt_like_num || ', ' || 'È¸¿ø ³Ñ¹ö : ' || pmember_num
-                        || ', ' || 'µ¿³×»ıÈ° ´ë´ñ±Û ³Ñ¹ö: ' || ', ' || prcmt_num );
+    DBMS_OUTPUT.PUT_LINE('ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš” ë„˜ë²„: ' || prcmt_like_num || ', ' || 'íšŒì› ë„˜ë²„ : ' || pmember_num
+                        || ', ' || 'ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€ ë„˜ë²„: ' || ', ' || prcmt_num );
 --EXCEPTION
 END;
 EXEC up_inscmtreplylike(SEQ_RCMT_LIKE.NEXTVAL, 2, 1);
 
---up_delcmtreplylike ´ë´ñ±ÛÁÁ¾Æ¿ä »èÁ¦
+--up_delcmtreplylike ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš” ì‚­ì œ
 CREATE OR REPLACE PROCEDURE up_delcmtreplylike
 (
     prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
@@ -200,7 +208,7 @@ BEGIN
 END;
 EXEC up_delcmtreplylike(23, 2, 1);
 
--- Æ®¸®°Å
+-- ëŒ€ëŒ“ê¸€ ì¶”ê°€/ì‚­ì œ íŠ¸ë¦¬ê±° ìƒì„±
 
 
 

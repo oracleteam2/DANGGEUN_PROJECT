@@ -1,76 +1,76 @@
 -------------------------- danggeun_query_yeon--------------------------
--- [[µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸]] 
--- [µ¿³×»ıÈ°°Ô½ÃÆÇ+µ¿³×»ıÈ°Ä«Å×°í¸®+°Ô½ÃÆÇÁÁ¾Æ¿ä+È¸¿ø+µ¿³×»ıÈ°´ñ±Û+´ñ±ÛÁÁ¾Æ¿ä+´ë´ñ±Û+´ë´ñ±ÛÁÁ¾Æ¿ä]
--- °Ô½ÃÆÇ Á¦¸ñ
--- °Ô½ÃÈ¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö / È¸¿ø´Ğ³×ÀÓ
--- °Ô½ÃÈ¸¿øÁÖ¼Ò / ¾÷·Îµå½Ã°£
--- °Ô½Ã±Û Á¦¸ñ
--- °Ô½Ã±Û ³»¿ë
--- Á¶È¸¼ö X
--- ÁÁ¾Æ¿ä
-SELECT  cb.comm_board_num             --µ¿³×»ıÈ°°Ô½ÃÆÇ³Ñ¹ö
-        , cc.comm_ctgr_num            --Ä«Å×°í¸®¹øÈ£
-        , cc.comm_ctgr_name           --Ä«Å×°í¸®ÀÌ¸§
-        , member_profile              --È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö
-        , member_nickname             --È¸¿ø´Ğ³×ÀÓ
-        , SUBSTR(m.member_address,7)    --°Ô½Ã±ÛÈ¸¿øÁÖ¼Ò
-        , cb.comm_upload_date           --¾÷·ÎµåÀÏÀÚ
-        , cb.comm_title                 --°Ô½Ã±ÛÁ¦¸ñ
-        , cb.comm_content               --°Ô½Ã±Û³»¿ë
-        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) --°Ô½ÃÆÇÁÁ¾Æ¿ä°¹¼ö 
+-- [[ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ]] 
+-- [ë™ë„¤ìƒí™œê²Œì‹œíŒ+ë™ë„¤ìƒí™œì¹´í…Œê³ ë¦¬+ê²Œì‹œíŒì¢‹ì•„ìš”+íšŒì›+ë™ë„¤ìƒí™œëŒ“ê¸€+ëŒ“ê¸€ì¢‹ì•„ìš”+ëŒ€ëŒ“ê¸€+ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”]
+-- ê²Œì‹œíŒ ì œëª©
+-- ê²Œì‹œíšŒì›í”„ë¡œí•„ì´ë¯¸ì§€ / íšŒì›ë‹‰ë„¤ì„
+-- ê²Œì‹œíšŒì›ì£¼ì†Œ / ì—…ë¡œë“œì‹œê°„
+-- ê²Œì‹œê¸€ ì œëª©
+-- ê²Œì‹œê¸€ ë‚´ìš©
+-- ì¡°íšŒìˆ˜ X
+-- ì¢‹ì•„ìš”
+SELECT  cb.comm_board_num             --ë™ë„¤ìƒí™œê²Œì‹œíŒë„˜ë²„
+        , cc.comm_ctgr_num            --ì¹´í…Œê³ ë¦¬ë²ˆí˜¸
+        , cc.comm_ctgr_name           --ì¹´í…Œê³ ë¦¬ì´ë¦„
+        , member_profile              --íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€
+        , member_nickname             --íšŒì›ë‹‰ë„¤ì„
+        , SUBSTR(m.member_address,7)    --ê²Œì‹œê¸€íšŒì›ì£¼ì†Œ
+        , cb.comm_upload_date           --ì—…ë¡œë“œì¼ì
+        , cb.comm_title                 --ê²Œì‹œê¸€ì œëª©
+        , cb.comm_content               --ê²Œì‹œê¸€ë‚´ìš©
+        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) --ê²Œì‹œíŒì¢‹ì•„ìš”ê°¯ìˆ˜ 
 FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                    JOIN member m ON cb.member_num = m.member_num 
                    JOIN comm_board_like bl ON cb.member_num = bl.member_num
                    
-                   --order by cc.comm_ctgr_num --Ä«Å×°í¸®¹øÈ£
+                   --order by cc.comm_ctgr_num --ì¹´í…Œê³ ë¦¬ë²ˆí˜¸
  ;
                     
--- °Ô½ÃÆÇ ÁÁ¾Æ¿ä °³¼ö ¼¼±â
+-- ê²Œì‹œíŒ ì¢‹ì•„ìš” ê°œìˆ˜ ì„¸ê¸°
 SELECT distinct COUNT(comm_board_num) FROM COMM_BOARD_LIKE cbl where cbl.COMM_BOARD_NUM = '11' GROUP BY COMM_BOARD_NUM;
 SELECT * FROM comm_board_like;
--- °Ô½ÃÆÇ ´ñ±Û °¹¼ö ¼¼±â
+-- ê²Œì‹œíŒ ëŒ“ê¸€ ê°¯ìˆ˜ ì„¸ê¸°
 SELECT distinct COUNT(comm_num) FROM comm_cmt where  comm_board_num = '19'  GROUP BY comm_num;
 SELECT * FROM COMM_CMT;
--- °Ô½ÃÆÇ ´ñ±Û ÁÁ¾Æ¿ä °³¼ö ¼¼±â
+-- ê²Œì‹œíŒ ëŒ“ê¸€ ì¢‹ì•„ìš” ê°œìˆ˜ ì„¸ê¸°
 --SELECT comm_board_num, cmt_num  FROM comm_cmt_like ccl  where ccl.comm_board_num = '2' order BY comm_board_num;
 --SELECT * FROM comm_cmt_like; 
--- °Ô½ÃÆÇ ´ë´ñ±Û °¹¼ö ¼¼±â
+-- ê²Œì‹œíŒ ëŒ€ëŒ“ê¸€ ê°¯ìˆ˜ ì„¸ê¸°
 SELECT distinct COUNT(rcmt_num) FROM cmt_reply cr where comm_num = '2'  GROUP BY rcmt_num;
 SELECT * FROM cmt_reply;
--- °Ô½ÃÆÇ ´ë´ñ±Û ÁÁ¾Æ¿ä °¹¼ö ¼¼±â
+-- ê²Œì‹œíŒ ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš” ê°¯ìˆ˜ ì„¸ê¸°
 SELECT distinct COUNT(rcmt_num) FROM cmt_reply_like crl where crl.rcmt_num = '1' GROUP BY rcmt_num;
 SELECT * FROM cmt_reply_like;
 
 
                      
--- ÁÖ¼Ò µ¿ ÀÚ¸£±â
+-- ì£¼ì†Œ ë™ ìë¥´ê¸°
 select SUBSTR(member_address,7) from member ;     
 
-SELECT COUNT(*) FROM cmt_reply GROUP BY cmt_board_num;  -- ´ë´ñ±ÛÁÁ¾Æ¿ä°¹¼ö
+SELECT COUNT(*) FROM cmt_reply GROUP BY cmt_board_num;  -- ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”ê°¯ìˆ˜
 
--- µ¿³×»ıÈ° °Ô½ÃÆÇ+µ¿³×»ıÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä °¹¼ö
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ+ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš” ê°¯ìˆ˜
 SELECT t.*
 from(
-select count(comm_like_num) °Ô½ÃÆÇÁÁ¾Æ¿ä³Ñ¹ö         
+select count(comm_like_num) ê²Œì‹œíŒì¢‹ì•„ìš”ë„˜ë²„         
 from comm_board cb JOIN comm_board_like cbl ON cb.comm_board_num = cbl.comm_board_num
 group by cb.comm_board_num, comm_ctgr_num
 order by cb.comm_board_num
 ) t;
 --
-select cb.comm_board_num °Ô½ÃÆÇ¹øÈ£
-        , comm_ctgr_num °Ô½ÃÆÇÄ«Å×°í¸®¹øÈ£
-        , count(comm_like_num) °Ô½ÃÆÇÁÁ¾Æ¿ä³Ñ¹ö         
+select cb.comm_board_num ê²Œì‹œíŒë²ˆí˜¸
+        , comm_ctgr_num ê²Œì‹œíŒì¹´í…Œê³ ë¦¬ë²ˆí˜¸
+        , count(comm_like_num) ê²Œì‹œíŒì¢‹ì•„ìš”ë„˜ë²„         
 from comm_board cb JOIN comm_board_like cbl ON cb.comm_board_num = cbl.comm_board_num
 group by cb.comm_board_num, comm_ctgr_num
 order by cb.comm_board_num;
 --
-select cb.comm_board_num °Ô½ÃÆÇ¹øÈ£
-        , comm_ctgr_num °Ô½ÃÆÇÄ«Å×°í¸®¹øÈ£
-        , comm_like_num °Ô½ÃÆÇÁÁ¾Æ¿ä³Ñ¹ö         
+select cb.comm_board_num ê²Œì‹œíŒë²ˆí˜¸
+        , comm_ctgr_num ê²Œì‹œíŒì¹´í…Œê³ ë¦¬ë²ˆí˜¸
+        , comm_like_num ê²Œì‹œíŒì¢‹ì•„ìš”ë„˜ë²„         
 from comm_board cb JOIN comm_board_like cbl ON cb.comm_board_num = cbl.comm_board_num
 order by cb.comm_board_num;
 
--- µ¿³×»ıÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä °¹¼ö Á¶È¸
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš” ê°¯ìˆ˜ ì¡°íšŒ
 --SELECT *
 --FROM (
 --    SELECT comm_board_num
@@ -78,7 +78,7 @@ order by cb.comm_board_num;
 --    )
 --PIVOT( COUNT(comm_board_num) FOR comm_board_num IN ('1', '2','3','4','5','6','7','8','9','10'
 --                                                   , '11', '12','13','14','15','16','17','18','19','20') );
--- up_updtboardlike ÇÁ·Î½Ã¼­ »ı¼º - Ãß°¡                                                   
+-- up_updtboardlike í”„ë¡œì‹œì„œ ìƒì„± - ì¶”ê°€                                                   
 --CREATE OR REPLACE PROCEDURE up_updtboardlike
 --(
 --    prcmt_like_num  comm_board_like.rcmt_like_num%TYPE := NULL
@@ -90,7 +90,7 @@ order by cb.comm_board_num;
 --  vmember_num comm_board_like.member_num%TYPE;
 --  vrcmt_num   comm_board_like.prcmt_num%TYPE;
 --BEGIN
---    -- ¼öÁ¤ ÀüÀÇ ¿ø·¡ dname, loc
+--    -- ìˆ˜ì • ì „ì˜ ì›ë˜ dname, loc
 --    SELECT rcmt_like_num, member_num, rcmt_num INTO vrcmt_like_num, vmember_num, vrcmt_num
 --    FROM comm_board_like
 --    WHERE rcmt_num = prcmt_num; 
@@ -115,57 +115,57 @@ order by cb.comm_board_num;
 --    COMMIT;
 ---- EXCEPTION
 --END;
--- »èÁ¦
+-- ì‚­ì œ
 
 ---------------------------------------------------
--- [[µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸]] 
--- [µ¿³×»ıÈ°°Ô½ÃÆÇ+µ¿³×»ıÈ°Ä«Å×°í¸®+°Ô½ÃÆÇÁÁ¾Æ¿ä+È¸¿ø+µ¿³×»ıÈ°´ñ±Û+´ñ±ÛÁÁ¾Æ¿ä+´ë´ñ±Û+´ë´ñ±ÛÁÁ¾Æ¿ä]
--- °Ô½ÃÆÇ Á¦¸ñ
--- °Ô½ÃÈ¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö / È¸¿ø´Ğ³×ÀÓ
--- °Ô½ÃÈ¸¿øÁÖ¼Ò / ¾÷·Îµå½Ã°£
--- °Ô½Ã±Û Á¦¸ñ
--- °Ô½Ã±Û ³»¿ë
--- Á¶È¸¼ö
--- ÁÁ¾Æ¿ä
--- ´ñ±Û °¹¼ö
--- ´ñ±ÛÈ¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö / È¸¿ø´Ğ³×ÀÓ
--- ´ñ±ÛÈ¸¿øÁÖ¼Ò / ¾÷·Îµå ½Ã°£
--- ´ñ±Û ³»¿ë
--- ´ñ±Û ÁÁ¾Æ¿ä °¹¼ö
--- ´ë´ñ±Û È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö / È¸¿ø´Ğ³×ÀÓ
--- ´ë´ñ±ÛÈ¸¿øÁÖ¼Ò / ¾÷·Îµå ½Ã°£
--- ´ë´ñ±Û ³»¿ë
--- ´ë´ñ±Û ÁÁ¾Æ¿ä °¹¼ö
--- ¿ì¸® µ¿³× ÀÎ±â±Û
--- °Ô½ÃÆÇ Á¦¸ñ
--- °Ô½Ã±Û Á¦¸ñ
--- °Ô½Ã±Û ³»¿ë
--- È¸¿øÁÖ¼Ò / ¾÷·Îµå½Ã°£ / Á¶È¸¼ö / ÁÁ¾Æ¿ä¼ö / ´ñ±Û¼ö
+-- [[ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ]] 
+-- [ë™ë„¤ìƒí™œê²Œì‹œíŒ+ë™ë„¤ìƒí™œì¹´í…Œê³ ë¦¬+ê²Œì‹œíŒì¢‹ì•„ìš”+íšŒì›+ë™ë„¤ìƒí™œëŒ“ê¸€+ëŒ“ê¸€ì¢‹ì•„ìš”+ëŒ€ëŒ“ê¸€+ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”]
+-- ê²Œì‹œíŒ ì œëª©
+-- ê²Œì‹œíšŒì›í”„ë¡œí•„ì´ë¯¸ì§€ / íšŒì›ë‹‰ë„¤ì„
+-- ê²Œì‹œíšŒì›ì£¼ì†Œ / ì—…ë¡œë“œì‹œê°„
+-- ê²Œì‹œê¸€ ì œëª©
+-- ê²Œì‹œê¸€ ë‚´ìš©
+-- ì¡°íšŒìˆ˜
+-- ì¢‹ì•„ìš”
+-- ëŒ“ê¸€ ê°¯ìˆ˜
+-- ëŒ“ê¸€íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€ / íšŒì›ë‹‰ë„¤ì„
+-- ëŒ“ê¸€íšŒì›ì£¼ì†Œ / ì—…ë¡œë“œ ì‹œê°„
+-- ëŒ“ê¸€ ë‚´ìš©
+-- ëŒ“ê¸€ ì¢‹ì•„ìš” ê°¯ìˆ˜
+-- ëŒ€ëŒ“ê¸€ íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€ / íšŒì›ë‹‰ë„¤ì„
+-- ëŒ€ëŒ“ê¸€íšŒì›ì£¼ì†Œ / ì—…ë¡œë“œ ì‹œê°„
+-- ëŒ€ëŒ“ê¸€ ë‚´ìš©
+-- ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš” ê°¯ìˆ˜
+-- ìš°ë¦¬ ë™ë„¤ ì¸ê¸°ê¸€
+-- ê²Œì‹œíŒ ì œëª©
+-- ê²Œì‹œê¸€ ì œëª©
+-- ê²Œì‹œê¸€ ë‚´ìš©
+-- íšŒì›ì£¼ì†Œ / ì—…ë¡œë“œì‹œê°„ / ì¡°íšŒìˆ˜ / ì¢‹ì•„ìš”ìˆ˜ / ëŒ“ê¸€ìˆ˜
 
 select * from comm_board ;
 desc comm_board;
 --
-SELECT  cb.comm_board_num               --µ¿³×»ıÈ°°Ô½ÃÆÇ³Ñ¹ö
-        , cc.comm_ctgr_name             --  Ä«Å×°í¸®ÀÌ¸§
-        , m.member_profile              --°Ô½Ã±ÛÈ¸¿øÇÁ·ÎÇÊ
-        , m.member_nickname             --°Ô½Ã±ÛÈ¸¿ø´Ğ³×ÀÓ
-        , SUBSTR(m.member_address,7)    --°Ô½Ã±ÛÈ¸¿øÁÖ¼Ò
-        , cb.comm_upload_date           --¾÷·ÎµåÀÏÀÚ
-        , cb.comm_title                 --°Ô½Ã±ÛÁ¦¸ñ
-        , cb.comm_content               --°Ô½Ã±Û³»¿ë
-        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) °Ô½ÃÆÇÁÁ¾Æ¿ä°¹¼ö 
-         ,(SELECT distinct COUNT(comm_num) FROM comm_cmt cct where cct.comm_board_num = cb.comm_board_num   GROUP BY comm_num)        °Ô½ÃÆÇ´ñ±Û°¹¼ö
-        , (select member_profile from member where member_num = cct.member_num ) ´ñ±ÛÈ¸¿øÇÁ·ÎÇÊ
-        , (select member_nickname from member where member_num = cct.member_num ) ´ñ±ÛÈ¸¿ø´Ğ³×ÀÓ  
-        , (select SUBSTR(member_address,7) from member where member_num = cct.member_num ) ´ñ±ÛÈ¸¿øÁÖ¼Ò
-        , cct.comm_content              ´ñ±Û³»¿ë
-        --, (SELECT distinct COUNT(cmt_num) FROM comm_cmt_like ccl where ccl.comm_board_num = cb.comm_board_num GROUP BY cmt_num ) ´ñ±ÛÁÁ¾Æ¿ä°¹¼ö
-        , (SELECT distinct COUNT(rcmt_num) FROM cmt_reply cr where cr.comm_num = cct.comm_num  GROUP BY rcmt_num )  ´ë´ñ±Û°¹¼ö
-        , (select member_profile from member where member_num = cr.member_num ) ´ë´ñ±ÛÈ¸¿øÇÁ·ÎÇÊ
-        , (select member_nickname from member where member_num = cr.member_num ) ´ë´ñ±ÛÈ¸¿ø´Ğ³×ÀÓ  
-        , (select SUBSTR(member_address,7) from member where member_num = cr.member_num )  ´ë´ñ±ÛÈ¸¿øÁÖ¼Ò
-        , rcmt_content                                                           ´ë´ñ±Û³»¿ë
-        , (SELECT distinct COUNT(rcmt_num) FROM cmt_reply_like crl where crl.rcmt_num = cr.rcmt_num GROUP BY rcmt_num )´ë´ñ±ÛÁÁ¾Æ¿ä°¹¼ö
+SELECT  cb.comm_board_num               --ë™ë„¤ìƒí™œê²Œì‹œíŒë„˜ë²„
+        , cc.comm_ctgr_name             --  ì¹´í…Œê³ ë¦¬ì´ë¦„
+        , m.member_profile              --ê²Œì‹œê¸€íšŒì›í”„ë¡œí•„
+        , m.member_nickname             --ê²Œì‹œê¸€íšŒì›ë‹‰ë„¤ì„
+        , SUBSTR(m.member_address,7)    --ê²Œì‹œê¸€íšŒì›ì£¼ì†Œ
+        , cb.comm_upload_date           --ì—…ë¡œë“œì¼ì
+        , cb.comm_title                 --ê²Œì‹œê¸€ì œëª©
+        , cb.comm_content               --ê²Œì‹œê¸€ë‚´ìš©
+        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) ê²Œì‹œíŒì¢‹ì•„ìš”ê°¯ìˆ˜ 
+         ,(SELECT distinct COUNT(comm_num) FROM comm_cmt cct where cct.comm_board_num = cb.comm_board_num   GROUP BY comm_num)        ê²Œì‹œíŒëŒ“ê¸€ê°¯ìˆ˜
+        , (select member_profile from member where member_num = cct.member_num ) ëŒ“ê¸€íšŒì›í”„ë¡œí•„
+        , (select member_nickname from member where member_num = cct.member_num ) ëŒ“ê¸€íšŒì›ë‹‰ë„¤ì„  
+        , (select SUBSTR(member_address,7) from member where member_num = cct.member_num ) ëŒ“ê¸€íšŒì›ì£¼ì†Œ
+        , cct.comm_content              ëŒ“ê¸€ë‚´ìš©
+        --, (SELECT distinct COUNT(cmt_num) FROM comm_cmt_like ccl where ccl.comm_board_num = cb.comm_board_num GROUP BY cmt_num ) ëŒ“ê¸€ì¢‹ì•„ìš”ê°¯ìˆ˜
+        , (SELECT distinct COUNT(rcmt_num) FROM cmt_reply cr where cr.comm_num = cct.comm_num  GROUP BY rcmt_num )  ëŒ€ëŒ“ê¸€ê°¯ìˆ˜
+        , (select member_profile from member where member_num = cr.member_num ) ëŒ€ëŒ“ê¸€íšŒì›í”„ë¡œí•„
+        , (select member_nickname from member where member_num = cr.member_num ) ëŒ€ëŒ“ê¸€íšŒì›ë‹‰ë„¤ì„  
+        , (select SUBSTR(member_address,7) from member where member_num = cr.member_num )  ëŒ€ëŒ“ê¸€íšŒì›ì£¼ì†Œ
+        , rcmt_content                                                           ëŒ€ëŒ“ê¸€ë‚´ìš©
+        , (SELECT distinct COUNT(rcmt_num) FROM cmt_reply_like crl where crl.rcmt_num = cr.rcmt_num GROUP BY rcmt_num )ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”ê°¯ìˆ˜
 FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                    JOIN member m ON cb.member_num = m.member_num 
                    JOIN comm_board_like cbl ON cb.member_num = cbl.member_num
@@ -175,54 +175,54 @@ FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num
                    JOIN cmt_reply_like crl ON crl.rcmt_num = cr.rcmt_num
                    ;
 ----------------------------------------
--- up_commboard µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸ ÇÁ·Î½ÃÀú1
+-- up_commboard ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ í”„ë¡œì‹œì €1
 -----------------------------------------
 -------------------------------------------------------
--- up_seltblcommboard µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸ ÇÁ·Î½ÃÀú2
+-- up_seltblcommboard ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ í”„ë¡œì‹œì €2
 -------------------------------------------------------
--- Áø¼º´Ô---------------------------------------------------------
--- µ¿³×»ıÈ°´ë´ñ±ÛÁÁ¾Æ¿äÅ×ÀÌºí
+-- ì§„ì„±ë‹˜---------------------------------------------------------
+-- ë™ë„¤ìƒí™œëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”í…Œì´ë¸”
 SELECT * FROM
 cmt_reply_like;  
-------------------------´ë´ñ±ÛÁÁ¾Æ¿ä°¹¼ö
+------------------------ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”ê°¯ìˆ˜
 SELECT DISTINCT rcmt_num, COUNT(*) like_count 
-from cmt_Reply_like -- µ¿³×´ë´ñ±ÛÁÁ¾Æ¿ä
+from cmt_Reply_like -- ë™ë„¤ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”
 GROUP BY rcmt_num;
 
--- µ¿³×»ıÈ°´ñ±ÛÁÁ¾Æ¿äÅ×ÀÌºí
+-- ë™ë„¤ìƒí™œëŒ“ê¸€ì¢‹ì•„ìš”í…Œì´ë¸”
 SELECT * 
 FROM comm_cmt_like; 
 ----------------------------------------------------------------
 
--- µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸
--- µ¿³×»ıÈ° °Ô½ÃÆÇ ÁÁ¾Æ¿ä
--- µ¿³×»ıÈ° Ä«Å×°í¸®
--- µ¿³×»ıÈ° ´ë´ñ±Û ÁÁ¾Æ¿ä
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¢‹ì•„ìš”
+-- ë™ë„¤ìƒí™œ ì¹´í…Œê³ ë¦¬
+-- ë™ë„¤ìƒí™œ ëŒ€ëŒ“ê¸€ ì¢‹ì•„ìš”
 
--- TBL_COMMBOARD Å×ÀÌºí »ı¼º
+-- TBL_COMMBOARD í…Œì´ë¸” ìƒì„±
 CREATE TABLE tbl_commboard
 AS
-(       SELECT  cb.comm_board_num       board_num  --µ¿³×»ıÈ°°Ô½ÃÆÇ³Ñ¹ö
-        , cc.comm_ctgr_num              ctgr_num  --Ä«Å×°í¸®¹øÈ£
-        , cc.comm_ctgr_name             ctgr_name  --Ä«Å×°í¸®ÀÌ¸§
-        , member_profile                profile  --È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö
-        , member_nickname               nickname  --È¸¿ø´Ğ³×ÀÓ
-        , SUBSTR(m.member_address,7)    member_address   --°Ô½Ã±ÛÈ¸¿øÁÖ¼Ò
-        , cb.comm_upload_date           upload_date    --¾÷·ÎµåÀÏÀÚ
-        , cb.comm_title                 title       --°Ô½Ã±ÛÁ¦¸ñ
-        , cb.comm_content               comm_content     --°Ô½Ã±Û³»¿ë
-        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --°Ô½ÃÆÇÁÁ¾Æ¿ä°¹¼ö 
+(       SELECT  cb.comm_board_num       board_num  --ë™ë„¤ìƒí™œê²Œì‹œíŒë„˜ë²„
+        , cc.comm_ctgr_num              ctgr_num  --ì¹´í…Œê³ ë¦¬ë²ˆí˜¸
+        , cc.comm_ctgr_name             ctgr_name  --ì¹´í…Œê³ ë¦¬ì´ë¦„
+        , member_profile                profile  --íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€
+        , member_nickname               nickname  --íšŒì›ë‹‰ë„¤ì„
+        , SUBSTR(m.member_address,7)    member_address   --ê²Œì‹œê¸€íšŒì›ì£¼ì†Œ
+        , cb.comm_upload_date           upload_date    --ì—…ë¡œë“œì¼ì
+        , cb.comm_title                 title       --ê²Œì‹œê¸€ì œëª©
+        , cb.comm_content               comm_content     --ê²Œì‹œê¸€ë‚´ìš©
+        , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --ê²Œì‹œíŒì¢‹ì•„ìš”ê°¯ìˆ˜ 
         FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                    JOIN member m ON cb.member_num = m.member_num 
                    JOIN comm_board_like bl ON cb.member_num = bl.member_num   
 );
 
--- [[µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸]] 
--- [µ¿³×»ıÈ°°Ô½ÃÆÇ+µ¿³×»ıÈ°Ä«Å×°í¸®+°Ô½ÃÆÇÁÁ¾Æ¿ä+È¸¿ø+µ¿³×»ıÈ°´ñ±Û+´ñ±ÛÁÁ¾Æ¿ä+´ë´ñ±Û+´ë´ñ±ÛÁÁ¾Æ¿ä]
--- °Ô½ÃÆÇ Á¦¸ñ
--- °Ô½ÃÈ¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö / È¸¿ø´Ğ³×ÀÓ
--- °Ô½ÃÈ¸¿øÁÖ¼Ò / ¾÷·Îµå½Ã°£
--- °Ô½Ã±Û Á¦¸ñ
--- °Ô½Ã±Û ³»¿ë
--- Á¶È¸¼ö X
--- ÁÁ¾Æ¿ä
+-- [[ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ]] 
+-- [ë™ë„¤ìƒí™œê²Œì‹œíŒ+ë™ë„¤ìƒí™œì¹´í…Œê³ ë¦¬+ê²Œì‹œíŒì¢‹ì•„ìš”+íšŒì›+ë™ë„¤ìƒí™œëŒ“ê¸€+ëŒ“ê¸€ì¢‹ì•„ìš”+ëŒ€ëŒ“ê¸€+ëŒ€ëŒ“ê¸€ì¢‹ì•„ìš”]
+-- ê²Œì‹œíŒ ì œëª©
+-- ê²Œì‹œíšŒì›í”„ë¡œí•„ì´ë¯¸ì§€ / íšŒì›ë‹‰ë„¤ì„
+-- ê²Œì‹œíšŒì›ì£¼ì†Œ / ì—…ë¡œë“œì‹œê°„
+-- ê²Œì‹œê¸€ ì œëª©
+-- ê²Œì‹œê¸€ ë‚´ìš©
+-- ì¡°íšŒìˆ˜ X
+-- ì¢‹ì•„ìš”

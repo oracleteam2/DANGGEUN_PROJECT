@@ -1,233 +1,37 @@
 -- SCOTT
--- ë°ì´í„° ì¶œë ¥ìš©(í™”ë©´)
-----
--- íšŒì› ë§ˆì´í˜ì´ì§€ ì¡°íšŒ
+-- µ¥ÀÌÅÍ Ãâ·Â¿ë(È­¸é)
+
+-- È¸¿ø ¸¶ÀÌÆäÀÌÁö Á¶È¸
 
 
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-- °øÁö»çÇ× °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 
 
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- °øÁö»çÇ× °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 
 
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
-DECLARE
-  CURSOR trade_board_cursor IS
-    SELECT tb.TRADE_NUM,
-           m.MEMBER_NICKNAME,
-             c.item_ctgr_name,
-           tb.TRADE_TITLE,
-           tb.TRADE_CONTENT,
-           TO_CHAR(tb.UPLOAD_DATE, 'YY-MM-DD') AS UPLOAD_DATE,
-           tb.TRADE_PRICE,
-           tb.TRADE_LOCATION,
-          
-           LISTAGG(i.ITEM_IMAGE_URL, ', ') WITHIN GROUP (ORDER BY i.ITEM_IMAGE_NUM) AS IMAGE_URLS
-    FROM TRADE_BOARD tb
-         JOIN MEMBER m ON tb.MEMBER_NUM = m.MEMBER_NUM
-         JOIN ITEM_IMAGE i ON tb.TRADE_NUM = i.TRADE_NUM
-         JOIN item_ctgr c ON tb.selitem_ctgr_num = c.item_ctgr_num
-    GROUP BY tb.TRADE_NUM, m.MEMBER_NICKNAME,   c.item_ctgr_name, tb.TRADE_TITLE, tb.TRADE_CONTENT, tb.UPLOAD_DATE, tb.TRADE_PRICE, tb.TRADE_LOCATION;
-
-  trade_board_rec trade_board_cursor%ROWTYPE;
-BEGIN
-  OPEN trade_board_cursor;
-  LOOP
-    FETCH trade_board_cursor INTO trade_board_rec;
-    EXIT WHEN trade_board_cursor%NOTFOUND;
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ë²ˆí˜¸: ' || trade_board_rec.TRADE_NUM);
-    DBMS_OUTPUT.PUT_LINE('íšŒì› ë‹‰ë„¤ì„: ' || trade_board_rec.MEMBER_NICKNAME);
-    DBMS_OUTPUT.PUT_LINE('ì¹´í…Œê³ ë¦¬ : ' || trade_board_rec.item_ctgr_name);
-    DBMS_OUTPUT.PUT_LINE('ì œëª©: ' || trade_board_rec.TRADE_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ë‚´ìš©: ' || trade_board_rec.TRADE_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ì—…ë¡œë“œ ì¼ì: ' || trade_board_rec.UPLOAD_DATE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ê°€ê²©: ' || trade_board_rec.TRADE_PRICE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ìœ„ì¹˜: ' || trade_board_rec.TRADE_LOCATION);
-    DBMS_OUTPUT.PUT_LINE('ì´ë¯¸ì§€ URL: ' || trade_board_rec.IMAGE_URLS);
-    DBMS_OUTPUT.PUT_LINE('----------------------------------');
-  END LOOP;
-  CLOSE trade_board_cursor;
-END;
-
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
-CREATE OR REPLACE PROCEDURE up_selTradeBoard
-(
-    ptrade_num NUMBER
-)
-IS
-    vtrade_num NUMBER;
-BEGIN
-    SELECT trade_num INTO vtrade_num
-    FROM trade_board
-    WHERE trade_num = ptrade_num;
-    
-    IF vtrade_num = 0 THEN
-        DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
-    ELSE
-        FOR rec IN (
-            SELECT  
-                tb.trade_num
-                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url) 
-                  FROM item_image ii 
-                  WHERE ii.trade_num = tb.trade_num
-                  GROUP BY ii.trade_num) item_images
-                ,m.member_profile member_profile_image
-                ,m.member_nickname nickname
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) address
-                ,m.member_manner_points manner_point
-                ,tb.trade_title title
-                ,ic.item_ctgr_name category_name
-                ,CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
-                END time
-                ,tb.trade_content content
-                ,TO_CHAR(tb.trade_price, '999,999,999') price
-                ,COUNT(DISTINCT tbl.member_num) like_count
-            FROM 
-                item_image ii 
-                JOIN trade_board tb ON ii.trade_num = tb.trade_num
-                JOIN member m ON m.member_num = tb.member_num
-                JOIN item_ctgr ic ON ic.item_ctgr_num = tb.selitem_ctgr_num
-                LEFT JOIN trade_board_like tbl ON tbl.trade_num = tb.trade_num
-            WHERE 
-                tb.trade_num = ptrade_num
-            GROUP BY 
-                tb.trade_num, m.member_profile, m.member_nickname, tb.trade_price
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) 
-                ,m.member_manner_points, tb.trade_title, ic.item_ctgr_name
-                , CASE 
-                    WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
-                    ELSE TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
-                END
-                , tb.trade_content
-        )
-        LOOP
-            DBMS_OUTPUT.PUT_LINE('Item Image:');
-            DBMS_OUTPUT.PUT(rec.item_images);
-            DBMS_OUTPUT.PUT_LINE(' ');
-            DBMS_OUTPUT.PUT_LINE('Member Profile Image: ' || rec.member_profile_image);
-            DBMS_OUTPUT.PUT_LINE('Nickname: ' || rec.nickname);
-            DBMS_OUTPUT.PUT_LINE('Address: ' || rec.address);
-            DBMS_OUTPUT.PUT_LINE('Manner Point: ' || rec.manner_point);
-            DBMS_OUTPUT.PUT_LINE(' ');
-            DBMS_OUTPUT.PUT_LINE('Title: ' || rec.title);
-            DBMS_OUTPUT.PUT_LINE('Content: ' || rec.content);
-            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || 'ì›');
-            DBMS_OUTPUT.PUT_LINE(' ');
-            DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
-            DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
-            DBMS_OUTPUT.PUT_LINE('Like Count: ' || rec.like_count);
-        END LOOP;
-    END IF;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('An error occurred.');
-END;
-
-EXEC up_selTradeBoard(1);
-
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
-DECLARE
-  CURSOR comm_board_cursor IS
-    SELECT cb.COMM_BOARD_NUM,
-           cb.COMM_TITLE,
-           cb.COMM_CONTENT,
-           TO_CHAR(cb.COMM_UPLOAD_DATE, 'YY-MM-DD') AS UPLOAD_DATE
-          -- m.MEMBER_NICKNAME
-    FROM comm_board cb
-    JOIN member m ON cb.MEMBER_NUM = m.MEMBER_NUM;
-  comm_board_rec comm_board_cursor%ROWTYPE;
-  board_number NUMBER := 0;
-BEGIN
-  OPEN comm_board_cursor;
-  LOOP
-    FETCH comm_board_cursor INTO comm_board_rec;
-    EXIT WHEN comm_board_cursor%NOTFOUND;
-    board_number := board_number + 1;
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë²ˆí˜¸: ' || board_number);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì œëª©: ' || comm_board_rec.COMM_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë‚´ìš©: ' || comm_board_rec.COMM_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì¼: ' || comm_board_rec.UPLOAD_DATE);
-    --DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì: ' || comm_board_rec.MEMBER_NICKNAME);
-    DBMS_OUTPUT.PUT_LINE('----------------------------------');
-  END LOOP;
-  CLOSE comm_board_cursor;
-END;
-
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- Áß°í°Å·¡ °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ“ê¸€ ì¡°íšŒ
+-- Áß°í°Å·¡ °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ€ëŒ“ê¸€ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 
 
--- ì±„íŒ…ë°© ëª©ë¡ ì¡°íšŒ
-CREATE OR REPLACE PROCEDURE seek_list
-(
-    ptrade_num chat.trade_num%type
-)
-is
-    vtrade_num chat.trade_num%type;
-    vmember_num2 chat.member_num2%type;
-    vmember_nickname member.member_nickname%type;
-    vtrade_title trade_board.trade_title%type;
-begin 
-for slc in(
-    select c.trade_num, member_num2, member_nickname, trade_title 
-    from chat c join member m on c.member_num2 = m.member_num
-                join trade_board t on c.trade_num = t.trade_num
-    where c.trade_num= ptrade_num)
-    
-    loop
-    
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œíŒ ì œëª© : ' || slc.trade_title ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  slc.member_nickname);    
-   
-    end loop;
-end;
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 
 
-
--- ì±„íŒ… ë‚´ìš© ì¡°íšŒ
-
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ñ±Û Á¶È¸
 
 
-CREATE OR REPLACE PROCEDURE seek_chat_content
-(
-    ptrade_num chat.trade_num%type
-)
-is
---    vchat_content chat_board.chat_content%type;
---    vmember_num2 chat.member_num2%type;
---    vmember_nickname member.member_nickname%type;
-    vtrade_title trade_board.trade_title%type;
-begin 
-    select trade_title into vtrade_title
-    from trade_board
-    where trade_num = ptrade_num;
-    
- DBMS_OUTPUT.PUT_LINE('íŒë§¤ì¤‘ì¸ ë¬¼í’ˆ : ' || vtrade_title);
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ë´ñ±Û Á¶È¸
 
-for vcc in(
- select chat_content , member_num2, member_nickname, trade_title, b.chat_time
-    from chat c join member m on c.member_num2 = m.member_num
-                join chat_board  b on c.trade_num = b.trade_num
-                join trade_board t on c.member_num2 = t.member_num
-    where c.trade_num=ptrade_num
 
-)
+-- Ã¤ÆÃ¹æ ¸ñ·Ï Á¶È¸
 
- 
-  loop  
-  
-  
-    DBMS_OUTPUT.PUT_LINE('ì±„íŒ…ë‚´ìš© : ' || vcc.chat_content  ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  vcc.member_nickname || '   ' || 'ì±„íŒ… ì‹œê°„ : ' || vcc.chat_time);    
-   end loop;
 
-end;
+-- Ã¤ÆÃ ³»¿ë Á¶È¸
 
--- ê²°ì œ í˜ì´ì§€
+
+-- °áÁ¦ ÆäÀÌÁö
