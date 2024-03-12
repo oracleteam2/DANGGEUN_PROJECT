@@ -4,6 +4,43 @@
 -- 회원 마이페이지 조회
 
 
+-- 차단 조회
+CREATE OR REPLACE PROCEDURE up_selBLOCK
+(
+    pmember_num NUMBER
+)
+IS
+    vtmember_block NUMBER;
+    vfmember_block NUMBER;
+    vtnickname member.member_nickname%TYPE;
+    vfnickname member.member_nickname%TYPE;
+    vmember_num NUMBER;
+BEGIN
+    
+    SELECT member_nickname INTO vfnickname
+    FROM member
+    WHERE member_num = pmember_num;
+    
+--    FOR rec IN(
+--        SELECT DISTINCT member_nickname INTO vfnickname
+--        FROM member m JOIN BLOCK b ON m.member_num = f_block_mem_num)
+--    LOOP
+--        vfnickname := rec.member_nickname;
+--        DBMS_OUTPUT.PUT_LINE(vfnickname || '이');
+--    LOOP END;
+
+    FOR rec IN(
+        SELECT DISTINCT member_nickname INTO vtnickname
+        FROM member m JOIN BLOCK b ON m.member_num = t_block_mem_num
+    )
+    LOOP
+        vtnickname := rec.member_nickname;
+        DBMS_OUTPUT.PUT_LINE( vfnickname || '이 ' || vtnickname || '를 차단했습니다');
+    END LOOP;
+    
+END;
+
+
 -- 공지사항 게시판 전체 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
 
@@ -330,3 +367,6 @@ end;
 exec seek_chat_content(2);
 
 -- 결제 페이지
+
+
+
