@@ -280,11 +280,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred.');
 END;
 
-<<<<<<< HEAD
-ExEC up_selTradeBoard(1);
-=======
 EXEC up_selTradeBoard(1);
->>>>>>> f18a682367c179c541f4f956841bc02bba456d54
+
 
 -- 동네생활 게시판 전체 조회
 DECLARE
