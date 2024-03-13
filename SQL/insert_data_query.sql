@@ -1,7 +1,6 @@
 -- SCOTT
 -- 데이터 삽입
-11
-22
+
 --COMM : COMMUNITY
 --CMT : COMMENT
 --CTGR : CATEGORY
@@ -100,9 +99,6 @@ CREATE SEQUENCE seq_pay
 START WITH 1
 INCREMENT BY 1;
 
-INSERT INTO pay
-VALUES(1, 3);
-
 -- ITEM_CTGR 테이블
 --물품 카테고리 넘버 ( PK )
 --물품 카테고리 이름
@@ -116,12 +112,6 @@ INSERT INTO ITEM_CTGR VALUES ( 7, '취미') ;
 INSERT INTO ITEM_CTGR VALUES ( 8, '삽니다') ;
 COMMIT;
 
-DROP SEQUENCE seq_tboard;
-DROP SEQUENCE seq_image;
-
-DELETE FROM item_image;
-
-DELETE FROM trade_board;
 -- TRADE_BOARD 테이블
 -- trade_num ( PK ), member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location
 
@@ -411,20 +401,15 @@ VALUES(SEQ_CHATROOM_ID.NEXTVAL, 2, 8);
 INSERT INTO chat
 VALUES(SEQ_CHATROOM_ID.NEXTVAL, 6, 9);
 
+SELECT * FROM trade_Board;
 
 -- CHAT_BOARD 테이블, 채팅방 넘버, 채팅 넘버 ( PK ), 회원넘버, 채팅내용, 채팅시간
 CREATE SEQUENCE SEQ_CHATCONTENT_ROOM1_ID 
 START WITH 1
 INCREMENT BY 1;
 
-SELECT * FROM trade_board;
-
-
-
 INSERT INTO chat_board(trade_num,chat_num, CHAT_CONTENT, CHAT_TIME )
 VALUES (1,SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '안녕하세요~ 혹시 물건 팔렸나요?','11시 23분');
-
-
 
 INSERT INTO chat_board(trade_num, CHAT_NUM, CHAT_CONTENT, CHAT_TIME )
 VALUES (2,SEQ_CHATCONTENT_ROOM1_ID.NEXTVAL, '직거래 하고싶은데 가능하신가요?', '12시 24분');
@@ -661,9 +646,6 @@ COMMIT;
 CREATE SEQUENCE SEQ_COMM_NUM
 START WITH 1
 INCREMENT BY 1;
-
-SELECT * FROM comm_board;
-
 
 --1
 INSERT INTO COMM_CMT (COMM_BOARD_NUM, COMM_NUM, MEMBER_NUM,  COMM_DATE, COMM_CONTENT)
@@ -941,12 +923,6 @@ INCREMENT BY 1
 START WITH 1 
 NOCYCLE NOCACHE;
 
-SELECT * FROM trade_board_like;
-
-DROP SEQUENCE seq_tboard_like;
-
-DELETE FROM trade_board_like;
-
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 1, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 2, 1);
 INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( seq_tboard_like.NEXTVAL, 3, 1);
@@ -965,4 +941,26 @@ INSERT INTO trade_board_like (trade_like_num, trade_num, member_num) VALUES  ( s
 
 COMMIT;
 
+--------------------------------------------------------------------------------
+-- DROP 시킬 때 사용하세요
 
+DROP TABLE TRADE_BOARD_LIKE;
+DROP TABLE ITEM_IMAGE;
+DROP TABLE TRADE_BOARD;
+DROP TABLE ITEM_CTGR;
+DROP TABLE REPORT;
+DROP TABLE BLOCK;
+DROP TABLE PAY;
+DROP TABLE NOTICE_BOARD;
+DROP TABLE DANNGN_PAY;
+DROP TABLE ADMIN;
+DROP TABLE CHAT_BOARD;
+DROP TABLE CHAT;
+DROP TABLE COMM_CMT_LIKE;
+DROP TABLE CMT_BOARD_LIKE;
+DROP TABLE CMT_REPLY_LIKE;
+DROP TABLE CMT_REPLY;
+DROP TABLE COMM_CMT;
+DROP TABLE COMM_BOARD;
+DROP TABLE COMM_CTGR;
+DROP TABLE MEMBER;

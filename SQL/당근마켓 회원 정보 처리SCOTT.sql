@@ -1,3 +1,9 @@
+-- 회원 수정
+-- 회원 마이페이지 조회
+-- 회원삭제
+-- 당근페이 금액충전
+-- 회원 당근페이 추가
+-- 회원 추가
 
 -- 회원 마이페이지 조회
 CREATE OR REPLACE PROCEDURE up_select_mpage
