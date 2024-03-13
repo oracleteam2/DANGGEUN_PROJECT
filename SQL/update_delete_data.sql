@@ -925,7 +925,8 @@ EXECUTE up_select_mpage(1);
 
 -- 동네생활 카테고리
 -- 추가/수정/삭제
-SELECT * FROM comm_ctgr ;
+--SELECT * FROM comm_ctgr ;
+
 -- UP_INSCOMMCTAR 동네카테고리 추가프로시저
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
 (
@@ -967,7 +968,7 @@ END;
 
 EXEC up_updcommctgr(1, '인기');
 
--- 삭제
+--up_delcommctgr 동네카테고리 삭제프로시저
 CREATE OR REPLACE PROCEDURE up_delcommctgr
 (
     pcomm_ctgr_num NUMBER
