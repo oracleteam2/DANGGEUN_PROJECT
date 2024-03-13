@@ -66,7 +66,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(' ');
     END LOOP;
 EXCEPTION
-        WHEN NO_DATA_FOUND THEN
+    WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('관리자가 없습니다.');
 END;
 
@@ -118,13 +118,12 @@ IS
 BEGIN
     DBMS_OUTPUT.PUT_LINE('공지사항');
     DBMS_OUTPUT.PUT_LINE(' ');
-    FOR vrow IN (
-    SELECT notice_title
-    , notice_date
-    , admin_nickname
-    FROM notice_board nb JOIN admin a USING(admin_num)
-    ORDER BY vnotice_date
-    )
+    FOR vrow IN (SELECT notice_title
+                , notice_date
+                , admin_nickname
+                FROM notice_board nb JOIN admin a USING(admin_num)
+                ORDER BY vnotice_date
+                )
     LOOP
     DBMS_OUTPUT.PUT_LINE('[공지] ' || ' ' || vrow.notice_title);
     DBMS_OUTPUT.PUT_LINE('Date : ' || vrow.notice_date || '              ' || 'Writer : '|| vrow.admin_nickname);
@@ -133,8 +132,6 @@ BEGIN
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('공지사항이 없습니다.');
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('오류 발생: ');
 END;
 
 EXEC up_selNoticeBoardAll;
@@ -382,7 +379,6 @@ BEGIN
      DBMS_OUTPUT.PUT_LINE(' '); 
     END LOOP;
 --EXCEPTION
-  -- ROLLBACK;
 END;
 
 --EXEC up_selcommboard(19);
@@ -440,14 +436,14 @@ IS
 BEGIN
   -- 대댓글 정보 조회
   FOR vrow IN 
-  (SELECT 
-    cr.rcmt_num, 
-    m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
-    cr.rcmt_date, 
-    cr.rcmt_content
-   FROM cmt_reply cr
-   JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_reply와 MEMBER 테이블 조인
-  )
+              (SELECT 
+                cr.rcmt_num, 
+                m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
+                cr.rcmt_date, 
+                cr.rcmt_content
+               FROM cmt_reply cr
+               JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_reply와 MEMBER 테이블 조인
+              )
   LOOP
     -- 조회된 정보를 변수에 할당
     vrcmt_num := vrow.rcmt_num;
@@ -463,9 +459,8 @@ BEGIN
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
-  -- 대댓글이 없는 경우 처리
-  WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
 END;
 
 EXEC up_checkReply;
@@ -476,60 +471,53 @@ CREATE OR REPLACE PROCEDURE seek_list
 (
     ptrade_num chat.trade_num%type
 )
-is
+IS
     vtrade_num chat.trade_num%type;
     vbuyer_num chat.buyer_num%type;
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
     vmember_adress member.member_address%type;
     vmember_manner_points member.member_manner_points%type;
-begin 
-for slc in(
-    select c.trade_num, buyer_num, member_nickname, trade_title , member_address, member_manner_points
-    from chat c join member m on c.buyer_num = m.member_num
-                join trade_board t on c.trade_num = t.trade_num
-    where c.trade_num= ptrade_num)
+BEGIN 
+FOR slc IN(
+    SELECT c.trade_num, buyer_num, member_nickname, trade_title , member_address, member_manner_points
+    FROM chat c JOIN member m on c.buyer_num = m.member_num
+                JOIN trade_board t on c.trade_num = t.trade_num
+    WHERE c.trade_num= ptrade_num)
     
-    loop
-    
-    DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname || ' 상대방 주소 : ' || slc.member_address ||'   '|| '매너 온도 : ' || slc.member_manner_points);    
-    
-    end loop;
-end;
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname || ' 상대방 주소 : ' || slc.member_address ||'   '|| '매너 온도 : ' || slc.member_manner_points);    
+    END LOOP;
+END;
 
-exec seek_list(2); 
+EXEC seek_list(2); 
 
 -- 채팅 내용 조회
 CREATE OR REPLACE PROCEDURE seek_chat_content
 (
     ptrade_num chat_board.trade_num%type
 )
-is
---    vchat_content chat_board.chat_content%type;
- --   vmember_num2 chat.member_num2%type;
+IS
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
     vmember_manner_points member.member_manner_points%type;
-begin 
-    select trade_title, member_manner_points, member_nickname into vtrade_title, vmember_manner_points, vmember_nickname
-    from trade_board t join member m on t.member_num = m.member_num
-    where trade_num = ptrade_num;
+BEGIN 
+    SELECT trade_title, member_manner_points, member_nickname INTO vtrade_title, vmember_manner_points, vmember_nickname
+    FROM trade_board t JOIN member m on t.member_num = m.member_num
+    WHERE trade_num = ptrade_num;
     
  DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title  ||'   '||   '채팅 상대방 : ' ||  vmember_nickname  ||'  '|| ' 상대방 매너온도 : ' || vmember_manner_points);
 
-for vcc in(
- select chat_content , buyer_num, b.chat_time
-    from chat c join member m on c.buyer_num = m.member_num
-                join chat_board  b on c.trade_num = b.trade_num            
-    where b.trade_num=ptrade_num
+FOR vcc IN(
+    SELECT chat_content , buyer_num, b.chat_time
+    FROM chat c JOIN member m on c.buyer_num = m.member_num
+                JOIN chat_board  b on c.trade_num = b.trade_num            
+    WHERE b.trade_num=ptrade_num
 
 )
-  loop  
-  
-  
-    DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content || '   ' || '채팅 시간 : ' || vcc.chat_time);    
-   end loop;
+    LOOP  
+        DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content || '   ' || '채팅 시간 : ' || vcc.chat_time);    
+    END LOOP;
+END;
 
-end;
-
-exec seek_chat_content(2);
+EXEC seek_chat_content(2);

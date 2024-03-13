@@ -119,7 +119,9 @@ COMMIT;
 -- trade_num, item_image_num (PK) ,item_image_url
 
 -- TRADE_BOARD INSERT 하나 하고 ITEM_IMAGE INSERT를 순차적으로 진행하시면 됩니다.
---
+
+
+-- 중고거래 게시판 테이블
 -- 시퀀스 생성
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
