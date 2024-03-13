@@ -1088,7 +1088,7 @@ BEGIN
 END;
 
 BEGIN
-    up_delCommBoard(pcomm_board_num => 1, pmember_num => 9);
+    up_delCommBoard(pcomm_board_num => 1, pmember_num => 1);
 END;
 
 
