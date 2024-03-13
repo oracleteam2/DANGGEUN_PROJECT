@@ -693,8 +693,12 @@ BEGIN
     up_delTradeBoard(ptrade_num => 1, pmember_num => 1);
 END;
 
+<<<<<<< HEAD
 -- 중고거래 게시판 삭제 트리거
 CREATE OR REPLACE TRIGGER delete_related_data_trigger
+=======
+CREATE OR REPLACE TRIGGER ut_del_related_trade_board
+>>>>>>> 5098aa98d4fbc86741489a0292da847560ecb713
 BEFORE DELETE ON trade_board
 FOR EACH ROW
 BEGIN
@@ -929,7 +933,6 @@ EXEC up_delcommctgr(1);
 
 -- 동네생활 게시판
 -- 동네생활 게시판 수정
-SELECT * FROM comm_board;
 CREATE OR REPLACE PROCEDURE up_updCommBoard(
     pcomm_board_num IN NUMBER
     ,pmember_num IN NUMBER
@@ -973,8 +976,68 @@ BEGIN
     up_updCommBoard(pcomm_board_num => 1, pmember_num => 9, pcomm_title => '제목 수정');
 END;
 SELECT * FROM comm_Board;
--- 동네생활 게시판 삭제
 
+
+-- 동네생활 게시판 삭제
+SELECT * FROM comm_board;
+CREATE OR REPLACE PROCEDURE up_delCommBoard(
+    pcomm_board_num IN NUMBER
+    ,pmember_num IN NUMBER
+)
+IS
+    vmember_num comm_board.member_num%TYPE;
+    MEMBER_NOT_MATCHED EXCEPTION;
+BEGIN
+    -- 해당 trade_num에 대한 member_num 값을 가져옵니다.
+    SELECT member_num INTO vmember_num
+    FROM comm_board
+    WHERE comm_board_num = pcomm_board_num;
+
+    IF vmember_num != pmember_num THEN
+        RAISE MEMBER_NOT_MATCHED;
+    END IF;
+
+    DELETE comm_board
+    WHERE comm_board_num = pcomm_board_num;
+        
+
+    DBMS_OUTPUT.PUT_LINE('삭제 완료');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Comm board number ' || pcomm_board_num || ' does not exist.');
+    WHEN MEMBER_NOT_MATCHED THEN
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+END;
+
+-- 동네생활 게시판 1번이 삭제되면 그에 해당하는 댓글같은거까지 다 삭제 되는 트리거
+CREATE OR REPLACE TRIGGER ut_del_related_comm_board
+BEFORE DELETE ON comm_board
+FOR EACH ROW
+BEGIN
+    DELETE FROM cmt_reply_like
+    WHERE rcmt_num = (SELECT rcmt_num FROM cmt_reply WHERE cmt_board_num = :OLD.comm_board_num);
+
+    -- cmt_reply(동네생활 대댓글) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
+    DELETE FROM cmt_reply
+    WHERE cmt_board_num = :OLD.comm_board_num;
+    
+    -- comm_cmt_like(댓글좋아요) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
+    DELETE FROM comm_cmt_like
+    WHERE comm_board_num = :OLD.comm_board_num;
+    
+    -- comm_cmt(동네생활 댓글) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
+    DELETE FROM comm_cmt
+    WHERE comm_board_num = :OLD.comm_board_num;
+    
+    -- comm_board_like(동네생활 게시판 좋아요) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
+    DELETE FROM comm_board_like
+    WHERE comm_board_num = :OLD.comm_board_num;
+    
+END;
+
+BEGIN
+    up_delCommBoard(pcomm_board_num => 1, pmember_num => 1);
+END;
 
 
 -- 동네생활 댓글
