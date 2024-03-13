@@ -139,14 +139,12 @@ BEGIN
     WHERE member_num = pmem_num;      
 END;
 
-<<<<<<< HEAD
-EXEC up_delete_member(24);
-=======
 EXEC up_delmember(1);
+
 SELECT * FROM member;
 SELECT * FROM trade_board;
 SELECT * FROM chat;
->>>>>>> 730dae444e1670046b435b29c9178cbe779be44a
+
 --------------------------------------------------------------------------------
 
 
@@ -434,7 +432,6 @@ END;
 EXEC up_updAdmin(2, padmin_nickname => '유진2');
 EXEC up_updAdmin(2, padmin_id => 'yuejin');
 EXEC up_updAdmin(2, padmin_password => 01040457834);
-
 
 -- 관리자 로그, 수정사항 정보 테이블
 CREATE TABLE admin_log_info
@@ -1156,39 +1153,35 @@ EXEC up_insboardlike ( 14, 8, 11 );
 
 
 ------------------------------- 동네생활 댓글 -----------------------------------
--- 동네생활 댓글 추가
-CREATE OR REPLACE PROCEDURE add_comment
-(
-    p_board_num IN NUMBER,
-    p_member_num IN NUMBER,
-    p_content IN VARCHAR2,
-    pcomm_num NUMBER
-)
-AS
-BEGIN
-    INSERT INTO comm_cmt VALUES (p_board_num, pcomm_num, p_member_num, SYSDATE, p_content);
-END;
-
-EXEC add_comment(1, 2, '집가고싶다', 20);
-
-SELECT * FROM comm_cmt;
-
 -- 동네생활 댓글 수정
-CREATE OR REPLACE PROCEDURE up_updCmt
+CREATE OR REPLACE PROCEDURE up_updcmt
 (
-  pcomm_board_num NUMBER,
-  pcomm_num NUMBER,
-  p_new_date comm_cmt.comm_date%TYPE := SYSDATE,
-  p_new_content comm_cmt.comm_content%TYPE := NULL
+    p_comm_board_num comm_cmt.comm_board_num%TYPE := NULL,
+    p_comm_num comm_cmt.comm_num%TYPE := NULL,
+    p_member_num comm_cmt.member_num%TYPE := NULL,
+    p_comm_date comm_cmt.comm_date%TYPE := NULL,
+    p_comm_content comm_cmt.comm_content%TYPE := NULL
 )
 IS
+  v_rows_updated INTEGER;
 BEGIN
-  UPDATE comm_cmt
-  SET comm_content = NVL(p_new_content, comm_content)
-  WHERE comm_board_num = pcomm_board_num;
-END;
+    UPDATE comm_cmt
+    SET comm_board_num = NVL(p_comm_board_num, comm_board_num),
+        comm_num = NVL(p_comm_num, comm_num),
+        member_num = NVL(p_member_num, member_num),
+        comm_date = NVL(p_comm_date, comm_date),
+        comm_content = NVL(p_comm_content, comm_content)
+    WHERE comm_num = p_comm_num AND comm_board_num = p_comm_board_num;
 
-EXEC up_updCmt( 1, p_new_content => '내용 수정' );
+    v_rows_updated := SQL%ROWCOUNT;
+
+    IF v_rows_updated > 0 THEN
+        DBMS_OUTPUT.PUT_LINE(v_rows_updated || '개의 댓글이 수정되었습니다.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('수정할 댓글이 없습니다.');
+    END IF;
+END;
+EXEC up_updcmt(21, 23, 30, SYSDATE, '수정된 댓글 내용입니다.');
 
 -- 동네생활 댓글 삭제
 CREATE OR REPLACE PROCEDURE up_delcmt
@@ -1198,6 +1191,10 @@ CREATE OR REPLACE PROCEDURE up_delcmt
 IS
   v_rows_deleted INTEGER;
 BEGIN
+    -- 자식 레코드(대댓글) 삭제
+    DELETE FROM cmt_reply WHERE comm_board_num = p_comm_board_num;
+
+    -- 부모 레코드(댓글) 삭제
     DELETE FROM comm_cmt WHERE comm_board_num = p_comm_board_num;
 
     v_rows_deleted := SQL%ROWCOUNT;
@@ -1209,7 +1206,7 @@ BEGIN
     END IF;
 END;
 
-EXEC up_delcmt(10);
+EXEC up_delcmt(1);
 
 --------------------------------------------------------------------------------
 
@@ -1220,112 +1217,104 @@ EXEC up_delcmt(10);
 CREATE OR REPLACE PROCEDURE up_inslike(
     p_board_num IN NUMBER,
     p_cmt_num IN NUMBER,
-    p_member_num IN NUMBER
-    ) -- 게시판 번호, 댓글 번호, 좋아요 누른 회원 번호 매개변수
+    p_member_num IN NUMBER)
 AS
 BEGIN
     -- 새로운 좋아요 정보 추가
     INSERT INTO comm_cmt_like (
+        comm_cmt_like,  -- 고유 식별자 컬럼에 시퀀스 값을 할당
         comm_board_num,
         cmt_num,
         member_num)
     VALUES (
+        comm_cmt_like_seq.NEXTVAL,  -- 여기서 시퀀스의 다음 값을 사용
         p_board_num,
         p_cmt_num,
         p_member_num);
         
     -- INSERT 작업 후 커밋
     COMMIT;
+    
     -- 추가된 좋아요 정보 출력
     DBMS_OUTPUT.put_line('게시판 번호: ' || p_board_num || ', 댓글 번호: ' || p_cmt_num || '에 대한 좋아요가 추가되었습니다. 회원 번호: ' || p_member_num);
 END;
+-- EXEC up_inslike(1, 10, 3);
 
-EXEC up_inslike(1, 10, 10);
 
 -- 동네생활 댓글 좋아요 삭제(취소)
-CREATE OR REPLACE PROCEDURE up_dellike
-(
+CREATE OR REPLACE PROCEDURE up_dellike(
     p_board_num IN NUMBER,
     p_cmt_num IN NUMBER,
-    p_member_num IN NUMBER
-)
+    p_member_num IN NUMBER) -- 삭제할 게시판 번호, 댓글 번호, 좋아요를 누른 회원 번호 매개변수
 AS
-  v_count NUMBER;
+  v_count NUMBER := 0; -- 삭제된 행의 수를 저장할 변수 초기화
 BEGIN
     -- 좋아요 정보 삭제
     DELETE FROM comm_cmt_like
     WHERE comm_board_num = p_board_num
-    AND cmt_num = p_cmt_num
-    AND member_num = p_member_num
-    RETURNING COUNT(*) INTO v_count;
+      AND cmt_num = p_cmt_num
+      AND member_num = p_member_num;
     
+    -- 삭제된 행의 수를 변수에 저장
+    v_count := SQL%ROWCOUNT;
+
+    -- 삭제 작업 후 커밋
     COMMIT;
     
+    -- 삭제된 좋아요 정보 출력
     IF v_count > 0 THEN
-        DBMS_OUTPUT.put_line('게시판 번호: ' || p_board_num || ', 댓글 번호: ' || p_cmt_num || ', 회원 번호: ' || p_member_num || '에 대한 좋아요가 삭제되었습니다.');
+        DBMS_OUTPUT.put_line(v_count || '개의 좋아요가 삭제되었습니다. 게시판 번호: ' || p_board_num || ', 댓글 번호: ' || p_cmt_num || ', 회원 번호: ' || p_member_num || '.');
     ELSE
         DBMS_OUTPUT.put_line('삭제할 좋아요 정보가 없습니다.');
     END IF;
 END;
 
-EXEC up_dellike(1, 10, 10);
+EXEC up_dellike(1, 10, 3);
 
 --------------------------------------------------------------------------------
 
 
 
 ----------------------------- 동네생활 대댓글 -----------------------------------
--- 동네생활 대댓글 추가
-CREATE OR REPLACE PROCEDURE add_reply(
-    p_board_num IN NUMBER,
-    p_comm_num IN NUMBER,
-    p_member_num IN NUMBER,
-    p_content IN VARCHAR2) -- 대댓글 추가에 대한 각 매개변수
-AS
-BEGIN
-    -- 새로운 대댓글 추가(INSERT문)
-    INSERT INTO cmt_reply (
-        cmt_board_num,
-        comm_num,
-        member_num,
-        rcmt_content)
-    -- 대댓글 추가에 대한 값
-    VALUES (
-        p_board_num,
-        p_comm_num,
-        p_member_num,
-        p_content);
-END;
-
-EXEC add_reply()
-
 -- 동네생활 대댓글 수정
-CREATE OR REPLACE PROCEDURE up_insrely
+CREATE OR REPLACE PROCEDURE up_updreply
 (
-    p_new_rcmt_num cmt_reply.rcmt_num%TYPE := NULL,
-    p_new_member_num cmt_reply.member_num%TYPE := NULL,
-    p_new_rcmt_date cmt_reply.rcmt_date%TYPE := NULL,
-    p_new_rcmt_content cmt_reply.rcmt_content%TYPE := NULL
+  p_new_board_num cmt_reply.cmt_board_num%TYPE := NULL,  -- 대댓글 게시글 번호
+  p_new_num cmt_reply.rcmt_num%TYPE := NULL,  -- 대댓글 번호
+  p_new_member_num cmt_reply.member_num%TYPE := NULL,  -- 작성자 번호
+  p_new_date cmt_reply.rcmt_date%TYPE := NULL,  -- 대댓글 작성 날짜
+  p_new_content cmt_reply.rcmt_content%TYPE := NULL  -- 대댓글 내용
 )
 IS
 BEGIN
-    UPDATE cmt_reply
-    SET rcmt_num = NVL(p_new_rcmt_num, rcmt_num),
-        member_num = NVL(p_new_member_num, member_num),
-        rcmt_date = NVL(p_new_rcmt_date, rcmt_date),
-        rcmt_content = NVL(p_new_rcmt_content, rcmt_content)
-    WHERE rcmt_num = p_new_rcmt_num;
-END;
+  -- 대댓글 정보 업데이트
+  UPDATE cmt_reply
+  SET cmt_board_num = NVL(p_new_board_num, cmt_board_num),
+      rcmt_num = NVL(p_new_num, rcmt_num),
+      member_num = NVL(p_new_member_num, member_num),
+      rcmt_date = NVL(p_new_date, rcmt_date),
+      rcmt_content = NVL(p_new_content, rcmt_content)
+  WHERE rcmt_num = p_new_num;
 
-EXEC up_insrely();
+  -- 업데이트된 행이 있는지 확인하고 결과 메시지 출력
+  IF SQL%ROWCOUNT > 0 THEN
+    DBMS_OUTPUT.PUT_LINE('대댓글 번호 ' || p_new_num || '가 성공적으로 수정되었습니다.');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('대댓글 번호 ' || p_new_num || '에 해당하는 대댓글이 없습니다.');
+  END IF;
+END;
+-- EXEC up_updreply(10, 10, 10, SYSDATE, '수정된 대댓글 내용입니다.');
 
 -- 동네생활 대댓글 삭제
 CREATE OR REPLACE PROCEDURE up_delreply
 (
-    p_rcmt_num cmt_reply.rcmt_num%TYPE  -- 삭제할 대댓글 번호
+    p_rcmt_num cmt_reply.rcmt_num%TYPE -- 대댓글 번호
 )
 IS
 BEGIN
+    -- 대댓글에 대한 모든 좋아요 삭제
+    DELETE FROM cmt_reply_like WHERE rcmt_num = p_rcmt_num;
+
     -- 대댓글 삭제
     DELETE FROM cmt_reply WHERE rcmt_num = p_rcmt_num;
 
@@ -1337,7 +1326,7 @@ BEGIN
     END IF;
 END;
 
-EXEC up_delreply(20);
+EXEC up_delreply(10);
 
 --------------------------------------------------------------------------------
 
