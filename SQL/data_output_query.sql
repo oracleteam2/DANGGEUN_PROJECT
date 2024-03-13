@@ -1,8 +1,8 @@
 -- SCOTT
--- ë°ì´í„° ì¶œë ¥ìš©(í™”ë©´)
+-- µ¥ÀÌÅÍ Ãâ·Â¿ë(È­¸é)
 
-------------------------------- íšŒì› ì¡°íšŒ ---------------------------------------
--- íšŒì› ë§ˆì´í˜ì´ì§€ ì¡°íšŒ
+------------------------------- È¸¿ø Á¶È¸ ---------------------------------------
+-- È¸¿ø ¸¶ÀÌÆäÀÌÁö Á¶È¸
 CREATE OR REPLACE PROCEDURE up_select_mpage
 (
     pmember_num member.member_num%TYPE
@@ -37,10 +37,10 @@ BEGIN
     
     DBMS_OUTPUT.PUT( vmem_profile );
     DBMS_OUTPUT.PUT_LINE( vmem_nickname );
-    DBMS_OUTPUT.PUT_LINE( 'ë‹¹ê·¼í˜ì´ ê¸ˆì•¡ : ' || vbalance ||'ì›');
-    DBMS_OUTPUT.PUT_LINE( 'ë§¤ë„ˆì˜¨ë„ : ' || vmem_mpoints || 'â„ƒ' );
-    DBMS_OUTPUT.PUT_LINE( 'íŒë§¤ë¬¼í’ˆ : ' ||vcount_memb_tboard || 'ê°œ' );
-    DBMS_OUTPUT.PUT_LINE( 'ì£¼ì†Œ : ' || vmem_addr );
+    DBMS_OUTPUT.PUT_LINE( '´ç±ÙÆäÀÌ ±İ¾× : ' || vbalance ||'¿ø');
+    DBMS_OUTPUT.PUT_LINE( '¸Å³Ê¿Âµµ : ' || vmem_mpoints || '¡É' );
+    DBMS_OUTPUT.PUT_LINE( 'ÆÇ¸Å¹°Ç° : ' ||vcount_memb_tboard || '°³' );
+    DBMS_OUTPUT.PUT_LINE( 'ÁÖ¼Ò : ' || vmem_addr );
 
 --EXCEPTION
 END;
@@ -51,8 +51,8 @@ EXEC up_select_mpage(1);
 
 
 
------------------------------- ê´€ë¦¬ì ì¡°íšŒ --------------------------------------
--- ê´€ë¦¬ì ì „ì²´ ì¡°íšŒ
+------------------------------ °ü¸®ÀÚ Á¶È¸ --------------------------------------
+-- °ü¸®ÀÚ ÀüÃ¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selAdminAll
 IS
     vadmin_nickname admin.admin_nickname%TYPE;
@@ -71,7 +71,7 @@ BEGIN
     END LOOP;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('ê´€ë¦¬ìê°€ ì—†ìŠµë‹ˆë‹¤.');
+        DBMS_OUTPUT.PUT_LINE('°ü¸®ÀÚ°¡ ¾ø½À´Ï´Ù.');
 END;
 
 EXEC up_selAdminAll;
@@ -80,7 +80,7 @@ EXEC up_selAdminAll;
 
 
 
---------------------------------- ì°¨ë‹¨ ì¡°íšŒ -------------------------------------
+--------------------------------- Â÷´Ü Á¶È¸ -------------------------------------
 CREATE OR REPLACE PROCEDURE up_selBLOCK
 (
     pmember_num NUMBER
@@ -107,7 +107,7 @@ BEGIN
     )
     LOOP
         vtnickname := rec.member_nickname;
-        DBMS_OUTPUT.PUT_LINE( vfnickname || 'ì´ ' || vtnickname || 'ë¥¼ ì°¨ë‹¨í–ˆìŠµë‹ˆë‹¤');
+        DBMS_OUTPUT.PUT_LINE( vfnickname || 'ÀÌ ' || vtnickname || '¸¦ Â÷´ÜÇß½À´Ï´Ù');
     END LOOP;
     
 END;
@@ -118,8 +118,8 @@ EXEC up_selBLOCK(2);
 
 
 
---------------------------- ê³µì§€ ì‚¬í•­ ì¡°íšŒ --------------------------------------
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+--------------------------- °øÁö »çÇ× Á¶È¸ --------------------------------------
+-- °øÁö»çÇ× °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
 
 IS
@@ -128,7 +128,7 @@ IS
     vadmin_nickname admin.admin_nickname%TYPE;
     
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('ê³µì§€ì‚¬í•­');
+    DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×');
     DBMS_OUTPUT.PUT_LINE(' ');
     FOR vrow IN (SELECT notice_title
                 , notice_date
@@ -137,18 +137,18 @@ BEGIN
                 ORDER BY vnotice_date
                 )
     LOOP
-    DBMS_OUTPUT.PUT_LINE('[ê³µì§€] ' || ' ' || vrow.notice_title);
+    DBMS_OUTPUT.PUT_LINE('[°øÁö] ' || ' ' || vrow.notice_title);
     DBMS_OUTPUT.PUT_LINE('Date : ' || vrow.notice_date || '              ' || 'Writer : '|| vrow.admin_nickname);
     DBMS_OUTPUT.PUT_LINE(' ');
     END LOOP;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('ê³µì§€ì‚¬í•­ì´ ì—†ìŠµë‹ˆë‹¤.');
+        DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×ÀÌ ¾ø½À´Ï´Ù.');
 END;
 
 EXEC up_selNoticeBoardAll;
 
--- ê³µì§€ì‚¬í•­ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- °øÁö»çÇ× °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardInfo
 (
     pnotice_num notice_board.notice_num%TYPE
@@ -167,7 +167,7 @@ BEGIN
         INTO vnotice_title, vnotice_content, vnotice_date, vadmin_nickname
     FROM notice_board nb JOIN admin a USING(admin_num)
     WHERE notice_num = pnotice_num;
-    DBMS_OUTPUT.PUT_LINE('ê³µì§€');
+    DBMS_OUTPUT.PUT_LINE('°øÁö');
     DBMS_OUTPUT.PUT_LINE(' ');
     DBMS_OUTPUT.PUT_LINE('Title : ' || vnotice_title);
     DBMS_OUTPUT.PUT_LINE('Date : ' || vnotice_date);
@@ -179,7 +179,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Writer : ' || vadmin_nickname);
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('ê³µì§€ì‚¬í•­ì´ ì—†ìŠµë‹ˆë‹¤.');
+        DBMS_OUTPUT.PUT_LINE('°øÁö»çÇ×ÀÌ ¾ø½À´Ï´Ù.');
 END;
 
 EXEC up_selNoticeBoardInfo(1);
@@ -188,8 +188,8 @@ EXEC up_selNoticeBoardInfo(1);
 
 
 
--------------------------- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ì¡°íšŒ ---------------------------------
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-------------------------- Áß°í°Å·¡ °Ô½ÃÆÇ Á¶È¸ ---------------------------------
+-- Áß°í°Å·¡ °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 DECLARE
   CURSOR trade_board_cursor IS
     SELECT tb.TRADE_NUM,
@@ -214,21 +214,21 @@ BEGIN
   LOOP
     FETCH trade_board_cursor INTO trade_board_rec;
     EXIT WHEN trade_board_cursor%NOTFOUND;
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ë²ˆí˜¸: ' || trade_board_rec.TRADE_NUM);
-    DBMS_OUTPUT.PUT_LINE('íšŒì› ë‹‰ë„¤ì„: ' || trade_board_rec.MEMBER_NICKNAME);
-    DBMS_OUTPUT.PUT_LINE('ì¹´í…Œê³ ë¦¬ : ' || trade_board_rec.item_ctgr_name);
-    DBMS_OUTPUT.PUT_LINE('ì œëª©: ' || trade_board_rec.TRADE_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ë‚´ìš©: ' || trade_board_rec.TRADE_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ì—…ë¡œë“œ ì¼ì: ' || trade_board_rec.UPLOAD_DATE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ê°€ê²©: ' || trade_board_rec.TRADE_PRICE);
-    DBMS_OUTPUT.PUT_LINE('ê±°ë˜ ìœ„ì¹˜: ' || trade_board_rec.TRADE_LOCATION);
-    DBMS_OUTPUT.PUT_LINE('ì´ë¯¸ì§€ URL: ' || trade_board_rec.IMAGE_URLS);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ ¹øÈ£: ' || trade_board_rec.TRADE_NUM);
+    DBMS_OUTPUT.PUT_LINE('È¸¿ø ´Ğ³×ÀÓ: ' || trade_board_rec.MEMBER_NICKNAME);
+    DBMS_OUTPUT.PUT_LINE('Ä«Å×°í¸® : ' || trade_board_rec.item_ctgr_name);
+    DBMS_OUTPUT.PUT_LINE('Á¦¸ñ: ' || trade_board_rec.TRADE_TITLE);
+    DBMS_OUTPUT.PUT_LINE('³»¿ë: ' || trade_board_rec.TRADE_CONTENT);
+    DBMS_OUTPUT.PUT_LINE('¾÷·Îµå ÀÏÀÚ: ' || trade_board_rec.UPLOAD_DATE);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ °¡°İ: ' || trade_board_rec.TRADE_PRICE);
+    DBMS_OUTPUT.PUT_LINE('°Å·¡ À§Ä¡: ' || trade_board_rec.TRADE_LOCATION);
+    DBMS_OUTPUT.PUT_LINE('ÀÌ¹ÌÁö URL: ' || trade_board_rec.IMAGE_URLS);
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
   END LOOP;
   CLOSE trade_board_cursor;
 END;
 
--- ì¤‘ê³ ê±°ë˜ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- Áß°í°Å·¡ °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
     ptrade_num NUMBER
@@ -252,7 +252,7 @@ BEGIN
                   GROUP BY ii.trade_num) item_images
                 ,m.member_profile member_profile_image
                 ,m.member_nickname nickname
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) address
+                ,SUBSTR(m.member_address, INSTR(m.member_address, '½Ã ') + 1) address
                 ,m.member_manner_points manner_point
                 ,tb.trade_title title
                 ,ic.item_ctgr_name category_name
@@ -260,12 +260,12 @@ BEGIN
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || 'ì‹œê°„ ì „'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || '½Ã°£ Àü'
                             ELSE 
-                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
+                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ºĞ Àü'
                         END
                     ELSE 
-                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
+                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ÀÏ Àü'
                 END time
                 ,tb.trade_content content
                 ,TO_CHAR(tb.trade_price, '999,999,999') price
@@ -280,18 +280,18 @@ BEGIN
                 tb.trade_num = ptrade_num
             GROUP BY 
                 tb.trade_num, m.member_profile, m.member_nickname, tb.trade_price
-                ,SUBSTR(m.member_address, INSTR(m.member_address, 'ì‹œ ') + 1) 
+                ,SUBSTR(m.member_address, INSTR(m.member_address, '½Ã ') + 1) 
                 ,m.member_manner_points, tb.trade_title, ic.item_ctgr_name
                 , CASE 
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || 'ì‹œê°„ ì „'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '½Ã°£ Àü'
                             ELSE 
-                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ë¶„ ì „'
+                                TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || 'ºĞ Àü'
                         END
                     ELSE 
-                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ì¼ ì „'
+                        TRUNC(SYSDATE - TO_DATE(tb.upload_date)) || 'ÀÏ Àü'
                 END
                 , tb.trade_content
         )
@@ -306,7 +306,7 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE(' ');
             DBMS_OUTPUT.PUT_LINE('Title: ' || rec.title);
             DBMS_OUTPUT.PUT_LINE('Content: ' || rec.content);
-            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || 'ì›');
+            DBMS_OUTPUT.PUT_LINE('PRICE: ' || rec.price || '¿ø');
             DBMS_OUTPUT.PUT_LINE(' ');
             DBMS_OUTPUT.PUT_LINE('Category Name: ' || rec.category_name);
             DBMS_OUTPUT.PUT_LINE('Time: ' || rec.time);
@@ -326,8 +326,8 @@ EXEC up_selTradeBoard(1);
 
 
 
--------------------------- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì¡°íšŒ ---------------------------------
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ì „ì²´ ì¡°íšŒ
+-------------------------- µ¿³×»ıÈ° °Ô½ÃÆÇ Á¶È¸ ---------------------------------
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ ÀüÃ¼ Á¶È¸
 DECLARE
   CURSOR comm_board_cursor IS
     SELECT cb.COMM_BOARD_NUM,
@@ -345,17 +345,17 @@ BEGIN
     FETCH comm_board_cursor INTO comm_board_rec;
     EXIT WHEN comm_board_cursor%NOTFOUND;
     board_number := board_number + 1;
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë²ˆí˜¸: ' || board_number);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì œëª©: ' || comm_board_rec.COMM_TITLE);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ë‚´ìš©: ' || comm_board_rec.COMM_CONTENT);
-    DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì¼: ' || comm_board_rec.UPLOAD_DATE);
-    --DBMS_OUTPUT.PUT_LINE('ê²Œì‹œë¬¼ ì‘ì„±ì: ' || comm_board_rec.MEMBER_NICKNAME);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ¹øÈ£: ' || board_number);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° Á¦¸ñ: ' || comm_board_rec.COMM_TITLE);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ³»¿ë: ' || comm_board_rec.COMM_CONTENT);
+    DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ÀÛ¼ºÀÏ: ' || comm_board_rec.UPLOAD_DATE);
+    --DBMS_OUTPUT.PUT_LINE('°Ô½Ã¹° ÀÛ¼ºÀÚ: ' || comm_board_rec.MEMBER_NICKNAME);
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
   END LOOP;
   CLOSE comm_board_cursor;
 END;
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ìƒì„¸ ì¡°íšŒ
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ »ó¼¼ Á¶È¸
 CREATE OR REPLACE PROCEDURE up_selcommboard
 (
     pcomm_board_num NUMBER
@@ -367,22 +367,22 @@ BEGIN
     FROM comm_board
     WHERE comm_board_num = pcomm_board_num;
     
-    FOR com IN ( SELECT  distinct cb.comm_board_num           board_num  --ë™ë„¤ìƒí™œê²Œì‹œíŒë„˜ë²„
-                    , cc.comm_ctgr_num              ctgr_num  --ì¹´í…Œê³ ë¦¬ë²ˆí˜¸
-                    , cc.comm_ctgr_name             ctgr_name  --ì¹´í…Œê³ ë¦¬ì´ë¦„
-                    , member_profile                profile  --íšŒì›í”„ë¡œí•„ì´ë¯¸ì§€
-                    , member_nickname               nickname  --íšŒì›ë‹‰ë„¤ì„
-                    , SUBSTR(m.member_address,7)    member_address   --ê²Œì‹œê¸€íšŒì›ì£¼ì†Œ
+    FOR com IN ( SELECT  distinct cb.comm_board_num           board_num  --µ¿³×»ıÈ°°Ô½ÃÆÇ³Ñ¹ö
+                    , cc.comm_ctgr_num              ctgr_num  --Ä«Å×°í¸®¹øÈ£
+                    , cc.comm_ctgr_name             ctgr_name  --Ä«Å×°í¸®ÀÌ¸§
+                    , member_profile                profile  --È¸¿øÇÁ·ÎÇÊÀÌ¹ÌÁö
+                    , member_nickname               nickname  --È¸¿ø´Ğ³×ÀÓ
+                    , SUBSTR(m.member_address,7)    member_address   --°Ô½Ã±ÛÈ¸¿øÁÖ¼Ò
                     , CASE 
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) > 24 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) * 24 * 60) || 'ë¶„ ì „'
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) < 24 THEN ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) || 'ì‹œê°„ ì „'
-                        WHEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) < 30 THEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) || 'ì¼ ì „'
-                        WHEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) < 12 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) || 'ê°œì›” ì „'
-                        ELSE TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30/12 ) || 'ë…„ ì „'
-                      END upload_date    --ì—…ë¡œë“œì¼ì
-                    , cb.comm_title                 title       --ê²Œì‹œê¸€ì œëª©
-                    , cb.comm_content               comm_content     --ê²Œì‹œê¸€ë‚´ìš©
-                    , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --ê²Œì‹œíŒì¢‹ì•„ìš”ê°¯ìˆ˜ 
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) > 24 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) * 24 * 60) || 'ºĞ Àü'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) < 24 THEN ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) || '½Ã°£ Àü'
+                        WHEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) < 30 THEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) || 'ÀÏ Àü'
+                        WHEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) < 12 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) || '°³¿ù Àü'
+                        ELSE TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30/12 ) || '³â Àü'
+                      END upload_date    --¾÷·ÎµåÀÏÀÚ
+                    , cb.comm_title                 title       --°Ô½Ã±ÛÁ¦¸ñ
+                    , cb.comm_content               comm_content     --°Ô½Ã±Û³»¿ë
+                    , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --°Ô½ÃÆÇÁÁ¾Æ¿ä°¹¼ö 
                     FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                                JOIN member m ON cb.member_num = m.member_num 
                                LEFT JOIN comm_board_like bl ON cb.member_num = bl.member_num
@@ -407,13 +407,13 @@ EXEC up_selcommboard(19);
 
 
 
-------------------------- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ“ê¸€ ì¡°íšŒ -----------------------------
+------------------------- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ñ±Û Á¶È¸ -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkcmt
 IS
-  vcomm_num comm_cmt.comm_num%TYPE; -- ëŒ“ê¸€ ë²ˆí˜¸
-  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- ì‘ì„±ì ë‹‰ë„¤ì„
-  vcomm_date comm_cmt.comm_date%TYPE; -- ëŒ“ê¸€ ì‘ì„± ë‚ ì§œ
-  vcomm_content comm_cmt.comm_content%TYPE; -- ëŒ“ê¸€ ë‚´ìš©
+  vcomm_num comm_cmt.comm_num%TYPE; -- ´ñ±Û ¹øÈ£
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- ÀÛ¼ºÀÚ ´Ğ³×ÀÓ
+  vcomm_date comm_cmt.comm_date%TYPE; -- ´ñ±Û ÀÛ¼º ³¯Â¥
+  vcomm_content comm_cmt.comm_content%TYPE; -- ´ñ±Û ³»¿ë
 BEGIN
   FOR vrow IN 
   (SELECT 
@@ -430,15 +430,15 @@ BEGIN
     vcomm_date := vrow.comm_date;
     vcomm_content := vrow.comm_content;
 
-    DBMS_OUTPUT.put_line('**ëŒ“ê¸€ ë²ˆí˜¸: ' || vcomm_num);
-    DBMS_OUTPUT.put_line('**ì‘ì„±ì ë‹‰ë„¤ì„: ' || vmember_nickname);
-    DBMS_OUTPUT.put_line('**ì‘ì„± ë‚ ì§œ: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD'));
-    DBMS_OUTPUT.put_line('**ëŒ“ê¸€ ë‚´ìš©: ' || vcomm_content);
+    DBMS_OUTPUT.put_line('**´ñ±Û ¹øÈ£: ' || vcomm_num);
+    DBMS_OUTPUT.put_line('**ÀÛ¼ºÀÚ ´Ğ³×ÀÓ: ' || vmember_nickname);
+    DBMS_OUTPUT.put_line('**ÀÛ¼º ³¯Â¥: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD'));
+    DBMS_OUTPUT.put_line('**´ñ±Û ³»¿ë: ' || vcomm_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('**ëŒ“ê¸€ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.');
+    DBMS_OUTPUT.PUT_LINE('**´ñ±ÛÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.');
 END;
 EXEC up_checkcmt;
 
@@ -446,42 +446,42 @@ EXEC up_checkcmt;
 
 
 
------------------------ ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ëŒ€ëŒ“ê¸€ ì¡°íšŒ -----------------------------
+----------------------- µ¿³×»ıÈ° °Ô½ÃÆÇ ´ë´ñ±Û Á¶È¸ -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkReply
 IS
-  -- ë³€ìˆ˜ ì„ ì–¸
-  vrcmt_num cmt_reply.rcmt_num%TYPE; -- ëŒ€ëŒ“ê¸€ ë²ˆí˜¸
-  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- ì‘ì„±ì ë‹‰ë„¤ì„
-  vrcmt_date cmt_reply.rcmt_date%TYPE; -- ëŒ€ëŒ“ê¸€ ì‘ì„± ë‚ ì§œ
-  vrcmt_content cmt_reply.rcmt_content%TYPE; -- ëŒ€ëŒ“ê¸€ ë‚´ìš©
+  -- º¯¼ö ¼±¾ğ
+  vrcmt_num cmt_reply.rcmt_num%TYPE; -- ´ë´ñ±Û ¹øÈ£
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- ÀÛ¼ºÀÚ ´Ğ³×ÀÓ
+  vrcmt_date cmt_reply.rcmt_date%TYPE; -- ´ë´ñ±Û ÀÛ¼º ³¯Â¥
+  vrcmt_content cmt_reply.rcmt_content%TYPE; -- ´ë´ñ±Û ³»¿ë
 BEGIN
-  -- ëŒ€ëŒ“ê¸€ ì •ë³´ ì¡°íšŒ
+  -- ´ë´ñ±Û Á¤º¸ Á¶È¸
   FOR vrow IN 
               (SELECT 
                 cr.rcmt_num, 
-                m.MEMBER_NICKNAME, -- MEMBER í…Œì´ë¸”ì—ì„œ ë‹‰ë„¤ì„ ì¡°íšŒ
+                m.MEMBER_NICKNAME, -- MEMBER Å×ÀÌºí¿¡¼­ ´Ğ³×ÀÓ Á¶È¸
                 cr.rcmt_date, 
                 cr.rcmt_content
                FROM cmt_reply cr
-               JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_replyì™€ MEMBER í…Œì´ë¸” ì¡°ì¸
+               JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_reply¿Í MEMBER Å×ÀÌºí Á¶ÀÎ
               )
   LOOP
-    -- ì¡°íšŒëœ ì •ë³´ë¥¼ ë³€ìˆ˜ì— í• ë‹¹
+    -- Á¶È¸µÈ Á¤º¸¸¦ º¯¼ö¿¡ ÇÒ´ç
     vrcmt_num := vrow.rcmt_num;
     vmember_nickname := vrow.MEMBER_NICKNAME;
     vrcmt_date := vrow.rcmt_date;
     vrcmt_content := vrow.rcmt_content;
 
-    -- ëŒ€ëŒ“ê¸€ ì •ë³´ ì¶œë ¥
-    DBMS_OUTPUT.put_line('**ëŒ€ëŒ“ê¸€ ë²ˆí˜¸: ' || vrcmt_num);
-    DBMS_OUTPUT.put_line('**ì‘ì„±ì ë‹‰ë„¤ì„: ' || vmember_nickname);
-    DBMS_OUTPUT.put_line('**ì‘ì„± ë‚ ì§œ: ' || TO_CHAR(vrcmt_date, 'YYYY-MM-DD'));
-    DBMS_OUTPUT.put_line('**ëŒ€ëŒ“ê¸€ ë‚´ìš©: ' || vrcmt_content);
+    -- ´ë´ñ±Û Á¤º¸ Ãâ·Â
+    DBMS_OUTPUT.put_line('**´ë´ñ±Û ¹øÈ£: ' || vrcmt_num);
+    DBMS_OUTPUT.put_line('**ÀÛ¼ºÀÚ ´Ğ³×ÀÓ: ' || vmember_nickname);
+    DBMS_OUTPUT.put_line('**ÀÛ¼º ³¯Â¥: ' || TO_CHAR(vrcmt_date, 'YYYY-MM-DD'));
+    DBMS_OUTPUT.put_line('**´ë´ñ±Û ³»¿ë: ' || vrcmt_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('**ëŒ€ëŒ“ê¸€ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.');
+        DBMS_OUTPUT.PUT_LINE('**´ë´ñ±ÛÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.');
 END;
 
 EXEC up_checkReply;
@@ -489,9 +489,9 @@ EXEC up_checkReply;
 --------------------------------------------------------------------------------
 
 
------------------------------- ì±„íŒ… ì¡°íšŒ ----------------------------------------
+------------------------------ Ã¤ÆÃ Á¶È¸ ----------------------------------------
 
--- ì±„íŒ…ë°© ëª©ë¡ ì¡°íšŒ
+-- Ã¤ÆÃ¹æ ¸ñ·Ï Á¶È¸
 CREATE OR REPLACE PROCEDURE seek_list
 (
     ptrade_num chat.trade_num%type
@@ -511,13 +511,13 @@ FOR slc IN(
     WHERE c.trade_num= ptrade_num)
     
     LOOP
-        DBMS_OUTPUT.PUT_LINE('ê²Œì‹œíŒ ì œëª© : ' || slc.trade_title ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  slc.member_nickname || ' ìƒëŒ€ë°© ì£¼ì†Œ : ' || slc.member_address ||'   '|| 'ë§¤ë„ˆ ì˜¨ë„ : ' || slc.member_manner_points);    
+        DBMS_OUTPUT.PUT_LINE('°Ô½ÃÆÇ Á¦¸ñ : ' || slc.trade_title ||'   '||   'Ã¤ÆÃ »ó´ë¹æ : ' ||  slc.member_nickname || ' »ó´ë¹æ ÁÖ¼Ò : ' || slc.member_address ||'   '|| '¸Å³Ê ¿Âµµ : ' || slc.member_manner_points);    
     END LOOP;
 END;
 
 EXEC seek_list(2); 
 
--- ì±„íŒ… ë‚´ìš© ì¡°íšŒ
+-- Ã¤ÆÃ ³»¿ë Á¶È¸
 CREATE OR REPLACE PROCEDURE seek_chat_content
 (
     ptrade_num chat_board.trade_num%type
@@ -531,7 +531,7 @@ BEGIN
     FROM trade_board t JOIN member m on t.member_num = m.member_num
     WHERE trade_num = ptrade_num;
     
- DBMS_OUTPUT.PUT_LINE('íŒë§¤ì¤‘ì¸ ë¬¼í’ˆ : ' || vtrade_title  ||'   '||   'ì±„íŒ… ìƒëŒ€ë°© : ' ||  vmember_nickname  ||'  '|| ' ìƒëŒ€ë°© ë§¤ë„ˆì˜¨ë„ : ' || vmember_manner_points);
+ DBMS_OUTPUT.PUT_LINE('ÆÇ¸ÅÁßÀÎ ¹°Ç° : ' || vtrade_title  ||'   '||   'Ã¤ÆÃ »ó´ë¹æ : ' ||  vmember_nickname  ||'  '|| ' »ó´ë¹æ ¸Å³Ê¿Âµµ : ' || vmember_manner_points);
 
 FOR vcc IN(
     SELECT chat_content , buyer_num, b.chat_time
@@ -541,7 +541,7 @@ FOR vcc IN(
 
 )
     LOOP  
-        DBMS_OUTPUT.PUT_LINE('ì±„íŒ…ë‚´ìš© : ' || vcc.chat_content || '   ' || 'ì±„íŒ… ì‹œê°„ : ' || vcc.chat_time);    
+        DBMS_OUTPUT.PUT_LINE('Ã¤ÆÃ³»¿ë : ' || vcc.chat_content || '   ' || 'Ã¤ÆÃ ½Ã°£ : ' || vcc.chat_time);    
     END LOOP;
 END;
 
@@ -549,11 +549,11 @@ EXEC seek_chat_content(2);
 
 --------------------------------------------------------------------------------
 
--- ê±°ë˜ ê²Œì‹œíŒ ê²€ìƒ‰
+-- °Å·¡ °Ô½ÃÆÇ °Ë»ö
 CREATE OR REPLACE PROCEDURE up_searchTradeBoard
 (
-     psearchCondition VARCHAR2, -- ì›í•˜ëŠ” ê²€ìƒ‰ì–´
-     porder NUMBER DEFAULT 1 --  2ì¼ê²½ìš° ìµœì‹ ìˆœìœ¼ë¡œ ì •ë ¬
+     psearchCondition VARCHAR2, -- ¿øÇÏ´Â °Ë»ö¾î
+     porder NUMBER DEFAULT 1 --  2ÀÏ°æ¿ì ÃÖ½Å¼øÀ¸·Î Á¤·Ä
 )
 IS
     vitem_image_url VARCHAR2(4000);
@@ -566,12 +566,12 @@ IS
     SELECT item_image_url
     , e.trade_title, e.trade_price, e.trade_location, COUNT(tbl.trade_like_num) like_count,
     CASE
-        WHEN (SYSDATE - upload_date) * 24 * 60 >= 1440 THEN -- 1ì¼ ì´ìƒ
-             TO_CHAR(FLOOR((SYSDATE - upload_date)), 'FM9999') || 'ì¼ ì „'
-        WHEN (SYSDATE - upload_date) * 24 >= 60 THEN -- 1ì¼ ë¯¸ë§Œ
-             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24), 'FM9999') || 'ì‹œê°„ ì „'
-        ELSE -- 1ì‹œê°„ ë¯¸ë§Œ
-             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24 * 60), 'FM9999') || 'ë¶„ ì „'
+        WHEN (SYSDATE - upload_date) * 24 * 60 >= 1440 THEN -- 1ÀÏ ÀÌ»ó
+             TO_CHAR(FLOOR((SYSDATE - upload_date)), 'FM9999') || 'ÀÏ Àü'
+        WHEN (SYSDATE - upload_date) * 24 >= 60 THEN -- 1ÀÏ ¹Ì¸¸
+             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24), 'FM9999') || '½Ã°£ Àü'
+        ELSE -- 1½Ã°£ ¹Ì¸¸
+             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24 * 60), 'FM9999') || 'ºĞ Àü'
     END vtime_since_upload
     FROM trade_board e LEFT JOIN trade_board_like tbl ON tbl.trade_num = e.trade_num
                         JOIN item_image ii ON e.trade_num = ii.trade_num
@@ -582,14 +582,14 @@ BEGIN
     OPEN t_trade_board_cur;
     LOOP
         FETCH t_trade_board_cur INTO vitem_image_url, vtrade_title, vprice, vtrade_location, vlike_count, vtime_since_upload;
-        EXIT WHEN t_trade_board_cur%NOTFOUND; -- ë” ì´ìƒ ê°€ì ¸ì˜¬ í–‰ì´ ì—†ìœ¼ë©´ ë£¨í”„ ì¢…ë£Œ
+        EXIT WHEN t_trade_board_cur%NOTFOUND; -- ´õ ÀÌ»ó °¡Á®¿Ã ÇàÀÌ ¾øÀ¸¸é ·çÇÁ Á¾·á
     
-    -- ê°€ì ¸ì˜¨ ë°ì´í„°ë¥¼ ì¶œë ¥
-    DBMS_OUTPUT.PUT_LINE('ìƒí’ˆ ì´ë¯¸ì§€ : ' || vitem_image_url );
-    DBMS_OUTPUT.PUT_LINE('ê¸€ ì œëª© : ' || vtrade_title );
-    DBMS_OUTPUT.PUT_LINE('ê°€ê²© : ' || vprice );
-    DBMS_OUTPUT.PUT_LINE('ì—…ë¡œë“œ ë‚ ì§œ : ' || vtime_since_upload );   
-    DBMS_OUTPUT.PUT_LINE('ì¢‹ì•„ìš” ìˆ˜ : ' || vlike_count);
+    -- °¡Á®¿Â µ¥ÀÌÅÍ¸¦ Ãâ·Â
+    DBMS_OUTPUT.PUT_LINE('»óÇ° ÀÌ¹ÌÁö : ' || vitem_image_url );
+    DBMS_OUTPUT.PUT_LINE('±Û Á¦¸ñ : ' || vtrade_title );
+    DBMS_OUTPUT.PUT_LINE('°¡°İ : ' || vprice );
+    DBMS_OUTPUT.PUT_LINE('¾÷·Îµå ³¯Â¥ : ' || vtime_since_upload );   
+    DBMS_OUTPUT.PUT_LINE('ÁÁ¾Æ¿ä ¼ö : ' || vlike_count);
     DBMS_OUTPUT.PUT_LINE(' ');
   END LOOP;
   CLOSE t_trade_board_cur;
@@ -598,13 +598,13 @@ END;
 
 SELECT * FROM trade_board;
 
-EXEC up_searchTradeBoard('ë§¥ìŠ¤');
+EXEC up_searchTradeBoard('¸Æ½º');
 
--- ë™ë„¤ìƒí™œ ê²Œì‹œíŒ ê²€ìƒ‰
+-- µ¿³×»ıÈ° °Ô½ÃÆÇ °Ë»ö
 CREATE OR REPLACE PROCEDURE up_searchCommBoard
 (
-     psearchCondition VARCHAR2, -- ì›í•˜ëŠ” ê²€ìƒ‰ì–´
-     porder NUMBER --  2ì¼ê²½ìš° ìµœì‹ ìˆœìœ¼ë¡œ ì •ë ¬
+     psearchCondition VARCHAR2, -- ¿øÇÏ´Â °Ë»ö¾î
+     porder NUMBER --  2ÀÏ°æ¿ì ÃÖ½Å¼øÀ¸·Î Á¤·Ä
 )
 IS
     vcomm_title        VARCHAR2(4000);
@@ -617,12 +617,12 @@ IS
     SELECT e.comm_title, m.member_address, e.comm_content, COUNT(cbl.comm_like_num) like_count
     , COUNT(cc.comm_num) cmt_count,
     CASE
-        WHEN (SYSDATE - comm_upload_date) * 24 * 60 >= 1440 THEN -- 1ì¼ ì´ìƒ
-             TO_CHAR(FLOOR((SYSDATE - comm_upload_date)), 'FM9999') || 'ì¼ ì „'
-        WHEN (SYSDATE - comm_upload_date) * 24 >= 60 THEN -- 1ì¼ ë¯¸ë§Œ
-             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24), 'FM9999') || 'ì‹œê°„ ì „'
-        ELSE -- 1ì‹œê°„ ë¯¸ë§Œ
-             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24 * 60), 'FM9999') || 'ë¶„ ì „'
+        WHEN (SYSDATE - comm_upload_date) * 24 * 60 >= 1440 THEN -- 1ÀÏ ÀÌ»ó
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date)), 'FM9999') || 'ÀÏ Àü'
+        WHEN (SYSDATE - comm_upload_date) * 24 >= 60 THEN -- 1ÀÏ ¹Ì¸¸
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24), 'FM9999') || '½Ã°£ Àü'
+        ELSE -- 1½Ã°£ ¹Ì¸¸
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24 * 60), 'FM9999') || 'ºĞ Àü'
     END vtime_since_upload
     FROM comm_board e JOIN member m ON e.member_num = m.member_num 
                       LEFT JOIN comm_board_like cbl ON cbl.comm_board_num = e.comm_board_num
@@ -634,21 +634,21 @@ BEGIN
     OPEN c_comm_board_cur;
     LOOP
         FETCH c_comm_board_cur INTO vcomm_title, vmem_addr, vcontent, vlike_count, vcmt_count, vtime_since_upload;
-        EXIT WHEN c_comm_board_cur%NOTFOUND; -- ë” ì´ìƒ ê°€ì ¸ì˜¬ í–‰ì´ ì—†ìœ¼ë©´ ë£¨í”„ ì¢…ë£Œ
+        EXIT WHEN c_comm_board_cur%NOTFOUND; -- ´õ ÀÌ»ó °¡Á®¿Ã ÇàÀÌ ¾øÀ¸¸é ·çÇÁ Á¾·á
     
-    -- ê°€ì ¸ì˜¨ ë°ì´í„°ë¥¼ ì¶œë ¥
-    DBMS_OUTPUT.PUT_LINE('ê¸€ ì œëª© : ' || vcomm_title );
-    DBMS_OUTPUT.PUT_LINE('ê¸€ ë‚´ìš© : ' || vcontent );
-    DBMS_OUTPUT.PUT_LINE('ì‘ì„±ì ì£¼ì†Œ : ' || vmem_addr );
-    DBMS_OUTPUT.PUT_LINE('ì—…ë¡œë“œ ë‚ ì§œ : ' || vtime_since_upload );   
-    DBMS_OUTPUT.PUT_LINE('ì¢‹ì•„ìš” ìˆ˜ : ' || vlike_count);
-    DBMS_OUTPUT.PUT_LINE('ëŒ“ê¸€ ìˆ˜ : ' || vcmt_count);
+    -- °¡Á®¿Â µ¥ÀÌÅÍ¸¦ Ãâ·Â
+    DBMS_OUTPUT.PUT_LINE('±Û Á¦¸ñ : ' || vcomm_title );
+    DBMS_OUTPUT.PUT_LINE('±Û ³»¿ë : ' || vcontent );
+    DBMS_OUTPUT.PUT_LINE('ÀÛ¼ºÀÚ ÁÖ¼Ò : ' || vmem_addr );
+    DBMS_OUTPUT.PUT_LINE('¾÷·Îµå ³¯Â¥ : ' || vtime_since_upload );   
+    DBMS_OUTPUT.PUT_LINE('ÁÁ¾Æ¿ä ¼ö : ' || vlike_count);
+    DBMS_OUTPUT.PUT_LINE('´ñ±Û ¼ö : ' || vcmt_count);
     DBMS_OUTPUT.PUT_LINE(' ');
   END LOOP;
   CLOSE c_comm_board_cur;
 --EXCEPTION
 END;
-EXEC up_searchCommBoard('ì˜¤ëŠ˜', 2);
+EXEC up_searchCommBoard('¿À´Ã', 2);
 
 SELECT * FROM comm_board;
 SELECT * FROM comm_board_like;
