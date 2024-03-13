@@ -548,9 +548,7 @@ END;
 
 EXEC seek_chat_content(2);
 
-<<<<<<< HEAD
-exec seek_chat_content(2);
-
+--
 -- 거래 게시판 검색
 CREATE OR REPLACE PROCEDURE up_searchTradeBoard
 (
@@ -655,8 +653,3 @@ EXEC up_searchCommBoard('오늘', 2);
 SELECT * FROM comm_board;
 SELECT * FROM comm_board_like;
 SELECT * FROM comm_cmt;
-
-
-=======
---------------------------------------------------------------------------------
->>>>>>> ab91ea59aeb4020daa6c3009f90cd362fa75a3c5
