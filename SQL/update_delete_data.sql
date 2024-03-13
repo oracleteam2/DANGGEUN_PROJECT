@@ -186,7 +186,6 @@ BEGIN
 --EXCEPTION
 END;
 
-
 -- 관리자의 모든 수정사항 조회를 위한 프로시저
 CREATE OR REPLACE PROCEDURE up_AdminLogInfo
 IS
@@ -209,7 +208,7 @@ EXCEPTION
 END;
 
 EXEC up_AdminLogInfo;
-ROLLBACK;
+
 
 -- 회원 로그 정보에 대한 테이블 생성
 CREATE TABLE member_log_info
@@ -217,9 +216,6 @@ CREATE TABLE member_log_info
     memo VARCHAR2(1000)
     , log_date DATE DEFAULT SYSDATE
 );
-
-DROP TABLE member_log_info;
-
 
 -- [관리자 권한] 회원의 모든 수정사항(생성, 삭제, 수정)조회를 위한 트리거 
 CREATE OR REPLACE TRIGGER ut_MemberLogInfo
