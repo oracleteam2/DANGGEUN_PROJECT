@@ -50,19 +50,22 @@ BEGIN
         ,member_tel      = NVL(pmem_tel, vmem_tel)
         ,member_profile  = NVL(pmem_profile, vmem_profile)
     WHERE member_num = pmem_num;
-
+    DBMS_OUTPUT.PUT_LINE( '회원 수정 완료');
+    COMMIT;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
     RAISE_APPLICATION_ERROR(-20002, '업데이트할 회원이 존재하지 않는다.');
 END;
 
-EXEC up_update_member(1, '유진')
+EXEC up_update_member(12, '진돌');
 ROLLBaCk;
 SELECT * FROM member;
 
 -- 회원 삭제
-ALTER TABLE memeber
+ALTER TABLE member
 DROP CONSTRAINT PK_member CASCADE;
+
+EXECUTE up_delete_member(13);
 
 CREATE OR REPLACE PROCEDURE up_delete_member
 (
@@ -459,8 +462,10 @@ BEGIN
     END IF;
 --EXCEPTION 
 END;
+EXECUTE up_charge_danggeun_pay( 12, -1020000);
 
-EXEC up_charge_danggeun_pay( 11, 30000);
+
+
 
 -- 결제
 -- 결제 테이블 INSERT
@@ -470,11 +475,12 @@ CREATE OR REPLACE PROCEDURE up_insert_pay
 )
 IS
     vmem_nickname member.member_nickname%TYPE;
-    vseller_num trade.member_num%TYPE; -- 판매자
+    vseller_num NUMBER; -- 판매자
     vbuyer_num chat.buyer_num%TYPE; -- 구매자
     vtrade_num chat.trade_num%TYPE; -- chat에서 trade번호가 있을때
     vbalance danggeun_pay.balance%TYPE;
     vprice NUMBER;
+    c_count NUMBER;
 BEGIN
     -- 구매자
     SELECT trade_num, buyer_num
@@ -497,28 +503,40 @@ BEGIN
     FROM member
     WHERE member_num = vbuyer_num;
     
-    DBMS_OUTPUT.PUT_LINE ( vmem_nickname );
-    DBMS_OUTPUT.PUT_LINE ( vprice || '원');
-    DBMS_OUTPUT.PUT_LINE ( '남은금액' || vbalance || '원' );
-    DBMS_OUTPUT.PUT_LINE ( '1' || '2' || '3' );
-    DBMS_OUTPUT.PUT_LINE ( '4' || '5' || '6' );
-    DBMS_OUTPUT.PUT_LINE ( '7' || '8' || '9' );
-    DBMS_OUTPUT.PUT_LINE ( ''  || '0' || '<-' );
+    SELECT COUNT( * )
+        INTO c_count
+    FROM pay
+    WHERE chat_room_num = p_chat_num;
     
-    IF vbalance >= vprice THEN
+    IF c_count >= 1 THEN
+    RAISE_APPLICATION_ERROR(-20001, '이미 완료된 거래입니다.');
+    ELSIF vbalance >= vprice THEN
     INSERT INTO pay ( pay_num, chat_room_num, seller_num, buyer_num, pay_date, remittance_amount )
     VALUES (seq_pay.NEXTVAL, p_chat_num, vseller_num, vbuyer_num, SYSDATE, vprice);
-    ELSE 
-    RAISE_APPLICATION_ERROR(-06502, '계좌 잔액이 부족합니다.');
+    ELSE
+    RAISE_APPLICATION_ERROR(-20002, '계좌 잔액이 부족합니다.');
     END IF;
+        
+    DBMS_OUTPUT.PUT_LINE ( '닉네임 : ' || vmem_nickname );
+    DBMS_OUTPUT.PUT_LINE ( '금액 : ' || vprice || '원');
+    DBMS_OUTPUT.PUT_LINE ( '잔액' || vbalance || '원' );
+    DBMS_OUTPUT.PUT_LINE ( '  1  ' || '  2  ' || '  3  ' );
+    DBMS_OUTPUT.PUT_LINE ( '  4  ' || '  5  ' || '  6  ' );
+    DBMS_OUTPUT.PUT_LINE ( '  1  ' || '  2  ' || '  3  ' );
+    DBMS_OUTPUT.PUT_LINE ( ' 만원  ' || ' 0  ' || '  <-  ' );
+    
 --EXCEPTION
 END;
 
+
+EXECUTE up_insert_pay(4);
+SELECT * FROM chat;  
+SELECT * FROM trade_board; 
+SELECT * FROM pay;
+SELECT * FROM danggeun_pay; 
 EXECUTE up_insert_pay(1);
 
 -- 당근페이 수정
--- num1은 무조건 판매자 당근페이 금액 ++
--- num2는 무조건 구매자 당근페이 금액 --
 CREATE OR REPLACE TRIGGER ut_update_danggeun
 AFTER 
 INSERT ON pay
@@ -526,7 +544,7 @@ FOR EACH ROW
 BEGIN
     UPDATE danggeun_pay 
     SET balance = balance + :NEW.remittance_amount
-    WHERE member_num = :NEW.seler_num;
+    WHERE member_num = :NEW.seller_num;
     
     UPDATE danggeun_pay
     SET balance = balance - :NEW.remittance_amount
@@ -696,9 +714,8 @@ END;
 <<<<<<< HEAD
 -- 중고거래 게시판 삭제 트리거
 CREATE OR REPLACE TRIGGER delete_related_data_trigger
-=======
+
 CREATE OR REPLACE TRIGGER ut_del_related_trade_board
->>>>>>> 5098aa98d4fbc86741489a0292da847560ecb713
 BEFORE DELETE ON trade_board
 FOR EACH ROW
 BEGIN
@@ -823,12 +840,16 @@ INCREMENT BY 1
 START WITH 1
 NOCYCLE NOCACHE;
 
+
 -- 매너온도 추가(평가)
+
 CREATE OR REPLACE PROCEDURE up_insert_manner_points
 (
+    ppay_num NUMBER,
     p_chat_room_num pay.chat_room_num%TYPE,
     p_press_mem_num  NUMBER,        --매너온도 누른사람
-    p_compress_mem_num NUMBER       --매너온도 눌러진 사람
+    p_compress_mem_num NUMBER,       --매너온도 눌러진 사람
+    p_평가 VARCHAR2
 )
 IS
     v_p_count NUMBER;
@@ -836,7 +857,7 @@ IS
     vmem_manner_points member.member_manner_points%TYPE;
 BEGIN
     
-    SELECT member_manner_points
+   SELECT member_manner_points
         INTO vmem_manner_points
     FROM member
     WHERE member_num = p_compress_mem_num;
@@ -849,19 +870,23 @@ BEGIN
     SELECT COUNT(*)
         INTO v_p_count
     FROM pay
-    WHERE (buyer_num = p_press_mem_num AND seller_num = p_compress_mem_num) OR
-          (buyer_num = p_compress_mem_num AND seller_num = p_press_mem_num);
+    WHERE (buyer_num = p_press_mem_num AND seller_num = p_compress_mem_num AND pay_num = ppay_num ) OR
+          (buyer_num = p_compress_mem_num AND seller_num = p_press_mem_num AND pay_num = ppay_num);
           
-    IF v_m_count = 0 AND v_p_count = 1 THEN
+    IF v_m_count = 0 AND v_p_count = 1 AND p_평가 LIKE '긍정' THEN
     INSERT INTO manner_points ( manner_points_num, chat_room_num, press_mem_num, compress_mem_num, manner_points, update_date )
-    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, p_press_mem_num , p_compress_mem_num, vmem_manner_points+(vmem_manner_points*0.025)  ,SYSDATE );
+    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, p_press_mem_num, p_compress_mem_num, vmem_manner_points+(vmem_manner_points*0.025)  ,SYSDATE );
+    ELSIF v_m_count = 0 AND v_p_count = 1 AND p_평가 LIKE '부정' THEN
+    INSERT INTO manner_points ( manner_points_num, chat_room_num, press_mem_num, compress_mem_num, manner_points, update_date )
+    VALUES ( seq_manner_points.NEXTVAL, p_chat_room_num, p_press_mem_num, p_compress_mem_num, vmem_manner_points-(vmem_manner_points*0.025)  ,SYSDATE );
+    ELSIF v_p_count = 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, '거래를 진행하지 않은 유저는 매너온도 평가할 수 없습니다.');
     ELSE
     RAISE_APPLICATION_ERROR(-20001, '이미 매너온도를 평가한 회원입니다.');
     END IF;
 --EXCEPTION
 END;
 
-SELECT * FROM chat;
 
 CREATE OR REPLACE TRIGGER ut_update_mem_manner
 AFTER
@@ -873,21 +898,30 @@ BEGIN
     WHERE member_num = :NEW.compress_mem_num;
 END;
 
+
+SELECT * FROM member;
+SELECT * FROM manner_points;
+SELECT * FROM chat;
+SELECT * FROM trade_board;
+SELECT * FROM pay;
+
+EXEC up_insert_manner_points(3, 3, 1, 2, '부정');
+
+
 EXEC up_insert_manner_points( 1, 2, 1);
 EXECUTE up_insert_pay(6);
 EXECUTE up_select_mpage(1);
 
+
 -- 동네생활 카테고리
-<<<<<<< HEAD
 -- 추가/수정/삭제
---SELECT * FROM comm_ctgr ;
+
 
 -- UP_INSCOMMCTAR 동네카테고리 추가프로시저
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
-=======
+
 -- 동네생활 카테고리추가
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTGR
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
 (
     pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
     , pcomm_ctgr_name  comm_ctgr.comm_ctgr_name%TYPE 
@@ -923,11 +957,9 @@ END;
 
 EXEC up_updcommctgr(1, '인기');
 
-<<<<<<< HEAD
+
 --up_delcommctgr 동네카테고리 삭제프로시저
-=======
 -- 동네생활 카테고리 삭제
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
 CREATE OR REPLACE PROCEDURE up_delcommctgr
 (
     pcomm_ctgr_num NUMBER
@@ -1176,12 +1208,9 @@ END;
 EXEC up_delreply(20);
 
 -- 동네생활 게시판 좋아요
-<<<<<<< HEAD
-
--- up_udtcmtreplylike 게시판좋아요 추가 삭제 프로시저
-=======
+-- up_udtcmtreplylke 게시판좋아요 추가 삭제 프로시저
 -- 동네생활 게시판 좋아요 추가/삭제
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
+
 CREATE OR REPLACE PROCEDURE up_insdelboardlike
 (
     pcomm_like_num  comm_board_like.comm_like_num%TYPE
@@ -1192,7 +1221,7 @@ IS
     cnt_boardlike NUMBER;
 BEGIN
     --PLS-00103: Encountered the symbol "DISTINCT" when expecting one of the following:
-<<<<<<< HEAD
+
     select COUNT(comm_like_num) into cnt_boardlike
     from comm_board_like where member_num = pmember_num and comm_board_num = pcomm_board_num ;
     
@@ -1209,7 +1238,6 @@ END;
 
 --EXEC up_insdelboardlike ( 14, 8, 11 );
 --select * from comm_board_like;
-=======
     SELECT COUNT(comm_like_num) INTO cnt_boardlike
     FROM comm_board_like 
     WHERE member_num = pmember_num AND comm_board_num = pcomm_board_num ;
@@ -1225,8 +1253,6 @@ END;
 END;
 
 EXEC up_insboardlike ( 14, 8, 11 );
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
-
 
 -- 동네생활 댓글 좋아요
 -- 동네생활 댓글 좋아요 추가
@@ -1284,16 +1310,24 @@ END;
 EXEC up_dellike(1, 10, 10);
 
 
-<<<<<<< HEAD
 
 -- 동네생활 대댓글 좋아요
 
 -- up_inscmtreplylike 대댓글좋아요 추가/삭제 프로시저
-=======
 -- 동네생활 대댓글 좋아요
 -- 추가/삭제
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
+-- insert작업하기 전에 그 게시판에 해당하는 유저가 좋아요 눌렀으면 delete작업만 실행되도록
+SELECT * FROM cmt_reply_like ;
+DESC cmt_reply_like;
+
+
+-- 동네생활 대댓글 좋아요
+---- 추가/삭제
+-- up_inscmtreplylike 대댓글좋아요 추가
+CREATE OR REPLACE PROCEDURE up_inscmtreplylike
+
 CREATE OR REPLACE PROCEDURE up_insdelcmtreplylike
+
 (
     prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
     , pmember_num   cmt_reply_like.member_num%TYPE
@@ -1302,23 +1336,18 @@ CREATE OR REPLACE PROCEDURE up_insdelcmtreplylike
 IS
    cnt_replylike NUMBER;
 BEGIN      
-<<<<<<< HEAD
+
     select COUNT(rcmt_like_num) into cnt_replylike
     from cmt_reply_like where member_num = pmember_num and rcmt_num = prcmt_num ;
-=======
+    
     SELECT COUNT(rcmt_like_num) INTO cnt_replylike
     FROM cmt_reply_like 
     WHERE member_num = pmember_num AND rcmt_num = prcmt_num ;
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
-    
+
     IF cnt_replylike < 1 THEN 
         INSERT INTO cmt_reply_like VALUES (prcmt_like_num, pmember_num, prcmt_num) ;
     ELSIF cnt_replylike = 1 THEN
-<<<<<<< HEAD
-        DELETE FROM cmt_reply_like where member_num = pmember_num;
-=======
         DELETE FROM cmt_reply_like WHERE member_num = pmember_num;
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
     END IF; 
     
     commit;
@@ -1326,9 +1355,7 @@ BEGIN
 --EXCEPTION
 END;
 
-<<<<<<< HEAD
---EXEC up_insdelcmtreplylike(25, 2, 1);
---select * from cmt_reply_like;
-=======
+
+
 EXEC up_insdelcmtreplylike(25, 2, 1);
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
+
