@@ -89,7 +89,7 @@ END;
 
 
 -- 관리자
--- 관리자 추가 프로시저
+-- 관리자 추가 
 CREATE OR REPLACE PROCEDURE up_insAdmin
 (
     padmin_nickname admin.admin_nickname%TYPE := NULL
@@ -104,7 +104,7 @@ END;
 
 EXEC up_insAdmin('관리자4', 'admin9999', '12385');
 
--- 관리자 정보 수정 프로시저
+-- 관리자 수정
 CREATE OR REPLACE PROCEDURE up_updAdmin
 (
     padmin_num admin.admin_num%TYPE 
@@ -113,22 +113,30 @@ CREATE OR REPLACE PROCEDURE up_updAdmin
     , padmin_password admin.admin_password%TYPE := NULL
 )
 IS
+    vadmin_num admin.admin_num%TYPE;
 BEGIN
+    SELECT admin_num INTO vadmin_num
+    FROM admin
+    WHERE admin_num = padmin_num;
+
     UPDATE admin
     SET admin_nickname = NVL(padmin_nickname, admin_nickname)
         , admin_id = NVL(padmin_id, admin_id)
         , admin_password = NVL(padmin_password, admin_password)
     WHERE admin_num = padmin_num;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
-EXEC up_updAdmin(1, padmin_id => 'admin1241');
+EXEC up_updAdmin(3, padmin_nickname => '유진', padmin_id => 'admin1241');
 
 SELECT * FROM admin;
 
 ROLLBACK;
 
--- 관리자 삭제 프로시저
-
+-- 관리자 삭제 
 ALTER TABLE admin
 DROP CONSTRAINT PK_admin CASCADE;
 
@@ -137,11 +145,178 @@ CREATE OR REPLACE PROCEDURE up_delAdmin
     padmin_num admin.admin_num%TYPE
 )
 IS
+    vadmin_num admin.admin_num%TYPE;
 BEGIN
+    SELECT admin_num INTO vadmin_num
+    FROM admin
+    WHERE admin_num = padmin_num;
+    
     DELETE FROM admin WHERE admin_num = padmin_num;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
 EXEC up_delAdmin(5);
+
+-- 관리자 로그 조회 테이블
+CREATE TABLE admin_log_info
+(
+    memo VARCHAR(1000)
+    , log_date DATE DEFAULT SYSDATE
+);
+
+-- 관리자의 수정사항(생성, 수정, 삭제)조회를 위한 트리거
+CREATE OR REPLACE TRIGGER ut_AdminLogInfo
+AFTER
+INSERT OR UPDATE OR DELETE ON admin
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN 
+        INSERT INTO admin_log_info (memo) VALUES ('[' || :NEW.admin_id || '] -> 관리자 생성');
+    ELSIF UPDATING THEN 
+        IF :OLD.admin_nickname != :NEW.admin_nickname THEN
+            INSERT INTO admin_log_info (memo) VALUES ('관리자의 닉네임정보 [' || :OLD.admin_nickname || '->' || :NEW.admin_nickname || '] 변경');
+        ELSIF :OLD.admin_id != :NEW.admin_id THEN
+            INSERT INTO admin_log_info (memo) VALUES ('[' || :OLD.admin_nickname || '] 의 관리자 ID가 [' || :OLD.admin_id || '->' || :NEW.admin_id || '] 변경');
+        ELSIF :OLD.admin_password != :NEW.admin_password THEN
+            INSERT INTO admin_log_info (memo) VALUES ('[' || :OLD.admin_nickname || '] 의 관리자 비밀번호가 [' || :OLD.admin_password || '->' || :NEW.admin_password || '] 변경');
+        END IF;
+    ELSIF DELETING THEN 
+        INSERT INTO admin_log_info (memo) VALUES ('[' || :OLD.admin_id || '] -> 관리자 삭제');
+    END IF;
+--EXCEPTION
+END;
+
+
+-- 관리자의 모든 로그, 수정정보 조회를 위한 프로시저
+CREATE OR REPLACE PROCEDURE up_AdminLogInfo
+IS
+    vmemo admin_log_info.memo%TYPE;  
+BEGIN
+    SELECT memo INTO vmemo 
+    FROM admin_log_info 
+    WHERE ROWNUM = 1;
+    
+    DBMS_OUTPUT.PUT_LINE('관리자 수정사항');
+    FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM admin_log_info)
+        LOOP
+            DBMS_OUTPUT.PUT_LINE('About Admin Log : ' || vrow.memo);
+            DBMS_OUTPUT.PUT_LINE('TIME : ' || vrow.log_date);
+            DBMS_OUTPUT.PUT_LINE(' ');
+        END LOOP;
+EXCEPTION 
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20015, '수정된 기록이 없습니다.');
+END;
+
+EXEC up_AdminLogInfo;
+ROLLBACK;
+
+-- 회원 로그 정보에 대한 테이블 생성
+CREATE TABLE member_log_info
+(
+    memo VARCHAR2(1000)
+    , log_date DATE DEFAULT SYSDATE
+);
+
+DROP TABLE member_log_info;
+
+
+-- [관리자 권한] 회원의 모든 수정사항(생성, 삭제, 수정)조회를 위한 트리거 
+CREATE OR REPLACE TRIGGER ut_MemberLogInfo
+AFTER
+INSERT OR UPDATE OR DELETE ON member
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN 
+        INSERT INTO member_log_info (memo) VALUES ( :NEW.member_nickname || ' -> 생성');
+    ELSIF UPDATING THEN 
+        IF :OLD.member_nickname != :NEW.member_nickname THEN
+            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 이름정보 ' || '[' || :OLD.member_nickname || ' -> ' || :NEW.member_nickname || ']' || '  변경');
+        ELSIF :OLD.member_tel != :NEW.member_tel THEN
+            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 전화번호 ' || '[' || :OLD.member_tel || ' -> ' || :NEW.member_tel || ']' || ' 변경');
+        ELSIF :OLD.member_address != :NEW.member_address THEN
+            INSERT INTO member_log_info (memo) VALUES (  '[' || :OLD.member_nickname || ']' || '님의 주소 ' || '[' || :OLD.member_address || ' -> ' || :NEW.member_address || ']' || ' 변경');
+        END IF;
+    ELSIF DELETING THEN 
+        INSERT INTO member_log_info (memo) VALUES ( :OLD.member_nickname || ' -> 삭제');
+    END IF;
+--EXCEPTION
+END;
+
+-- [관리자 권한] 회원의 모든 로그, 수정정보 조회를 위한 프로시저
+CREATE OR REPLACE PROCEDURE up_MemberLogInfo
+IS
+    vmemo member_log_info.memo%TYPE DEFAULT NULL;
+BEGIN
+    SELECT memo INTO vmemo 
+    FROM member_log_info 
+    WHERE ROWNUM = 1;
+    DBMS_OUTPUT.PUT_LINE('회원 수정사항');
+    FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM member_log_info)
+        LOOP
+            DBMS_OUTPUT.PUT_LINE('About Member Log : ' || vrow.memo);
+            DBMS_OUTPUT.PUT_LINE('TIME : ' || vrow.log_date);
+            DBMS_OUTPUT.PUT_LINE(' ');
+        END LOOP;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '수정된 내용이 없습니다.');
+END;
+
+EXEC up_MemberLogInfo;
+
+-- 공지사항 게시판 수정사항 조회를 위한 테이블
+CREATE TABLE NoticeBoard_log_info
+(
+    memo VARCHAR2(1000)
+    , log_date DATE DEFAULT SYSDATE
+);
+
+-- [관리자 권한] 공지사항 게시판의 모든 수정사항 조회를 위한 트리거
+CREATE OR REPLACE TRIGGER ut_NoticeBoardLogInfo
+AFTER
+INSERT OR UPDATE OR DELETE ON notice_board
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN 
+        INSERT INTO NoticeBoard_log_info (memo) VALUES ( '[' ||  :NEW.notice_title || ']' || ' -> 게시판 생성');
+    ELSIF UPDATING THEN 
+        IF :OLD.notice_title != :NEW.notice_title THEN
+            INSERT INTO NoticeBoard_log_info (memo) VALUES ( '[' || :OLD.notice_title || ' -> ' || :NEW.notice_title || ']' || ' 게시판 이름 변경');
+        ELSIF :OLD.notice_content != :NEW.notice_content THEN
+            INSERT INTO NoticeBoard_log_info (memo) VALUES ( '[' || :OLD.notice_content || ' -> ' || :NEW.notice_content || ']' || ' 게시판 내용 변경');
+        END IF;
+    ELSIF DELETING THEN 
+        INSERT INTO NoticeBoard_log_info (memo) VALUES ( '[' || :OLD.notice_title || ']' || ' -> 게시판 삭제');
+    END IF;
+--EXCEPTION
+END;
+
+
+-- [관리자 권한] 공지사항 게시판의 모든 수정사항 조회 프로시저
+CREATE OR REPLACE PROCEDURE up_NoticeBoardLogInfo
+IS
+    vmemo NoticeBoard_log_info.memo%TYPE;
+BEGIN
+    SELECT memo INTO vmemo 
+    FROM noticeboard_log_info 
+    WHERE ROWNUM = 1;
+    
+    DBMS_OUTPUT.PUT_LINE('공지사항 게시판 수정사항');
+    FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM NoticeBoard_log_info)
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('ABout NoticeBoard Log : ' || vrow.memo);
+        DBMS_OUTPUT.PUT_LINE('TIME : ' || vrow.log_date);
+        DBMS_OUTPUT.PUT_LINE(' ');
+    END LOOP;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '수정된 게시판이 없습니다.');
+END;
+    
+EXEC up_NoticeBoardLogInfo;
 
 
 -- 신고
@@ -482,7 +657,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
     WHEN MEMBER_NOT_MATCHED THEN
-        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.');
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('An error occurred');
 END;
