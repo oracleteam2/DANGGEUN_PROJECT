@@ -22,8 +22,6 @@ END;
 
 EXECUTE up_insert_member( '000608', '유진', '서울시', '010-3111-2222', 'https://image.newsis.com/2012/05/25/NISI20120525_0006401508_web.jpg');
 
-SELECT * FROM member;
-
 -- 회원 수정
 CREATE OR REPLACE PROCEDURE up_update_member
 (
@@ -59,11 +57,13 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(-20002, '업데이트할 회원이 존재하지 않는다.');
 END;
 
-EXEC up_update_member(21, '진돌');
+EXEC up_update_member (21, pmem_nickname => '유진');
+EXEC up_update_member (21, pmem_addr => '대전 is good');
+EXEC up_update_member (21, pmem_tel => '010-4151-2151');
+EXEC up_update_member (21, pmem_profile => 'http://image.fgblkgfblkmgfbkl');
 
-EXEC up_update_member(21, pmem_addr => '울산 is good');
+SELECT * FROM member;
 
-EXEC up_update_member(21, pmem_tel => '010-4285-8888');
 
 -- 회원 삭제
 ALTER TABLE member
@@ -139,10 +139,14 @@ BEGIN
     WHERE member_num = pmem_num;      
 END;
 
+<<<<<<< HEAD
+EXEC up_delete_member(24);
+=======
 EXEC up_delmember(1);
 SELECT * FROM member;
 SELECT * FROM trade_board;
 SELECT * FROM chat;
+>>>>>>> 730dae444e1670046b435b29c9178cbe779be44a
 --------------------------------------------------------------------------------
 
 
@@ -399,7 +403,7 @@ BEGIN
 --EXCEPTION
 END;
 
-EXEC up_insAdmin('관리자4', 'admin9999', '12385');
+EXEC up_insAdmin('관리자5', 'admin9899', '12342385');
 
 -- 관리자 수정
 CREATE OR REPLACE PROCEDURE up_updAdmin
@@ -427,39 +431,19 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
-EXEC up_updAdmin(3, padmin_nickname => '유진', padmin_id => 'admin1241');
+EXEC up_updAdmin(2, padmin_nickname => '유진2');
+EXEC up_updAdmin(2, padmin_id => 'yuejin');
+EXEC up_updAdmin(2, padmin_password => 01040457834);
 
--- 관리자 삭제 
-ALTER TABLE admin
-DROP CONSTRAINT PK_admin CASCADE;
 
-CREATE OR REPLACE PROCEDURE up_delAdmin
-(
-    padmin_num admin.admin_num%TYPE
-)
-IS
-    vadmin_num admin.admin_num%TYPE;
-BEGIN
-    SELECT admin_num INTO vadmin_num
-    FROM admin
-    WHERE admin_num = padmin_num;
-    
-    DELETE FROM admin WHERE admin_num = padmin_num;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-    RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
-END;
-
-EXEC up_delAdmin(5);
-
--- 관리자 로그 조회 테이블
+-- 관리자 로그, 수정사항 정보 테이블
 CREATE TABLE admin_log_info
 (
     memo VARCHAR(1000)
     , log_date DATE DEFAULT SYSDATE
 );
 
--- 관리자의 수정사항(생성, 수정, 삭제)조회를 위한 트리거
+-- 관리자의 수정사항(생성, 수정)조회를 위한 트리거
 CREATE OR REPLACE TRIGGER ut_AdminLogInfo
 AFTER
 INSERT OR UPDATE OR DELETE ON admin
@@ -475,8 +459,6 @@ BEGIN
         ELSIF :OLD.admin_password != :NEW.admin_password THEN
             INSERT INTO admin_log_info (memo) VALUES ('[' || :OLD.admin_nickname || '] 의 관리자 비밀번호가 [' || :OLD.admin_password || '->' || :NEW.admin_password || '] 변경');
         END IF;
-    ELSIF DELETING THEN 
-        INSERT INTO admin_log_info (memo) VALUES ('[' || :OLD.admin_id || '] -> 관리자 삭제');
     END IF;
 --EXCEPTION
 END;
@@ -490,7 +472,7 @@ BEGIN
     FROM admin_log_info 
     WHERE ROWNUM = 1;
     
-    DBMS_OUTPUT.PUT_LINE('관리자 수정사항');
+    DBMS_OUTPUT.PUT_LINE('--> Admin Log File <--');
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM admin_log_info)
         LOOP
             DBMS_OUTPUT.PUT_LINE('About Admin Log : ' || vrow.memo);
@@ -504,8 +486,7 @@ END;
 
 EXEC up_AdminLogInfo;
 
-
--- 회원 로그 정보에 대한 테이블 생성
+-- 회원 로그, 수정사항 정보 테이블
 CREATE TABLE member_log_info
 (
     memo VARCHAR2(1000)
@@ -519,14 +500,16 @@ INSERT OR UPDATE OR DELETE ON member
 FOR EACH ROW
 BEGIN
     IF INSERTING THEN 
-        INSERT INTO member_log_info (memo) VALUES ( :NEW.member_nickname || ' -> 생성');
+        INSERT INTO member_log_info (memo) VALUES ( '[' || :NEW.member_nickname || ']' || ' -> 생성');
     ELSIF UPDATING THEN 
         IF :OLD.member_nickname != :NEW.member_nickname THEN
-            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 이름정보 ' || '[' || :OLD.member_nickname || ' -> ' || :NEW.member_nickname || ']' || '  변경');
+            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 이름정보가 ' || '[' || :OLD.member_nickname || ' -> ' || :NEW.member_nickname || ']' || '  변경');
         ELSIF :OLD.member_tel != :NEW.member_tel THEN
-            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 전화번호 ' || '[' || :OLD.member_tel || ' -> ' || :NEW.member_tel || ']' || ' 변경');
+            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 전화번호가 ' || '[' || :OLD.member_tel || ' -> ' || :NEW.member_tel || ']' || ' 변경');
         ELSIF :OLD.member_address != :NEW.member_address THEN
-            INSERT INTO member_log_info (memo) VALUES (  '[' || :OLD.member_nickname || ']' || '님의 주소 ' || '[' || :OLD.member_address || ' -> ' || :NEW.member_address || ']' || ' 변경');
+            INSERT INTO member_log_info (memo) VALUES (  '[' || :OLD.member_nickname || ']' || '님의 주소가 ' || '[' || :OLD.member_address || ' -> ' || :NEW.member_address || ']' || ' 변경');
+        ELSIF :OLD.member_profile != :NEW.member_profile THEN
+            INSERT INTO member_log_info (memo) VALUES ( '[' || :OLD.member_nickname || ']' || '님의 프로필 이미지가 ' || '[' || :OLD.member_profile || ' -> ' || :NEW.member_profile || ']' || ' 변경');
         END IF;
     ELSIF DELETING THEN 
         INSERT INTO member_log_info (memo) VALUES ( :OLD.member_nickname || ' -> 삭제');
@@ -542,7 +525,7 @@ BEGIN
     SELECT memo INTO vmemo 
     FROM member_log_info 
     WHERE ROWNUM = 1;
-    DBMS_OUTPUT.PUT_LINE('회원 수정사항');
+    DBMS_OUTPUT.PUT_LINE('--> MEMBER LOG FILE <--');
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM member_log_info)
         LOOP
             DBMS_OUTPUT.PUT_LINE('About Member Log : ' || vrow.memo);
@@ -556,7 +539,7 @@ END;
 
 EXEC up_MemberLogInfo;
 
--- 공지사항 게시판 로그 조회를 위한 테이블
+-- 공지사항 게시판 수정사항 정보테이블
 CREATE TABLE NoticeBoard_log_info
 (
     memo VARCHAR2(1000)
@@ -592,7 +575,7 @@ BEGIN
     FROM noticeboard_log_info 
     WHERE ROWNUM = 1;
     
-    DBMS_OUTPUT.PUT_LINE('공지사항 게시판 수정사항');
+    DBMS_OUTPUT.PUT_LINE('--> Notice Board Log File <--');
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM NoticeBoard_log_info)
     LOOP
         DBMS_OUTPUT.PUT_LINE('ABout NoticeBoard Log : ' || vrow.memo);
