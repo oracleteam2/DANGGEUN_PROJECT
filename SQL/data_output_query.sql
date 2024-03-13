@@ -1,6 +1,7 @@
 -- SCOTT
 -- 데이터 출력용(화면)
 
+------------------------------- 회원 조회 ---------------------------------------
 -- 회원 마이페이지 조회
 CREATE OR REPLACE PROCEDURE up_select_mpage
 (
@@ -15,7 +16,6 @@ IS
     vbalance danggeun_pay.balance%TYPE;
     v_mem_count NUMBER;
 BEGIN
-    
     SELECT COUNT(*)
         INTO v_mem_count
     FROM member
@@ -47,7 +47,40 @@ END;
 
 EXEC up_select_mpage(1);
 
--- 차단 조회
+--------------------------------------------------------------------------------
+
+
+
+------------------------------ 관리자 조회 --------------------------------------
+-- 관리자 전체 조회
+CREATE OR REPLACE PROCEDURE up_selAdminAll
+IS
+    vadmin_nickname admin.admin_nickname%TYPE;
+    vadmin_ID admin.admin_ID%TYPE;
+    vadmin_password admin.admin_password%TYPE;
+BEGIN
+    FOR vrow IN (SELECT admin_nickname
+                        , admin_id
+                        , admin_password
+                 FROM admin)
+    LOOP
+    DBMS_OUTPUT.PUT_LINE('NAME : ' || vrow.admin_nickname);
+    DBMS_OUTPUT.PUT_LINE('ID : ' || vrow.admin_id);
+    DBMS_OUTPUT.PUT_LINE('admin_password : ' || vrow.admin_password);
+    DBMS_OUTPUT.PUT_LINE(' ');
+    END LOOP;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('관리자가 없습니다.');
+END;
+
+EXEC up_selAdminAll;
+
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------- 차단 조회 -------------------------------------
 CREATE OR REPLACE PROCEDURE up_selBLOCK
 (
     pmember_num NUMBER
@@ -81,6 +114,11 @@ END;
 
 EXEC up_selBLOCK(2);
 
+--------------------------------------------------------------------------------
+
+
+
+--------------------------- 공지 사항 조회 --------------------------------------
 -- 공지사항 게시판 전체 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
 
@@ -92,13 +130,12 @@ IS
 BEGIN
     DBMS_OUTPUT.PUT_LINE('공지사항');
     DBMS_OUTPUT.PUT_LINE(' ');
-    FOR vrow IN (
-    SELECT notice_title
-    , notice_date
-    , admin_nickname
-    FROM notice_board nb JOIN admin a USING(admin_num)
-    ORDER BY vnotice_date
-    )
+    FOR vrow IN (SELECT notice_title
+                , notice_date
+                , admin_nickname
+                FROM notice_board nb JOIN admin a USING(admin_num)
+                ORDER BY vnotice_date
+                )
     LOOP
     DBMS_OUTPUT.PUT_LINE('[공지] ' || ' ' || vrow.notice_title);
     DBMS_OUTPUT.PUT_LINE('Date : ' || vrow.notice_date || '              ' || 'Writer : '|| vrow.admin_nickname);
@@ -107,8 +144,6 @@ BEGIN
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('공지사항이 없습니다.');
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('오류 발생: ');
 END;
 
 EXEC up_selNoticeBoardAll;
@@ -149,6 +184,11 @@ END;
 
 EXEC up_selNoticeBoardInfo(1);
 
+--------------------------------------------------------------------------------
+
+
+
+-------------------------- 중고거래 게시판 조회 ---------------------------------
 -- 중고거래 게시판 전체 조회
 DECLARE
   CURSOR trade_board_cursor IS
@@ -207,7 +247,7 @@ BEGIN
         FOR rec IN (
             SELECT  
                 tb.trade_num
-                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url) 
+                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url)
                   FROM item_image ii 
                   WHERE ii.trade_num = tb.trade_num
                   GROUP BY ii.trade_num) item_images
@@ -283,7 +323,11 @@ END;
 
 EXEC up_selTradeBoard(1);
 
+--------------------------------------------------------------------------------
 
+
+
+-------------------------- 동네생활 게시판 조회 ---------------------------------
 -- 동네생활 게시판 전체 조회
 DECLARE
   CURSOR comm_board_cursor IS
@@ -313,7 +357,6 @@ BEGIN
 END;
 
 -- 동네생활 게시판 상세 조회
--- up_seltblcommboard 동네게시판조회
 CREATE OR REPLACE PROCEDURE up_selcommboard
 (
     pcomm_board_num NUMBER
@@ -332,16 +375,18 @@ BEGIN
                     , member_nickname               nickname  --회원닉네임
                     , SUBSTR(m.member_address,7)    member_address   --게시글회원주소
                     , CASE 
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) * 24 * 60) || '분 전'
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) > 30 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) / 30 ) || '개월 전'
-                        ELSE TRUNC(SYSDATE - TO_DATE(cb.comm_upload_date)) || '일 전'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) > 24 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) * 24 * 60) || '분 전'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) < 24 THEN ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) || '시간 전'
+                        WHEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) < 30 THEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) || '일 전'
+                        WHEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) < 12 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) || '개월 전'
+                        ELSE TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30/12 ) || '년 전'
                       END upload_date    --업로드일자
                     , cb.comm_title                 title       --게시글제목
                     , cb.comm_content               comm_content     --게시글내용
                     , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --게시판좋아요갯수 
                     FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                                JOIN member m ON cb.member_num = m.member_num 
-                               JOIN comm_board_like bl ON cb.member_num = bl.member_num
+                               LEFT JOIN comm_board_like bl ON cb.member_num = bl.member_num
                     where cb.comm_board_num = pcomm_board_num             
                    )
     LOOP
@@ -355,33 +400,40 @@ BEGIN
      DBMS_OUTPUT.PUT_LINE(' '); 
     END LOOP;
 --EXCEPTION
-  -- ROLLBACK;
 END;
 
-EXEC up_selcommboard(1);
+EXEC up_selcommboard(19);
 
--- 동네생활 게시판 댓글 조회
+--------------------------------------------------------------------------------
+
+
+
+------------------------- 동네생활 게시판 댓글 조회 -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkcmt
 IS
-  vcomm_num comm_cmt.comm_num%TYPE;
-  vmember_num comm_cmt.member_num%TYPE;
-  vcomm_date comm_cmt.comm_date%TYPE;
-  vcomm_content comm_cmt.comm_content%TYPE;
+  vcomm_num comm_cmt.comm_num%TYPE; -- 댓글 번호
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- 작성자 닉네임
+  vcomm_date comm_cmt.comm_date%TYPE; -- 댓글 작성 날짜
+  vcomm_content comm_cmt.comm_content%TYPE; -- 댓글 내용
 BEGIN
   FOR vrow IN 
   (SELECT 
-    comm_num, member_num, comm_date, comm_content
-   FROM comm_cmt)
+    c.comm_num, 
+    m.MEMBER_NICKNAME,
+    c.comm_date, 
+    c.comm_content
+   FROM comm_cmt c
+   JOIN MEMBER m ON c.member_num = m.MEMBER_NUM
+  )
   LOOP
     vcomm_num := vrow.comm_num;
-    vmember_num := vrow.member_num;
+    vmember_nickname := vrow.MEMBER_NICKNAME;
     vcomm_date := vrow.comm_date;
     vcomm_content := vrow.comm_content;
 
-    -- 댓글 정보 출력
     DBMS_OUTPUT.put_line('**댓글 번호: ' || vcomm_num);
-    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
-    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD HH24:MI:SS'));
+    DBMS_OUTPUT.put_line('**작성자 닉네임: ' || vmember_nickname);
+    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD'));
     DBMS_OUTPUT.put_line('**댓글 내용: ' || vcomm_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
@@ -389,102 +441,114 @@ EXCEPTION
   WHEN NO_DATA_FOUND THEN
     DBMS_OUTPUT.PUT_LINE('**댓글이 존재하지 않습니다.');
 END;
-
 EXEC up_checkcmt;
 
--- 동네생활 게시판 대댓글 조회
+--------------------------------------------------------------------------------
+
+
+
+----------------------- 동네생활 게시판 대댓글 조회 -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkReply
 IS
-  vrcmt_num cmt_reply.rcmt_num%TYPE;
-  vmember_num cmt_reply.member_num%TYPE;
-  vrcmt_date cmt_reply.rcmt_date%TYPE;
-  vrcmt_content cmt_reply.rcmt_content%TYPE;
+  -- 변수 선언
+  vrcmt_num cmt_reply.rcmt_num%TYPE; -- 대댓글 번호
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- 작성자 닉네임
+  vrcmt_date cmt_reply.rcmt_date%TYPE; -- 대댓글 작성 날짜
+  vrcmt_content cmt_reply.rcmt_content%TYPE; -- 대댓글 내용
 BEGIN
+  -- 대댓글 정보 조회
   FOR vrow IN 
-  (SELECT 
-    rcmt_num, member_num, rcmt_date, rcmt_content
-   FROM cmt_reply)
+              (SELECT 
+                cr.rcmt_num, 
+                m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
+                cr.rcmt_date, 
+                cr.rcmt_content
+               FROM cmt_reply cr
+               JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_reply와 MEMBER 테이블 조인
+              )
   LOOP
+    -- 조회된 정보를 변수에 할당
     vrcmt_num := vrow.rcmt_num;
-    vmember_num := vrow.member_num;
+    vmember_nickname := vrow.MEMBER_NICKNAME;
     vrcmt_date := vrow.rcmt_date;
     vrcmt_content := vrow.rcmt_content;
 
-    -- 댓글 정보 출력
+    -- 대댓글 정보 출력
     DBMS_OUTPUT.put_line('**대댓글 번호: ' || vrcmt_num);
-    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
+    DBMS_OUTPUT.put_line('**작성자 닉네임: ' || vmember_nickname);
     DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vrcmt_date, 'YYYY-MM-DD'));
     DBMS_OUTPUT.put_line('**대댓글 내용: ' || vrcmt_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-    DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
+        DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
 END;
 
 EXEC up_checkReply;
+
+--------------------------------------------------------------------------------
+
+
+------------------------------ 채팅 조회 ----------------------------------------
 
 -- 채팅방 목록 조회
 CREATE OR REPLACE PROCEDURE seek_list
 (
     ptrade_num chat.trade_num%type
 )
-is
+IS
     vtrade_num chat.trade_num%type;
     vbuyer_num chat.buyer_num%type;
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
     vmember_adress member.member_address%type;
     vmember_manner_points member.member_manner_points%type;
-begin 
-for slc in(
-    select c.trade_num, buyer_num, member_nickname, trade_title , member_address, member_manner_points
-    from chat c join member m on c.buyer_num = m.member_num
-                join trade_board t on c.trade_num = t.trade_num
-    where c.trade_num= ptrade_num)
+BEGIN 
+FOR slc IN(
+    SELECT c.trade_num, buyer_num, member_nickname, trade_title , member_address, member_manner_points
+    FROM chat c JOIN member m on c.buyer_num = m.member_num
+                JOIN trade_board t on c.trade_num = t.trade_num
+    WHERE c.trade_num= ptrade_num)
     
-    loop
-    
-    DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname || ' 상대방 주소 : ' || slc.member_address ||'   '|| '매너 온도 : ' || slc.member_manner_points);    
-    
-    end loop;
-end;
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('게시판 제목 : ' || slc.trade_title ||'   '||   '채팅 상대방 : ' ||  slc.member_nickname || ' 상대방 주소 : ' || slc.member_address ||'   '|| '매너 온도 : ' || slc.member_manner_points);    
+    END LOOP;
+END;
 
-exec seek_list(2); 
+EXEC seek_list(2); 
 
 -- 채팅 내용 조회
 CREATE OR REPLACE PROCEDURE seek_chat_content
 (
     ptrade_num chat_board.trade_num%type
 )
-is
---    vchat_content chat_board.chat_content%type;
- --   vmember_num2 chat.member_num2%type;
+IS
     vmember_nickname member.member_nickname%type;
     vtrade_title trade_board.trade_title%type;
     vmember_manner_points member.member_manner_points%type;
-begin 
-    select trade_title, member_manner_points, member_nickname into vtrade_title, vmember_manner_points, vmember_nickname
-    from trade_board t join member m on t.member_num = m.member_num
-    where trade_num = ptrade_num;
+BEGIN 
+    SELECT trade_title, member_manner_points, member_nickname INTO vtrade_title, vmember_manner_points, vmember_nickname
+    FROM trade_board t JOIN member m on t.member_num = m.member_num
+    WHERE trade_num = ptrade_num;
     
  DBMS_OUTPUT.PUT_LINE('판매중인 물품 : ' || vtrade_title  ||'   '||   '채팅 상대방 : ' ||  vmember_nickname  ||'  '|| ' 상대방 매너온도 : ' || vmember_manner_points);
 
-for vcc in(
- select chat_content , buyer_num, b.chat_time
-    from chat c join member m on c.buyer_num = m.member_num
-                join chat_board  b on c.trade_num = b.trade_num            
-    where b.trade_num=ptrade_num
+FOR vcc IN(
+    SELECT chat_content , buyer_num, b.chat_time
+    FROM chat c JOIN member m on c.buyer_num = m.member_num
+                JOIN chat_board  b on c.trade_num = b.trade_num            
+    WHERE b.trade_num=ptrade_num
 
 )
-  loop  
-  
-  
-    DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content || '   ' || '채팅 시간 : ' || vcc.chat_time);    
-   end loop;
+    LOOP  
+        DBMS_OUTPUT.PUT_LINE('채팅내용 : ' || vcc.chat_content || '   ' || '채팅 시간 : ' || vcc.chat_time);    
+    END LOOP;
+END;
 
-end;
+EXEC seek_chat_content(2);
 
+<<<<<<< HEAD
 exec seek_chat_content(2);
 
 -- 거래 게시판 검색
@@ -593,3 +657,6 @@ SELECT * FROM comm_board_like;
 SELECT * FROM comm_cmt;
 
 
+=======
+--------------------------------------------------------------------------------
+>>>>>>> ab91ea59aeb4020daa6c3009f90cd362fa75a3c5
