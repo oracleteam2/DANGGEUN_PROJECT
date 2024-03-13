@@ -113,16 +113,24 @@ CREATE OR REPLACE PROCEDURE up_updAdmin
     , padmin_password admin.admin_password%TYPE := NULL
 )
 IS
+    vadmin_num admin.admin_num%TYPE;
 BEGIN
+    SELECT admin_num INTO vadmin_num
+    FROM admin
+    WHERE admin_num = padmin_num;
+
     UPDATE admin
     SET admin_nickname = NVL(padmin_nickname, admin_nickname)
         , admin_id = NVL(padmin_id, admin_id)
         , admin_password = NVL(padmin_password, admin_password)
     WHERE admin_num = padmin_num;
---EXCEPTION
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
-EXEC up_updAdmin(1, padmin_id => 'admin1241');
+EXEC up_updAdmin(3, padmin_nickname => '유진', padmin_id => 'admin1241');
 
 SELECT * FROM admin;
 
@@ -137,8 +145,16 @@ CREATE OR REPLACE PROCEDURE up_delAdmin
     padmin_num admin.admin_num%TYPE
 )
 IS
+    vadmin_num admin.admin_num%TYPE;
 BEGIN
+    SELECT admin_num INTO vadmin_num
+    FROM admin
+    WHERE admin_num = padmin_num;
+    
     DELETE FROM admin WHERE admin_num = padmin_num;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
 EXEC up_delAdmin(5);
@@ -178,8 +194,11 @@ CREATE OR REPLACE PROCEDURE up_AdminLogInfo
 IS
     vmemo admin_log_info.memo%TYPE;  
 BEGIN
+    SELECT memo INTO vmemo 
+    FROM admin_log_info 
+    WHERE ROWNUM = 1;
+    
     DBMS_OUTPUT.PUT_LINE('관리자 수정사항');
-
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM admin_log_info)
         LOOP
             DBMS_OUTPUT.PUT_LINE('About Admin Log : ' || vrow.memo);
@@ -187,8 +206,8 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE(' ');
         END LOOP;
 EXCEPTION 
-    WHEN NO_UPDATE THEN
-    RAISE_    DBMS_OUTPUT.PUT_LINE('수정된 내용이 없습니다.');
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20015, '수정된 기록이 없습니다.');
 END;
 
 EXEC up_AdminLogInfo;
@@ -230,27 +249,20 @@ END;
 CREATE OR REPLACE PROCEDURE up_MemberLogInfo
 IS
     vmemo member_log_info.memo%TYPE DEFAULT NULL;
---    NO_DATA_FOUND EXCEPTION;
-    
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('회원 수정사항');
     SELECT memo INTO vmemo 
     FROM member_log_info 
     WHERE ROWNUM = 1;
-    
---    IF vmemo IS NULL
---        THEN RAISE NO_DATA_FOUND;
---    ELSE
+    DBMS_OUTPUT.PUT_LINE('회원 수정사항');
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM member_log_info)
         LOOP
             DBMS_OUTPUT.PUT_LINE('About Member Log : ' || vrow.memo);
             DBMS_OUTPUT.PUT_LINE('TIME : ' || vrow.log_date);
             DBMS_OUTPUT.PUT_LINE(' ');
         END LOOP;
---    END IF;
---EXCEPTION
---    WHEN NO_DATA_FOUND THEN
---        DBMS_OUTPUT.PUT_LINE('수정된 내용이 없습니다.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '수정된 내용이 없습니다.');
 END;
 
 EXEC up_MemberLogInfo;
@@ -261,8 +273,6 @@ CREATE TABLE NoticeBoard_log_info
     memo VARCHAR2(1000)
     , log_date DATE DEFAULT SYSDATE
 );
-SELECT * FROM NoticeBoard_log_info;
-
 
 -- [관리자 권한] 공지사항 게시판의 모든 수정사항 조회를 위한 트리거
 CREATE OR REPLACE TRIGGER ut_NoticeBoardLogInfo
@@ -290,6 +300,10 @@ CREATE OR REPLACE PROCEDURE up_NoticeBoardLogInfo
 IS
     vmemo NoticeBoard_log_info.memo%TYPE;
 BEGIN
+    SELECT memo INTO vmemo 
+    FROM noticeboard_log_info 
+    WHERE ROWNUM = 1;
+    
     DBMS_OUTPUT.PUT_LINE('공지사항 게시판 수정사항');
     FOR vrow IN (SELECT memo, TO_CHAR(log_date, 'YYYY-MM-DD HH24:MI:SS') log_date FROM NoticeBoard_log_info)
     LOOP
@@ -297,7 +311,9 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('TIME : ' || vrow.log_date);
         DBMS_OUTPUT.PUT_LINE(' ');
     END LOOP;
---EXCEPTION
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20014, '수정된 게시판이 없습니다.');
 END;
     
 EXEC up_NoticeBoardLogInfo;
@@ -641,7 +657,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('Trade number ' || ptrade_num || ' does not exist.');
     WHEN MEMBER_NOT_MATCHED THEN
-        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
+        DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.');
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('An error occurred');
 END;
