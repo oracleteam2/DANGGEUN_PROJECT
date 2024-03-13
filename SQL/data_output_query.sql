@@ -548,9 +548,14 @@ END;
 
 EXEC seek_chat_content(2);
 
+<<<<<<< HEAD
+--
+-- �ŷ� �Խ��� �˻�
+=======
 
 
 -- 거래 게시판 검색
+>>>>>>> 730dae444e1670046b435b29c9178cbe779be44a
 CREATE OR REPLACE PROCEDURE up_searchTradeBoard
 (
      psearchCondition VARCHAR2, -- 원하는 검색어
