@@ -47,6 +47,32 @@ END;
 
 EXEC up_select_mpage(1);
 
+
+-- 관리자 조회
+CREATE OR REPLACE PROCEDURE up_selAdminAll
+IS
+    vadmin_nickname admin.admin_nickname%TYPE;
+    vadmin_ID admin.admin_ID%TYPE;
+    vadmin_password admin.admin_password%TYPE;
+BEGIN
+    FOR vrow IN (SELECT admin_nickname
+                        , admin_id
+                        , admin_password
+                 FROM admin)
+    LOOP
+    DBMS_OUTPUT.PUT_LINE('NAME : ' || vrow.admin_nickname);
+    DBMS_OUTPUT.PUT_LINE('ID : ' || vrow.admin_id);
+    DBMS_OUTPUT.PUT_LINE('admin_password : ' || vrow.admin_password);
+    DBMS_OUTPUT.PUT_LINE(' ');
+    END LOOP;
+EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('관리자가 없습니다.');
+END;
+
+EXEC up_selAdminAll;
+
+
 -- 차단 조회
 CREATE OR REPLACE PROCEDURE up_selBLOCK
 (
@@ -206,7 +232,7 @@ BEGIN
         FOR rec IN (
             SELECT  
                 tb.trade_num
-                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url) 
+                ,(SELECT LISTAGG(ii.item_image_url || CHR(10), ', ') WITHIN GROUP (ORDER BY ii.item_image_url)
                   FROM item_image ii 
                   WHERE ii.trade_num = tb.trade_num
                   GROUP BY ii.trade_num) item_images
@@ -365,66 +391,85 @@ END;
 -- 동네생활 게시판 댓글 조회
 CREATE OR REPLACE PROCEDURE up_checkcmt
 IS
-  vcomm_num comm_cmt.comm_num%TYPE;
-  vmember_num comm_cmt.member_num%TYPE;
-  vcomm_date comm_cmt.comm_date%TYPE;
-  vcomm_content comm_cmt.comm_content%TYPE;
+  -- 변수 선언
+  vcomm_num comm_cmt.comm_num%TYPE; -- 댓글 번호
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- 작성자 닉네임
+  vcomm_date comm_cmt.comm_date%TYPE; -- 댓글 작성 날짜
+  vcomm_content comm_cmt.comm_content%TYPE; -- 댓글 내용
 BEGIN
+  -- 댓글 정보 조회
   FOR vrow IN 
   (SELECT 
-    comm_num, member_num, comm_date, comm_content
-   FROM comm_cmt)
+    c.comm_num, 
+    m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
+    c.comm_date, 
+    c.comm_content
+   FROM comm_cmt c
+   JOIN MEMBER m ON c.member_num = m.MEMBER_NUM -- comm_cmt와 MEMBER 테이블 조인
+  )
   LOOP
+    -- 조회된 정보를 변수에 할당
     vcomm_num := vrow.comm_num;
-    vmember_num := vrow.member_num;
+    vmember_nickname := vrow.MEMBER_NICKNAME;
     vcomm_date := vrow.comm_date;
     vcomm_content := vrow.comm_content;
 
     -- 댓글 정보 출력
     DBMS_OUTPUT.put_line('**댓글 번호: ' || vcomm_num);
-    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
-    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD HH24:MI:SS'));
+    DBMS_OUTPUT.put_line('**작성자 닉네임: ' || vmember_nickname);
+    DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD'));
     DBMS_OUTPUT.put_line('**댓글 내용: ' || vcomm_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
+  -- 댓글이 없는 경우 처리
   WHEN NO_DATA_FOUND THEN
     DBMS_OUTPUT.PUT_LINE('**댓글이 존재하지 않습니다.');
 END;
-
 EXEC up_checkcmt;
+
 
 -- 동네생활 게시판 대댓글 조회
 CREATE OR REPLACE PROCEDURE up_checkReply
 IS
-  vrcmt_num cmt_reply.rcmt_num%TYPE;
-  vmember_num cmt_reply.member_num%TYPE;
-  vrcmt_date cmt_reply.rcmt_date%TYPE;
-  vrcmt_content cmt_reply.rcmt_content%TYPE;
+  -- 변수 선언
+  vrcmt_num cmt_reply.rcmt_num%TYPE; -- 대댓글 번호
+  vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- 작성자 닉네임
+  vrcmt_date cmt_reply.rcmt_date%TYPE; -- 대댓글 작성 날짜
+  vrcmt_content cmt_reply.rcmt_content%TYPE; -- 대댓글 내용
 BEGIN
+  -- 대댓글 정보 조회
   FOR vrow IN 
   (SELECT 
-    rcmt_num, member_num, rcmt_date, rcmt_content
-   FROM cmt_reply)
+    cr.rcmt_num, 
+    m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
+    cr.rcmt_date, 
+    cr.rcmt_content
+   FROM cmt_reply cr
+   JOIN MEMBER m ON cr.member_num = m.MEMBER_NUM -- cmt_reply와 MEMBER 테이블 조인
+  )
   LOOP
+    -- 조회된 정보를 변수에 할당
     vrcmt_num := vrow.rcmt_num;
-    vmember_num := vrow.member_num;
+    vmember_nickname := vrow.MEMBER_NICKNAME;
     vrcmt_date := vrow.rcmt_date;
     vrcmt_content := vrow.rcmt_content;
 
-    -- 댓글 정보 출력
+    -- 대댓글 정보 출력
     DBMS_OUTPUT.put_line('**대댓글 번호: ' || vrcmt_num);
-    DBMS_OUTPUT.put_line('**작성자 번호: ' || vmember_num);
+    DBMS_OUTPUT.put_line('**작성자 닉네임: ' || vmember_nickname);
     DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vrcmt_date, 'YYYY-MM-DD'));
     DBMS_OUTPUT.put_line('**대댓글 내용: ' || vrcmt_content);
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
-    WHEN NO_DATA_FOUND THEN
+  -- 대댓글이 없는 경우 처리
+  WHEN NO_DATA_FOUND THEN
     DBMS_OUTPUT.PUT_LINE('**대댓글이 존재하지 않습니다.');
 END;
 
 EXEC up_checkReply;
+
 
 -- 채팅방 목록 조회
 CREATE OR REPLACE PROCEDURE seek_list
