@@ -711,10 +711,8 @@ BEGIN
     up_delTradeBoard(ptrade_num => 1, pmember_num => 1);
 END;
 
-<<<<<<< HEAD
--- 중고거래 게시판 삭제 트리거
-CREATE OR REPLACE TRIGGER delete_related_data_trigger
 
+-- 중고거래 게시판 삭제 트리거
 CREATE OR REPLACE TRIGGER ut_del_related_trade_board
 BEFORE DELETE ON trade_board
 FOR EACH ROW
@@ -842,7 +840,6 @@ NOCYCLE NOCACHE;
 
 
 -- 매너온도 추가(평가)
-
 CREATE OR REPLACE PROCEDURE up_insert_manner_points
 (
     ppay_num NUMBER,
@@ -898,7 +895,6 @@ BEGIN
     WHERE member_num = :NEW.compress_mem_num;
 END;
 
-
 SELECT * FROM member;
 SELECT * FROM manner_points;
 SELECT * FROM chat;
@@ -914,13 +910,7 @@ EXECUTE up_select_mpage(1);
 
 
 -- 동네생활 카테고리
--- 추가/수정/삭제
-
-
--- UP_INSCOMMCTAR 동네카테고리 추가프로시저
-CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
-
--- 동네생활 카테고리추가
+-- 동네생활 카테고리 추가
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTGR
 (
     pcomm_ctgr_num   comm_ctgr.comm_ctgr_num%TYPE 
@@ -957,8 +947,6 @@ END;
 
 EXEC up_updcommctgr(1, '인기');
 
-
---up_delcommctgr 동네카테고리 삭제프로시저
 -- 동네생활 카테고리 삭제
 CREATE OR REPLACE PROCEDURE up_delcommctgr
 (
@@ -1019,7 +1007,6 @@ END;
 BEGIN
     up_updCommBoard(pcomm_board_num => 1, pmember_num => 9, pcomm_title => '제목 수정');
 END;
-SELECT * FROM comm_Board;
 
 
 -- 동네생활 게시판 삭제
@@ -1053,7 +1040,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
 END;
 
--- 동네생활 게시판 1번이 삭제되면 그에 해당하는 댓글같은거까지 다 삭제 되는 트리거
+-- 동네생활 게시판 삭제 트리거 (1번 게시판 삭제시 댓글까지 같이 DELETE)
 CREATE OR REPLACE TRIGGER ut_del_related_comm_board
 BEFORE DELETE ON comm_board
 FOR EACH ROW
@@ -1061,19 +1048,15 @@ BEGIN
     DELETE FROM cmt_reply_like
     WHERE rcmt_num = (SELECT rcmt_num FROM cmt_reply WHERE cmt_board_num = :OLD.comm_board_num);
 
-    -- cmt_reply(동네생활 대댓글) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
     DELETE FROM cmt_reply
     WHERE cmt_board_num = :OLD.comm_board_num;
     
-    -- comm_cmt_like(댓글좋아요) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
     DELETE FROM comm_cmt_like
     WHERE comm_board_num = :OLD.comm_board_num;
     
-    -- comm_cmt(동네생활 댓글) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
     DELETE FROM comm_cmt
     WHERE comm_board_num = :OLD.comm_board_num;
     
-    -- comm_board_like(동네생활 게시판 좋아요) 테이블에서 해당 comm_board_num에 대응하는 데이터 삭제
     DELETE FROM comm_board_like
     WHERE comm_board_num = :OLD.comm_board_num;
     
@@ -1086,15 +1069,15 @@ END;
 
 -- 동네생활 댓글
 -- 동네생활 댓글 추가
-CREATE OR REPLACE PROCEDURE add_comment(
+CREATE OR REPLACE PROCEDURE add_comment
+(
     p_board_num IN NUMBER,
     p_member_num IN NUMBER,
     p_content IN VARCHAR2,
     pcomm_num NUMBER
-    ) -- 댓글 추가에 대한 매개변수
+)
 AS
 BEGIN
-    -- 새로운 댓글 INSERT
     INSERT INTO comm_cmt VALUES (p_board_num, pcomm_num, p_member_num, SYSDATE, p_content);
 END;
 
@@ -1105,7 +1088,6 @@ SELECT * FROM comm_cmt;
 -- 동네생활 댓글 수정
 CREATE OR REPLACE PROCEDURE up_updCmt
 (
-  -- 입력 매개변수 이름 변경 (comm_cmt 컬럼과 구분)
   pcomm_board_num NUMBER,
   pcomm_num NUMBER,
   p_new_date comm_cmt.comm_date%TYPE := SYSDATE,
@@ -1113,7 +1095,6 @@ CREATE OR REPLACE PROCEDURE up_updCmt
 )
 IS
 BEGIN
-  -- UPDATE 구문 수정 (comm_board_num 1회만 설정)
   UPDATE comm_cmt
   SET comm_content = NVL(p_new_content, comm_content)
   WHERE comm_board_num = pcomm_board_num;
@@ -1185,6 +1166,7 @@ BEGIN
         rcmt_content = NVL(p_new_rcmt_content, rcmt_content)
     WHERE rcmt_num = p_new_rcmt_num;
 END;
+
 EXEC up_insrely();
 
 -- 동네생활 대댓글 삭제
@@ -1207,8 +1189,8 @@ END;
 
 EXEC up_delreply(20);
 
+
 -- 동네생활 게시판 좋아요
--- up_udtcmtreplylke 게시판좋아요 추가 삭제 프로시저
 -- 동네생활 게시판 좋아요 추가/삭제
 
 CREATE OR REPLACE PROCEDURE up_insdelboardlike
@@ -1220,24 +1202,6 @@ CREATE OR REPLACE PROCEDURE up_insdelboardlike
 IS
     cnt_boardlike NUMBER;
 BEGIN
-    --PLS-00103: Encountered the symbol "DISTINCT" when expecting one of the following:
-
-    select COUNT(comm_like_num) into cnt_boardlike
-    from comm_board_like where member_num = pmember_num and comm_board_num = pcomm_board_num ;
-    
-    IF cnt_boardlike < 1 THEN 
-        INSERT INTO comm_board_like VALUES (pcomm_like_num, pmember_num, pcomm_board_num) ;
-    ELSIF cnt_boardlike = 1 THEN
-        DELETE FROM comm_board_like where member_num = pmember_num;
-    END IF; 
-    
-    commit;
-    
---EXCEPTION
-END;
-
---EXEC up_insdelboardlike ( 14, 8, 11 );
---select * from comm_board_like;
     SELECT COUNT(comm_like_num) INTO cnt_boardlike
     FROM comm_board_like 
     WHERE member_num = pmember_num AND comm_board_num = pcomm_board_num ;
@@ -1245,10 +1209,11 @@ END;
     IF cnt_boardlike < 1 THEN 
         INSERT INTO comm_board_like VALUES (pcomm_like_num, pmember_num, pcomm_board_num) ;
     ELSIF cnt_boardlike = 1 THEN
-        DELETE FROM comm_board_like where member_num = pmember_num;
+        DELETE FROM comm_board_like WHERE member_num = pmember_num;
     END IF; 
     
     COMMIT;
+    
 --EXCEPTION
 END;
 
@@ -1310,22 +1275,8 @@ END;
 EXEC up_dellike(1, 10, 10);
 
 
-
 -- 동네생활 대댓글 좋아요
-
--- up_inscmtreplylike 대댓글좋아요 추가/삭제 프로시저
--- 동네생활 대댓글 좋아요
--- 추가/삭제
--- insert작업하기 전에 그 게시판에 해당하는 유저가 좋아요 눌렀으면 delete작업만 실행되도록
-SELECT * FROM cmt_reply_like ;
-DESC cmt_reply_like;
-
-
--- 동네생활 대댓글 좋아요
----- 추가/삭제
--- up_inscmtreplylike 대댓글좋아요 추가
-CREATE OR REPLACE PROCEDURE up_inscmtreplylike
-
+-- 동네생활 대댓글 좋아요 추가/삭제
 CREATE OR REPLACE PROCEDURE up_insdelcmtreplylike
 
 (
@@ -1337,8 +1288,9 @@ IS
    cnt_replylike NUMBER;
 BEGIN      
 
-    select COUNT(rcmt_like_num) into cnt_replylike
-    from cmt_reply_like where member_num = pmember_num and rcmt_num = prcmt_num ;
+    SELECT COUNT(rcmt_like_num) INTO cnt_replylike
+    FROM cmt_reply_like 
+    WHERE member_num = pmember_num AND rcmt_num = prcmt_num ;
     
     SELECT COUNT(rcmt_like_num) INTO cnt_replylike
     FROM cmt_reply_like 
@@ -1350,12 +1302,10 @@ BEGIN
         DELETE FROM cmt_reply_like WHERE member_num = pmember_num;
     END IF; 
     
-    commit;
+    COMMIT;
 
 --EXCEPTION
 END;
-
-
 
 EXEC up_insdelcmtreplylike(25, 2, 1);
 

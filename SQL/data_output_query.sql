@@ -379,7 +379,6 @@ BEGIN
      DBMS_OUTPUT.PUT_LINE(' '); 
     END LOOP;
 --EXCEPTION
-  -- ROLLBACK;
 END;
 
 --EXEC up_selcommboard(19);
