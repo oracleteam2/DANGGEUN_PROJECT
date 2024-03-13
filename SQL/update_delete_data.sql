@@ -914,6 +914,12 @@ EXECUTE up_select_mpage(1);
 
 
 -- 동네생활 카테고리
+-- 추가/수정/삭제
+
+
+-- UP_INSCOMMCTAR 동네카테고리 추가프로시저
+CREATE OR REPLACE PROCEDURE UP_INSCOMMCTAR
+
 -- 동네생활 카테고리추가
 CREATE OR REPLACE PROCEDURE UP_INSCOMMCTGR
 (
@@ -951,6 +957,8 @@ END;
 
 EXEC up_updcommctgr(1, '인기');
 
+
+--up_delcommctgr 동네카테고리 삭제프로시저
 -- 동네생활 카테고리 삭제
 CREATE OR REPLACE PROCEDURE up_delcommctgr
 (
@@ -1200,7 +1208,9 @@ END;
 EXEC up_delreply(20);
 
 -- 동네생활 게시판 좋아요
+-- up_udtcmtreplylke 게시판좋아요 추가 삭제 프로시저
 -- 동네생활 게시판 좋아요 추가/삭제
+
 CREATE OR REPLACE PROCEDURE up_insdelboardlike
 (
     pcomm_like_num  comm_board_like.comm_like_num%TYPE
@@ -1211,6 +1221,23 @@ IS
     cnt_boardlike NUMBER;
 BEGIN
     --PLS-00103: Encountered the symbol "DISTINCT" when expecting one of the following:
+
+    select COUNT(comm_like_num) into cnt_boardlike
+    from comm_board_like where member_num = pmember_num and comm_board_num = pcomm_board_num ;
+    
+    IF cnt_boardlike < 1 THEN 
+        INSERT INTO comm_board_like VALUES (pcomm_like_num, pmember_num, pcomm_board_num) ;
+    ELSIF cnt_boardlike = 1 THEN
+        DELETE FROM comm_board_like where member_num = pmember_num;
+    END IF; 
+    
+    commit;
+    
+--EXCEPTION
+END;
+
+--EXEC up_insdelboardlike ( 14, 8, 11 );
+--select * from comm_board_like;
     SELECT COUNT(comm_like_num) INTO cnt_boardlike
     FROM comm_board_like 
     WHERE member_num = pmember_num AND comm_board_num = pcomm_board_num ;
@@ -1226,7 +1253,6 @@ BEGIN
 END;
 
 EXEC up_insboardlike ( 14, 8, 11 );
-
 
 -- 동네생활 댓글 좋아요
 -- 동네생활 댓글 좋아요 추가
@@ -1284,9 +1310,12 @@ END;
 EXEC up_dellike(1, 10, 10);
 
 
+
+-- 동네생활 대댓글 좋아요
+
+-- up_inscmtreplylike 대댓글좋아요 추가/삭제 프로시저
 -- 동네생활 대댓글 좋아요
 -- 추가/삭제
-<<<<<<< HEAD
 -- insert작업하기 전에 그 게시판에 해당하는 유저가 좋아요 눌렀으면 delete작업만 실행되도록
 SELECT * FROM cmt_reply_like ;
 DESC cmt_reply_like;
@@ -1296,9 +1325,9 @@ DESC cmt_reply_like;
 ---- 추가/삭제
 -- up_inscmtreplylike 대댓글좋아요 추가
 CREATE OR REPLACE PROCEDURE up_inscmtreplylike
-=======
+
 CREATE OR REPLACE PROCEDURE up_insdelcmtreplylike
->>>>>>> e581a8e7dd20796172252f4568a9ae3f30086427
+
 (
     prcmt_like_num  cmt_reply_like.rcmt_like_num%TYPE
     , pmember_num   cmt_reply_like.member_num%TYPE
@@ -1307,10 +1336,14 @@ CREATE OR REPLACE PROCEDURE up_insdelcmtreplylike
 IS
    cnt_replylike NUMBER;
 BEGIN      
+
+    select COUNT(rcmt_like_num) into cnt_replylike
+    from cmt_reply_like where member_num = pmember_num and rcmt_num = prcmt_num ;
+    
     SELECT COUNT(rcmt_like_num) INTO cnt_replylike
     FROM cmt_reply_like 
     WHERE member_num = pmember_num AND rcmt_num = prcmt_num ;
-    
+
     IF cnt_replylike < 1 THEN 
         INSERT INTO cmt_reply_like VALUES (prcmt_like_num, pmember_num, prcmt_num) ;
     ELSIF cnt_replylike = 1 THEN
@@ -1322,4 +1355,7 @@ BEGIN
 --EXCEPTION
 END;
 
+
+
 EXEC up_insdelcmtreplylike(25, 2, 1);
+
