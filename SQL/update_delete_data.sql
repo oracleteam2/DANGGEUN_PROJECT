@@ -69,31 +69,84 @@ SELECT * FROM member;
 ALTER TABLE member
 DROP CONSTRAINT PK_member CASCADE;
 
-EXECUTE up_delete_member(13);
+EXECUTE up_delmember(1);
 
-CREATE OR REPLACE PROCEDURE up_delete_member
+CREATE OR REPLACE PROCEDURE up_delmember
 (
-    pmem_num member.member_num%TYPE
+    pmem_num NUMBER
 )
 IS
-    v_is_member NUMBER;
 BEGIN
-    SELECT COUNT(*)
-        INTO v_is_member
-    FROM member
+    
+    -- danggeun_pay 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM danggeun_pay
+    WHERE member_num = pmem_num;
+    
+    -- block 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM block
+    WHERE t_block_mem_num = pmem_num OR f_block_mem_num = pmem_num;  
+    
+    -- trade_board_like 테이블 해당 member 대응하는 데이터 삭제
+    DELETE FROM trade_board_like
+    WHERE member_num = pmem_num;   
+
+    -- pay 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM pay
+    WHERE seller_num = pmem_num AND buyer_num = pmem_num;        
+    
+    -- manner_points 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM manner_points
+    WHERE press_mem_num = pmem_num OR compress_mem_num = pmem_num;   
+    
+    -- comm_reply_like 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM cmt_reply_like
+    WHERE member_num = pmem_num;
+    
+    -- comm_reply 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM cmt_reply 
+    WHERE member_num = pmem_num;
+      
+    -- comm_cmt 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM comm_cmt
+    WHERE member_num = pmem_num;
+    
+    -- comm_cmt_like 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM comm_cmt_like
     WHERE member_num = pmem_num;
 
-    IF v_is_member = 1
-    THEN
-    DELETE FROM member
+    -- comm_board_lik 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM comm_board_like
     WHERE member_num = pmem_num;
-    ELSE
-    RAISE_APPLICATION_ERROR(-20002, '삭제할 회원이 없습니다');
-    END IF;
---EXCEPTION
+    
+    -- comm_board 테이블에서 해당 member 대응하는 데이터 삭제
+    DELETE FROM comm_board
+    WHERE member_num = pmem_num;    
+    
+    -- report 테이블 해당 member 대응하는 데이터 삭제
+    DELETE FROM report
+    WHERE t_report_mem_num = pmem_num OR f_report_mem_num = pmem_num;    
+
+    -- chat 테이블 해당 member 대응하는 데이터 삭제
+    DELETE FROM chat
+    WHERE buyer_num = pmem_num;       
+    
+    -- trade_board 테이블 해당 member 대응하는 데이터 삭제
+    DELETE FROM trade_board
+    WHERE member_num = pmem_num;  
+    
+    -- trade_board 테이블 해당 member 대응하는 데이터 삭제
+    DELETE FROM member
+    WHERE member_num = pmem_num;      
 END;
 
+<<<<<<< HEAD
 EXEC up_delete_member(24);
+=======
+EXEC up_delmember(1);
+SELECT * FROM member;
+SELECT * FROM trade_board;
+SELECT * FROM chat;
+>>>>>>> 730dae444e1670046b435b29c9178cbe779be44a
 --------------------------------------------------------------------------------
 
 
@@ -148,6 +201,7 @@ BEGIN
     END IF;
 --EXCEPTION
 END;
+
 
 -- 매너온도 평가 시 작동되는 트리거
 CREATE OR REPLACE TRIGGER ut_update_mem_manner
