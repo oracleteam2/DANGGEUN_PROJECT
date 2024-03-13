@@ -271,15 +271,18 @@ BEGIN
                     , member_nickname               nickname  --회원닉네임
                     , SUBSTR(m.member_address,7)    member_address   --게시글회원주소
                     , CASE 
-                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 THEN TRUNC((SYSDATE - TO_DATE(cb.comm_upload_date)) * 24 * 60) || '분 전'
-                        ELSE TRUNC(SYSDATE - TO_DATE(cb.comm_upload_date)) || '일 전'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) > 24 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) * 24 * 60) || '분 전'
+                        WHEN SYSDATE - TO_DATE(cb.comm_upload_date) < 1 and ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) < 24 THEN ROUND((SYSDATE - TO_DATE(comm_upload_date)) * 24 ) || '시간 전'
+                        WHEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) < 30 THEN TRUNC(SYSDATE - TO_DATE(comm_upload_date)) || '일 전'
+                        WHEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) < 12 THEN TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30 ) || '개월 전'
+                        ELSE TRUNC((SYSDATE - TO_DATE(comm_upload_date)) / 30/12 ) || '년 전'
                       END upload_date    --업로드일자
                     , cb.comm_title                 title       --게시글제목
                     , cb.comm_content               comm_content     --게시글내용
                     , (SELECT distinct COUNT(comm_board_num) FROM comm_board_like cbl where cbl.comm_board_num = cb.comm_board_num  GROUP BY COMM_BOARD_NUM ) board_like_cnt --게시판좋아요갯수 
                     FROM comm_board cb JOIN comm_ctgr cc ON cb.comm_ctgr_num = cc.comm_ctgr_num 
                                JOIN member m ON cb.member_num = m.member_num 
-                               JOIN comm_board_like bl ON cb.member_num = bl.member_num
+                               LEFT JOIN comm_board_like bl ON cb.member_num = bl.member_num
                     where cb.comm_board_num = pcomm_board_num             
                    )
     LOOP
@@ -295,7 +298,9 @@ BEGIN
 --EXCEPTION
   -- ROLLBACK;
 END;
---EXEC up_selcommboard(4); 
+
+--EXEC up_selcommboard(1);
+--SELECT * FROM comm_board;
 
 -- 동네생활 게시판 댓글 조회
 
