@@ -188,6 +188,7 @@ BEGIN
   CLOSE trade_board_cursor;
 END;
 
+
 -- 중고거래 게시판 상세 조회
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
@@ -246,7 +247,7 @@ BEGIN
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || '시간 전'
                             ELSE 
                                 TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
                         END
@@ -485,3 +486,110 @@ for vcc in(
 end;
 
 exec seek_chat_content(2);
+
+-- 거래 게시판 검색
+CREATE OR REPLACE PROCEDURE up_searchTradeBoard
+(
+     psearchCondition VARCHAR2, -- 원하는 검색어
+     porder NUMBER DEFAULT 1 --  2일경우 최신순으로 정렬
+)
+IS
+    vitem_image_url VARCHAR2(4000);
+    vtrade_title        VARCHAR2(4000);
+    vtrade_location          VARCHAR2(4000);
+    vtime_since_upload VARCHAR2(4000);
+    vprice NUMBER;
+    vlike_count NUMBER;
+    CURSOR t_trade_board_cur IS
+    SELECT item_image_url
+    , e.trade_title, e.trade_price, e.trade_location, COUNT(tbl.trade_like_num) like_count,
+    CASE
+        WHEN (SYSDATE - upload_date) * 24 * 60 >= 1440 THEN -- 1일 이상
+             TO_CHAR(FLOOR((SYSDATE - upload_date)), 'FM9999') || '일 전'
+        WHEN (SYSDATE - upload_date) * 24 >= 60 THEN -- 1일 미만
+             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24), 'FM9999') || '시간 전'
+        ELSE -- 1시간 미만
+             TO_CHAR(FLOOR((SYSDATE - upload_date) * 24 * 60), 'FM9999') || '분 전'
+    END vtime_since_upload
+    FROM trade_board e LEFT JOIN trade_board_like tbl ON tbl.trade_num = e.trade_num
+                        JOIN item_image ii ON e.trade_num = ii.trade_num
+    WHERE trade_title LIKE '%' || psearchCondition || '%' 
+    GROUP BY item_image_url, e.trade_title, e.trade_price, e.trade_location, upload_date
+    ORDER BY CASE WHEN porder = 2 THEN upload_date END DESC;
+BEGIN
+    OPEN t_trade_board_cur;
+    LOOP
+        FETCH t_trade_board_cur INTO vitem_image_url, vtrade_title, vprice, vtrade_location, vlike_count, vtime_since_upload;
+        EXIT WHEN t_trade_board_cur%NOTFOUND; -- 더 이상 가져올 행이 없으면 루프 종료
+    
+    -- 가져온 데이터를 출력
+    DBMS_OUTPUT.PUT_LINE('상품 이미지 : ' || vitem_image_url );
+    DBMS_OUTPUT.PUT_LINE('글 제목 : ' || vtrade_title );
+    DBMS_OUTPUT.PUT_LINE('가격 : ' || vprice );
+    DBMS_OUTPUT.PUT_LINE('업로드 날짜 : ' || vtime_since_upload );   
+    DBMS_OUTPUT.PUT_LINE('좋아요 수 : ' || vlike_count);
+    DBMS_OUTPUT.PUT_LINE(' ');
+  END LOOP;
+  CLOSE t_trade_board_cur;
+--EXCEPTION
+END;
+
+SELECT * FROM trade_board;
+
+EXEC up_searchTradeBoard('맥스');
+
+-- 동네생활 게시판 검색
+CREATE OR REPLACE PROCEDURE up_searchCommBoard
+(
+     psearchCondition VARCHAR2, -- 원하는 검색어
+     porder NUMBER --  2일경우 최신순으로 정렬
+)
+IS
+    vcomm_title        VARCHAR2(4000);
+    vcontent           VARCHAR2(4000);
+    vmem_addr          VARCHAR2(4000);
+    vtime_since_upload VARCHAR2(4000);
+    vlike_count NUMBER;
+    vcmt_count NUMBER;
+    CURSOR c_comm_board_cur IS
+    SELECT e.comm_title, m.member_address, e.comm_content, COUNT(cbl.comm_like_num) like_count
+    , COUNT(cc.comm_num) cmt_count,
+    CASE
+        WHEN (SYSDATE - comm_upload_date) * 24 * 60 >= 1440 THEN -- 1일 이상
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date)), 'FM9999') || '일 전'
+        WHEN (SYSDATE - comm_upload_date) * 24 >= 60 THEN -- 1일 미만
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24), 'FM9999') || '시간 전'
+        ELSE -- 1시간 미만
+             TO_CHAR(FLOOR((SYSDATE - comm_upload_date) * 24 * 60), 'FM9999') || '분 전'
+    END vtime_since_upload
+    FROM comm_board e JOIN member m ON e.member_num = m.member_num 
+                      LEFT JOIN comm_board_like cbl ON cbl.comm_board_num = e.comm_board_num
+                      LEFT JOIN comm_cmt cc ON cc.comm_board_num = e.comm_board_num
+    WHERE comm_title LIKE '%' || psearchCondition || '%'
+    GROUP BY e.comm_title, m.member_address, e.comm_content, e.comm_upload_date
+    ORDER BY CASE WHEN porder = 2 THEN comm_upload_date END DESC;
+BEGIN
+    OPEN c_comm_board_cur;
+    LOOP
+        FETCH c_comm_board_cur INTO vcomm_title, vmem_addr, vcontent, vlike_count, vcmt_count, vtime_since_upload;
+        EXIT WHEN c_comm_board_cur%NOTFOUND; -- 더 이상 가져올 행이 없으면 루프 종료
+    
+    -- 가져온 데이터를 출력
+    DBMS_OUTPUT.PUT_LINE('글 제목 : ' || vcomm_title );
+    DBMS_OUTPUT.PUT_LINE('글 내용 : ' || vcontent );
+    DBMS_OUTPUT.PUT_LINE('작성자 주소 : ' || vmem_addr );
+    DBMS_OUTPUT.PUT_LINE('업로드 날짜 : ' || vtime_since_upload );   
+    DBMS_OUTPUT.PUT_LINE('좋아요 수 : ' || vlike_count);
+    DBMS_OUTPUT.PUT_LINE('댓글 수 : ' || vcmt_count);
+    DBMS_OUTPUT.PUT_LINE(' ');
+  END LOOP;
+  CLOSE c_comm_board_cur;
+--EXCEPTION
+END;
+EXEC up_searchCommBoard('오늘', 2);
+
+SELECT * FROM comm_board;
+SELECT * FROM comm_board_like;
+SELECT * FROM comm_cmt;
+
+
