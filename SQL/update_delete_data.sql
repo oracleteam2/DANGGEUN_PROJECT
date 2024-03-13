@@ -139,6 +139,10 @@ BEGIN
     WHERE member_num = pmem_num;      
 END;
 
+EXEC up_delmember(1);
+SELECT * FROM member;
+SELECT * FROM trade_board;
+SELECT * FROM chat;
 --------------------------------------------------------------------------------
 
 
@@ -193,6 +197,7 @@ BEGIN
     END IF;
 --EXCEPTION
 END;
+
 
 -- 매너온도 평가 시 작동되는 트리거
 CREATE OR REPLACE TRIGGER ut_update_mem_manner
