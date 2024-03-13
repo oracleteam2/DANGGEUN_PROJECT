@@ -1,6 +1,7 @@
 -- SCOTT
 -- 데이터 출력용(화면)
 
+------------------------------- 회원 조회 ---------------------------------------
 -- 회원 마이페이지 조회
 CREATE OR REPLACE PROCEDURE up_select_mpage
 (
@@ -15,7 +16,6 @@ IS
     vbalance danggeun_pay.balance%TYPE;
     v_mem_count NUMBER;
 BEGIN
-    
     SELECT COUNT(*)
         INTO v_mem_count
     FROM member
@@ -47,8 +47,12 @@ END;
 
 EXEC up_select_mpage(1);
 
+--------------------------------------------------------------------------------
 
--- 관리자 조회
+
+
+------------------------------ 관리자 조회 --------------------------------------
+-- 관리자 전체 조회
 CREATE OR REPLACE PROCEDURE up_selAdminAll
 IS
     vadmin_nickname admin.admin_nickname%TYPE;
@@ -72,8 +76,11 @@ END;
 
 EXEC up_selAdminAll;
 
+--------------------------------------------------------------------------------
 
--- 차단 조회
+
+
+--------------------------------- 차단 조회 -------------------------------------
 CREATE OR REPLACE PROCEDURE up_selBLOCK
 (
     pmember_num NUMBER
@@ -107,6 +114,11 @@ END;
 
 EXEC up_selBLOCK(2);
 
+--------------------------------------------------------------------------------
+
+
+
+--------------------------- 공지 사항 조회 --------------------------------------
 -- 공지사항 게시판 전체 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardAll
 
@@ -172,6 +184,11 @@ END;
 
 EXEC up_selNoticeBoardInfo(1);
 
+--------------------------------------------------------------------------------
+
+
+
+-------------------------- 중고거래 게시판 조회 ---------------------------------
 -- 중고거래 게시판 전체 조회
 DECLARE
   CURSOR trade_board_cursor IS
@@ -305,7 +322,11 @@ END;
 
 EXEC up_selTradeBoard(1);
 
+--------------------------------------------------------------------------------
 
+
+
+-------------------------- 동네생활 게시판 조회 ---------------------------------
 -- 동네생활 게시판 전체 조회
 DECLARE
   CURSOR comm_board_cursor IS
@@ -335,7 +356,6 @@ BEGIN
 END;
 
 -- 동네생활 게시판 상세 조회
--- up_seltblcommboard 동네게시판조회
 CREATE OR REPLACE PROCEDURE up_selcommboard
 (
     pcomm_board_num NUMBER
@@ -381,36 +401,35 @@ BEGIN
 --EXCEPTION
 END;
 
---EXEC up_selcommboard(19);
+EXEC up_selcommboard(19);
+
+--------------------------------------------------------------------------------
 
 
--- 동네생활 게시판 댓글 조회
+
+------------------------- 동네생활 게시판 댓글 조회 -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkcmt
 IS
-  -- 변수 선언
   vcomm_num comm_cmt.comm_num%TYPE; -- 댓글 번호
   vmember_nickname MEMBER.MEMBER_NICKNAME%TYPE; -- 작성자 닉네임
   vcomm_date comm_cmt.comm_date%TYPE; -- 댓글 작성 날짜
   vcomm_content comm_cmt.comm_content%TYPE; -- 댓글 내용
 BEGIN
-  -- 댓글 정보 조회
   FOR vrow IN 
   (SELECT 
     c.comm_num, 
-    m.MEMBER_NICKNAME, -- MEMBER 테이블에서 닉네임 조회
+    m.MEMBER_NICKNAME,
     c.comm_date, 
     c.comm_content
    FROM comm_cmt c
-   JOIN MEMBER m ON c.member_num = m.MEMBER_NUM -- comm_cmt와 MEMBER 테이블 조인
+   JOIN MEMBER m ON c.member_num = m.MEMBER_NUM
   )
   LOOP
-    -- 조회된 정보를 변수에 할당
     vcomm_num := vrow.comm_num;
     vmember_nickname := vrow.MEMBER_NICKNAME;
     vcomm_date := vrow.comm_date;
     vcomm_content := vrow.comm_content;
 
-    -- 댓글 정보 출력
     DBMS_OUTPUT.put_line('**댓글 번호: ' || vcomm_num);
     DBMS_OUTPUT.put_line('**작성자 닉네임: ' || vmember_nickname);
     DBMS_OUTPUT.put_line('**작성 날짜: ' || TO_CHAR(vcomm_date, 'YYYY-MM-DD'));
@@ -418,14 +437,16 @@ BEGIN
     DBMS_OUTPUT.put_line('-----------------------------');
   END LOOP;
 EXCEPTION
-  -- 댓글이 없는 경우 처리
   WHEN NO_DATA_FOUND THEN
     DBMS_OUTPUT.PUT_LINE('**댓글이 존재하지 않습니다.');
 END;
 EXEC up_checkcmt;
 
+--------------------------------------------------------------------------------
 
--- 동네생활 게시판 대댓글 조회
+
+
+----------------------- 동네생활 게시판 대댓글 조회 -----------------------------
 CREATE OR REPLACE PROCEDURE up_checkReply
 IS
   -- 변수 선언
@@ -465,6 +486,10 @@ END;
 
 EXEC up_checkReply;
 
+--------------------------------------------------------------------------------
+
+
+------------------------------ 채팅 조회 ----------------------------------------
 
 -- 채팅방 목록 조회
 CREATE OR REPLACE PROCEDURE seek_list
@@ -521,3 +546,5 @@ FOR vcc IN(
 END;
 
 EXEC seek_chat_content(2);
+
+--------------------------------------------------------------------------------
