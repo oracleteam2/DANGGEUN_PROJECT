@@ -228,7 +228,6 @@ BEGIN
   CLOSE trade_board_cursor;
 END;
 
-
 -- 중고거래 게시판 상세 조회
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
@@ -287,7 +286,7 @@ BEGIN
                     WHEN SYSDATE - TO_DATE(tb.upload_date) < 1 THEN 
                         CASE 
                             WHEN TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) >= 60 THEN
-                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24)) || '시간 전'
+                                TRUNC(TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) / 60) || '시간 전'
                             ELSE 
                                 TRUNC((SYSDATE - TO_DATE(tb.upload_date)) * 24 * 60) || '분 전'
                         END
@@ -548,7 +547,7 @@ END;
 
 EXEC seek_chat_content(2);
 
-
+--------------------------------------------------------------------------------
 
 -- 거래 게시판 검색
 CREATE OR REPLACE PROCEDURE up_searchTradeBoard
@@ -654,3 +653,4 @@ EXEC up_searchCommBoard('오늘', 2);
 SELECT * FROM comm_board;
 SELECT * FROM comm_board_like;
 SELECT * FROM comm_cmt;
+
