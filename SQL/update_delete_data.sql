@@ -20,7 +20,7 @@ BEGIN
 --EXCEPTION
 END;
 
-EXECUTE up_insert_member( '000608', '유진', '서울시', '010-3111-2222', 'https://image.newsis.com/2012/05/25/NISI20120525_0006401508_web.jpg');
+EXECUTE up_insert_member();
 
 -- 회원 수정
 CREATE OR REPLACE PROCEDURE up_update_member
@@ -57,13 +57,10 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(-20002, '업데이트할 회원이 존재하지 않는다.');
 END;
 
-EXEC up_update_member (21, pmem_nickname => '유진');
-EXEC up_update_member (21, pmem_addr => '대전 is good');
-EXEC up_update_member (21, pmem_tel => '010-4151-2151');
-EXEC up_update_member (21, pmem_profile => 'http://image.fgblkgfblkmgfbkl');
-
-SELECT * FROM member;
-
+EXEC up_update_member (21, pmem_nickname => '');
+EXEC up_update_member (21, pmem_addr => '');
+EXEC up_update_member (21, pmem_tel => '');
+EXEC up_update_member (21, pmem_profile => '');
 
 -- 회원 삭제
 ALTER TABLE member
@@ -139,11 +136,7 @@ BEGIN
     WHERE member_num = pmem_num;      
 END;
 
-EXEC up_delmember(1);
-
-SELECT * FROM member;
-SELECT * FROM trade_board;
-SELECT * FROM chat;
+EXEC up_delmember();
 
 --------------------------------------------------------------------------------
 
@@ -429,10 +422,15 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(-20014, '존재하지 않는 관리자 번호입니다.');
 END;
 
-EXEC up_updAdmin(2, padmin_nickname => '유진2');
-EXEC up_updAdmin(2, padmin_id => 'yuejin');
-EXEC up_updAdmin(2, padmin_password => 01040457834);
+EXEC up_updAdmin(2, padmin_nickname => '');
+EXEC up_updAdmin(2, padmin_id => '');
+EXEC up_updAdmin(2, padmin_password => );
 
+--------------------------------------------------------------------------------
+
+
+
+---------------------------- 로그 열람 (기능) -----------------------------------
 -- 관리자 로그, 수정사항 정보 테이블
 CREATE TABLE admin_log_info
 (
@@ -585,6 +583,7 @@ EXCEPTION
 END;
     
 EXEC up_NoticeBoardLogInfo;
+
 
 --------------------------------------------------------------------------------
 
