@@ -371,7 +371,7 @@ END;
 
 SELECT * FROM trade_board;
 
-EXEC up_searchTradeBoard('맥스');
+EXEC up_searchTradeBoard('스');
 
 --------------------------------------------------------------------------------
 
@@ -451,7 +451,7 @@ BEGIN
     END LOOP;
 --EXCEPTION
 END;
-
+SELECT * FROM comm_board;
 EXEC up_selcommboard(19);
 
 -- 동네생활 게시판 검색

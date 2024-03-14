@@ -734,7 +734,7 @@ EXEC up_delNoticeBoard (3);
 
 ------------------------- 판매물품 카테고리 수정 --------------------------------
 UPDATE item_ctgr
-SET item_ctgr_name = '디지털'
+SET item_ctgr_name = '카테고리 수정'
 WHERE item_ctgr_num = 1;
 
 --------------------------------------------------------------------------------
@@ -776,7 +776,7 @@ EXCEPTION
 END;
 
 BEGIN
-    up_upditemimage(ptrade_num => 1, pitem_image_num => 1, pmember_num => 1, pitem_image_url => '신규이미지url');
+    up_upditemimage(ptrade_num => 1, pitem_image_num => 1, pmember_num => 2, pitem_image_url => '상품 이미지 수정 URL');
 END;
 
 SELECT * FROM item_image;
@@ -866,8 +866,8 @@ END;
 
 -- 수정문
 BEGIN
-    up_updtradeboard(1, pmember_num => 2
-    ,ptrade_title => '에어팟', pupload_date => '24/03/08', ptrade_price => 200000);
+    up_updtradeboard(1, pmember_num => 1
+    ,ptrade_title => '에어팟', ptrade_price => 300000);
 END;
 
 -- 중고거래 게시판 삭제
@@ -899,7 +899,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Member number ' || pmember_num || ' does not match.'); 
 END;
 
-
+ROLLBACK;
 BEGIN
     up_delTradeBoard(ptrade_num => 1, pmember_num => 1);
 END;
@@ -940,7 +940,7 @@ BEGIN
         
         IF v_count = 0 THEN
             INSERT INTO trade_board_like(trade_like_num, trade_num, member_num)
-            VALUES(seq_tboard_like.NEXTVAL, 1, 1);
+            VALUES(seq_tboard_like.NEXTVAL, pt_num, pmember_num);
         ELSIF v_count > 0 THEN
             DELETE FROM trade_board_like
             WHERE trade_num = pt_num AND member_num = pmember_num;
@@ -948,7 +948,8 @@ BEGIN
         END IF;
 --EXCEPTION
 END;
-EXECUTE up_insert_t_board_like(1, 1);
+EXECUTE up_insert_t_board_like(6, 8);
+
 
 --------------------------------------------------------------------------------
 
@@ -1053,7 +1054,7 @@ EXCEPTION
 END;
 
 BEGIN
-    up_updCommBoard(pcomm_board_num => 1, pmember_num => 9, pcomm_title => '제목 수정');
+    up_updCommBoard(pcomm_board_num => 19, pmember_num => 2, pcomm_title => '제목 수정', pcomm_content => '내용 수정');
 END;
 
 
@@ -1109,11 +1110,12 @@ BEGIN
     WHERE comm_board_num = :OLD.comm_board_num;
     
 END;
-
+SELECT * FROM comm_board
+WHERE comm_board_num = 1;
 BEGIN
-    up_delCommBoard(pcomm_board_num => 1, pmember_num => 1);
+    up_delCommBoard(pcomm_board_num => 1, pmember_num => 9);
 END;
-
+ROLLBACK;
 --------------------------------------------------------------------------------
 
 
@@ -1156,7 +1158,7 @@ EXEC up_insboardlike ( 14, 8, 11 );
 CREATE OR REPLACE PROCEDURE up_updcmt
 (
     p_comm_board_num comm_cmt.comm_board_num%TYPE := NULL,
-    p_comm_num comm_cmt.comm_num%TYPE := NULL,
+    p_comm_num comm_cmt.comm_num%TYPE,
     p_member_num comm_cmt.member_num%TYPE := NULL,
     p_comm_date comm_cmt.comm_date%TYPE := NULL,
     p_comm_content comm_cmt.comm_content%TYPE := NULL
@@ -1166,7 +1168,7 @@ IS
 BEGIN
     UPDATE comm_cmt
     SET comm_board_num = NVL(p_comm_board_num, comm_board_num),
-        comm_num = NVL(p_comm_num, comm_num),
+        comm_num = p_comm_num,
         member_num = NVL(p_member_num, member_num),
         comm_date = NVL(p_comm_date, comm_date),
         comm_content = NVL(p_comm_content, comm_content)
@@ -1185,7 +1187,7 @@ EXEC up_updcmt(21, 23, 30, SYSDATE, '수정된 댓글 내용입니다.');
 -- 동네생활 댓글 삭제
 CREATE OR REPLACE PROCEDURE up_delcmt
 (
-    p_comm_board_num comm_cmt.comm_board_num%TYPE := NULL
+    p_comm_board_num comm_cmt.comm_board_num%TYPE
 )
 IS
   v_rows_deleted INTEGER;
@@ -1204,6 +1206,7 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('삭제할 댓글이 없습니다.');
     END IF;
 END;
+
 
 EXEC up_delcmt(1);
 
