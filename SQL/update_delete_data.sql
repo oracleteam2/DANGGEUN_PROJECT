@@ -347,7 +347,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE ( 'ÀÜ¾×' || vbalance || '¿ø' );
     DBMS_OUTPUT.PUT_LINE ( '  1  ' || '  2  ' || '  3  ' );
     DBMS_OUTPUT.PUT_LINE ( '  4  ' || '  5  ' || '  6  ' );
-    DBMS_OUTPUT.PUT_LINE ( '  1  ' || '  2  ' || '  3  ' );
+    DBMS_OUTPUT.PUT_LINE ( '  7  ' || '  8  ' || '  9  ' );
     DBMS_OUTPUT.PUT_LINE ( ' ¸¸¿ø  ' || ' 0  ' || '  <-  ' );
     
 --EXCEPTION
