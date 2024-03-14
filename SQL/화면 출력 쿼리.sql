@@ -74,6 +74,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('관리자가 없습니다.');
 END;
 
+-- 출력
 EXEC up_selAdminAll;
 
 --------------------------------------------------------------------------------
@@ -146,7 +147,9 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('공지사항이 없습니다.');
 END;
 
+-- 공지사항 전체 출력
 EXEC up_selNoticeBoardAll;
+
 
 -- 공지사항 게시판 상세 조회
 CREATE OR REPLACE PROCEDURE up_selNoticeBoardInfo
@@ -182,6 +185,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('공지사항이 없습니다.');
 END;
 
+-- 1번 공지사항 상세 출력
 EXEC up_selNoticeBoardInfo(1);
 
 --------------------------------------------------------------------------------
@@ -189,6 +193,7 @@ EXEC up_selNoticeBoardInfo(1);
 
 
 -------------------------- 중고거래 게시판 조회 ---------------------------------
+-- (우현)
 -- 중고거래 게시판 전체 조회
 DECLARE
   CURSOR trade_board_cursor IS
@@ -228,7 +233,9 @@ BEGIN
   CLOSE trade_board_cursor;
 END;
 
+
 -- 중고거래 게시판 상세 조회
+-- (진성)
 CREATE OR REPLACE PROCEDURE up_selTradeBoard
 (
     ptrade_num NUMBER
@@ -323,6 +330,7 @@ END;
 EXEC up_selTradeBoard(1);
 
 -- 중고거래 게시판 검색
+-- (진성)
 CREATE OR REPLACE PROCEDURE up_searchTradeBoard
 (
      psearchCondition VARCHAR2, -- 원하는 검색어
@@ -371,13 +379,14 @@ END;
 
 SELECT * FROM trade_board;
 
-EXEC up_searchTradeBoard('스');
+EXEC up_searchTradeBoard('맥스');
 
 --------------------------------------------------------------------------------
 
 
 
 -------------------------- 동네생활 게시판 조회 ---------------------------------
+-- (우현)
 -- 동네생활 게시판 전체 조회
 DECLARE
   CURSOR comm_board_cursor IS
@@ -407,6 +416,7 @@ BEGIN
 END;
 
 -- 동네생활 게시판 상세 조회
+-- (연화)
 CREATE OR REPLACE PROCEDURE up_selcommboard
 (
     pcomm_board_num NUMBER
@@ -451,8 +461,13 @@ BEGIN
     END LOOP;
 --EXCEPTION
 END;
-SELECT * FROM comm_board;
-EXEC up_selcommboard(19);
+
+EXEC up_selcommboard(1);
+--
+update comm_board
+set comm_upload_date = '24-03-15'
+WHERE comm_board_num =1;
+
 
 -- 동네생활 게시판 검색
 CREATE OR REPLACE PROCEDURE up_searchCommBoard
@@ -502,6 +517,7 @@ BEGIN
   CLOSE c_comm_board_cur;
 --EXCEPTION
 END;
+
 EXEC up_searchCommBoard('오늘', 2);
 
 SELECT * FROM comm_board;
@@ -592,7 +608,7 @@ EXEC up_checkreply;
 
 
 ------------------------------ 채팅 조회 ----------------------------------------
-
+-- (영진)
 -- 채팅방 목록 조회
 CREATE OR REPLACE PROCEDURE seek_list
 (
