@@ -126,7 +126,6 @@ COMMIT;
 CREATE SEQUENCE seq_tboard INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE seq_image INCREMENT BY 1 START WITH 1 NOCYCLE NOCACHE;
 
---
 -- 에어팟맥스 새상품
 INSERT INTO TRADE_BOARD ( trade_num, member_num, selitem_ctgr_num, trade_title, trade_content, upload_date, trade_price, trade_location)
 VALUES (
@@ -520,9 +519,7 @@ INCREMENT BY 1;
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
 VALUES(seq_board.nextval,'누구든지 하루에 10분만 투자하면 부자가 될 수 있습니다. ','부자되는 법',1,to_date('21-04-23','yy-mm-dd'),9);
-update comm_board
-set comm_upload_date = '24-03-12'
-WHERE comm_board_num =1;
+
 
 INSERT INTO comm_board(COMM_BOARD_NUM,COMM_CONTENT,COMM_TITLE,COMM_CTGR_NUM,COMM_UPLOAD_DATE,MEMBER_NUM)
 VALUES(seq_board.nextval,'전31살 남자고 인천공항에 일때문에 픽업 가는데 공항가시는분 있으면공항까지 카풀합니다 ~ 연휴때 고향내려가는 차편 매진?瑛뻑 어떤분이 감사하게도 카풀해주셔서 편하게 갔던 기억이있어서 올려봅니다^^ ','내일 (3.7)오전 6시30분 출발 동수원사거리쪽에서',1,to_date('20-01-13','yy-mm-dd'),6);
